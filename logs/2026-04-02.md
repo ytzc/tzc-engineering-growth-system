@@ -56,6 +56,25 @@
 
 ---
 
+## 明天下一步
+
+**P0（明天必做）**
+
+- [ ] 設計 TPM → KEK → volume key key hierarchy，產出完整設計圖與說明
+- [ ] 整理 TCG 名詞（SRK / EK / AIK / DevID）與在系統中的角色 mapping
+- [ ] 定義目前系統應該採用的正確 key management model（TPM、KEK、volume key 的責任與資料流）
+
+**P1**
+
+- [ ] 重設 TPM handle 使用策略（避免 per-volume handle）
+- [ ] 比較 systemd-cryptenroll 與現有 tpm-agent 設計差異
+
+**P2**
+
+- [ ] 初步設計 sandbox identity 與 attestation flow
+
+---
+
 ## 備註 / 阻礙
 
 - 解題今天未完成，明天補上

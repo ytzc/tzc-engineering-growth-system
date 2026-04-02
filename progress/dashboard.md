@@ -20,9 +20,9 @@
 |---|---|---|---|---|
 | DSA problems solved | 0 | 0 | 0 | 300+ |
 | System designs written | 0 | 0 | 0 | 10+ |
-| Outputs produced | 0 | 0 | 0 | 20+ |
+| Outputs produced | 1 | 1 | 1 | 20+ |
 | Mock interviews done | 0 | 0 | 0 | 20+ |
-| Days with ≥1 action | 0 | 0 | 0 | — |
+| Days with ≥1 action | 1 | 1 | 1 | — |
 
 ---
 
@@ -32,7 +32,7 @@
 |---|---|---|---|---|
 | 01 DSA | Month 1–10 | NeetCode 75 | 0 | — |
 | 02 System Design | Month 1–10 | 5 basic designs | 0 | — |
-| 05 Security | Month 1–10 | Attestation lib | 0 | — |
+| 05 Security | Month 1–10 | Attestation lib | 1 | 2026-04-02 |
 
 ---
 
@@ -40,7 +40,7 @@
 
 | # | Date | Type | Title | Track |
 |---|---|---|---|---|
-| — | — | — | — | — |
+| 1 | 2026-04-02 | Note | TPM + LUKS Sealed Storage 架構分析 | 05 Security |
 
 ---
 
