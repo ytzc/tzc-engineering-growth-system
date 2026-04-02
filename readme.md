@@ -52,8 +52,11 @@ tzc-engineering-growth-system/
 │   ├── milestones.md
 │   └── vision.md
 │
-├── TODAY.md                     # ← 每天第一個打開。今天要做什麼。
-├── THIS_WEEK.md                 # ← 週一設定，週日回顧。
+├── today.md                     # ← 每天第一個打開。永遠與當天 logs/ 同步。
+├── this_week.md                 # ← 週一設定，週日回顧。
+│
+├── logs/                        # 每日執行歷史記錄
+│   └── YYYY-MM-DD.md            # 每天一個檔案，今天的 today.md 鏡像
 │
 ├── NOW/                         # 當前狀態 — 現在哪些 track 是 active
 │   ├── focus.md                 # Active tracks 與當前 milestone
@@ -540,19 +543,45 @@ git clone https://github.com/YOUR_USERNAME/tzc-engineering-growth-system.git
 cd tzc-engineering-growth-system
 
 # 每天的入口
-open TODAY.md
+open today.md
 
 # 查看現在哪些 track 是 active
-open NOW/focus.md
+open now/focus.md
 
-# 開啟今天的解題日誌
-touch LEETCODE/log/$(date +%Y-%m-%d).md
+# 建立今天的 log
+touch logs/$(date +%Y-%m-%d).md
 
 # 本週回顧（複製 template）
-cp REVIEWS/weekly/template.md REVIEWS/weekly/$(date +%G-W%V).md
+cp reviews/weekly/template.md reviews/weekly/$(date +%G-W%V).md
 ```
 
-每天打開 `TODAY.md`，宣告今天是哪種模式（Minimum / Normal / Deep），填三個欄位，完成三個 checkbox。就這樣。
+每天打開 `today.md`，宣告今天是哪種模式（Minimum / Normal / Deep），填三個欄位，完成三個 checkbox。或者直接用 `/daily-repo-operator` 讓 Claude 幫你完成整個流程。
+
+---
+
+## 每日操作流程
+
+### 開始今天
+- 建立或更新 `logs/YYYY-MM-DD.md`
+- 填入今天模式、解題練習、主技能與 micro-goal
+- 同步更新 `today.md`
+- commit 並 push
+
+commit 格式：`daily: YYYY-MM-DD start (plan)`
+
+### 結束今天
+- 更新 `logs/YYYY-MM-DD.md` 的實際完成內容
+- 補上產出、卡點與下一步
+- 同步更新 `today.md`
+- commit 並 push
+
+commit 格式：`daily: YYYY-MM-DD progress (<summary>)`
+
+### 原則
+- `logs/YYYY-MM-DD.md` 是每日執行的唯一歷史紀錄
+- `today.md` 是當天操作面板，隨時與當天 log 保持同步
+- 每天至少兩次 commit：開始一次，收尾一次
+- 與當日任務無關的變更不要一起 commit
 
 ---
 
