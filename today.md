@@ -20,7 +20,7 @@
 
 **Track：** `SKILLS/05-security-trusted-systems/`
 
-**今天的微目標（一句話）：** 把 tpm-agent 的 persistent handle 拿掉，改成 SRK-based
+**今天的微目標（一句話）：** 完成一份 NOTES/security 設計筆記：key hierarchy 圖 + 各名詞差異表 + 系統改法
 
 **做了什麼：**
 - 梳理 tpm-agent 現有架構：tree create → SSS → TPM → LUKS 完整流程
@@ -28,6 +28,9 @@
 - 識別 P1 問題：sealed-storage 與 container 綁定靠 pod_id、rsync 非 atomic
 - 發現關鍵設計轉向：應分 Storage（systemd-cryptenroll）與 Identity（attestation + KBS）兩層
 - 核心洞察：TPM + LUKS ≠ sandbox identity；correct key hierarchy 應為 SRK → KEK → volume key
+- *[resume]* 設計正確 key hierarchy：TPM → KEK → volume key，產出設計圖
+- *[resume]* 釐清 SRK、EK、AIK、DevID 差異
+- *[resume]* 整理 TCG 對 key / identity 的定義
 
 **卡住的地方：**
 - systemd-cryptenroll 是否完全取代自建 TPM agent 流程，尚未決定
@@ -40,6 +43,8 @@
 
 - [x] TPM + LUKS sealed storage 架構分析筆記
   → `NOTES/security/2026-04-02-tpm-luks-sealed-storage-analysis.md`
+- [ ] TPM key hierarchy 設計筆記（key hierarchy 圖 + 名詞差異表 + 系統改法）
+  → `NOTES/security/2026-04-02-tpm-key-hierarchy-design.md`
 
 ---
 
