@@ -1,58 +1,86 @@
-# 進度儀表板
+# Dashboard
 
-> 每週回顧時更新。
+*Updated: 2026-04-02 | Week 14 | Month 1 of 10*
 
-*最後更新：2026-04-02*
+> Update this every Sunday during the weekly review. The goal is not a beautiful dashboard — it's a true signal of whether you're moving.
 
 ---
 
-## 4 月目標狀態
+## North Star
 
-| 目標 | 進度 | 說明 |
+**Goal:** Google SWE interview-ready by February 2027
+**Current phase:** Phase 1 — Foundation (Months 1–2)
+**Status:** 🟡 Starting
+
+---
+
+## Key Metrics
+
+| Metric | This Week | This Month | Total | 10-Month Target |
+|---|---|---|---|---|
+| DSA problems solved | 0 | 0 | 0 | 300+ |
+| System designs written | 0 | 0 | 0 | 10+ |
+| Outputs produced | 0 | 0 | 0 | 20+ |
+| Mock interviews done | 0 | 0 | 0 | 20+ |
+| Days with ≥1 action | 0 | 0 | 0 | — |
+
+---
+
+## Active Tracks
+
+| Track | Phase | Current Milestone | Weeks Active | Last Session |
+|---|---|---|---|---|
+| 01 DSA | Month 1–10 | NeetCode 75 | 0 | — |
+| 02 System Design | Month 1–10 | 5 basic designs | 0 | — |
+| 05 Security | Month 1–10 | Attestation lib | 0 | — |
+
+---
+
+## Output Log (running total)
+
+| # | Date | Type | Title | Track |
+|---|---|---|---|---|
+| — | — | — | — | — |
+
+---
+
+## Habit Consistency
+
+| Week | M | T | W | T | F | S | S | Total |
+|---|---|---|---|---|---|---|---|---|
+| W14 | | | | | | | | 0/7 |
+
+---
+
+## Monthly Health Check
+
+Rate 1–5 (1 = poor, 5 = strong). Assess the last 4 weeks.
+
+| Area | Score | Action if < 3 |
 |---|---|---|
-| TPM/TCG Device Identity & Attestation | 0% | 剛啟動 |
-| CRA Survey × MX93 架構設計 | 0% | 剛啟動 |
-| LeetCode 初始 10 題 | 0/10 | 未開始 |
-| 系統設計書單 | 0% | 未開始 |
-| 多模態 Agent 研究 | 0% | 未開始 |
+| DSA consistency | — | Return to daily minimum (1 problem) |
+| System design depth | — | Write one design per week minimum |
+| Output cadence | — | Declare a "output week" — build/write only |
+| Sustainability | — | Drop one track, switch to Minimum Day default |
+| English communication | — | Add 30 min shadowing/speaking to daily routine |
 
 ---
 
-## LeetCode
+## Phase Tracker
 
-- **累計題數：** 0
-- **本週：** 0 題
-- **題型覆蓋：** 無
-- **目標：** 每週 5–7 題
+| Phase | Months | Focus | Status |
+|---|---|---|---|
+| 1 — Foundation | 1–2 | DSA baseline + SD fundamentals + Security systematize | 🔵 Current |
+| 2 — Depth | 3–5 | OS/Network/Distributed/DB rotation + first big deliverables | ⬜ |
+| 3 — Differentiation | 6–8 | Senior SD write-ups + Security OSS + AI/LLM pipeline | ⬜ |
+| 4 — Interview Sprint | 9–10 | Mock interviews + portfolio polish + behavioral prep | ⬜ |
 
 ---
 
-## 技術軌道
+## Adjustment Log
 
-| 軌道 | 狀態 | 本月進展 |
+> Record every time you change the plan and why.
+
+| Date | Change | Reason |
 |---|---|---|
-| 01 資料結構與演算法 | 🔵 進行中 | — |
-| 02 系統設計 | 🔵 進行中 | — |
-| 03 後端工程 | 🔵 進行中 | — |
-| 05 資安 | 🔵 進行中（CRA/TPM）| — |
-
----
-
-## 閱讀
-
-| 書名 | 進度 | 筆記 |
-|---|---|---|
-| 內行人才知道的系統設計面試指南 | 0% | — |
-
----
-
-## 習慣一致性（4 月）
-
-- 完整完成天數：0 / 1
-- 最長連續：0 天
-
----
-
-## 本月亮點
-
-*(每週回顧後補充)*
+| — | — | — |

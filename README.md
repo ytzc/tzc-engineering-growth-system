@@ -52,7 +52,23 @@ tzc-engineering-growth-system/
 │   ├── milestones.md
 │   └── vision.md
 │
-├── SKILLS/                      # 10 個技術學習軌道（面向 FAANG / 高階工程師）
+├── TODAY.md                     # ← Open this first. What to do today.
+├── THIS_WEEK.md                 # ← Set on Monday. Review on Sunday.
+│
+├── NOW/                         # Current state — what's active right now
+│   ├── focus.md                 # Active tracks, current milestones
+│   └── queue.md                 # Skills and outputs waiting their turn
+│
+├── OUTPUTS/                     # Everything produced — your portfolio
+│   ├── README.md                # Index + 10-month output targets
+│   ├── writeups/                # Technical write-ups and blog drafts
+│   ├── designs/                 # System design documents
+│   ├── projects/                # Code implementations and POCs
+│   ├── papers/                  # Paper reading notes with analysis
+│   └── talks/                   # Talk abstracts and slides
+│
+├── SKILLS/                      # 10 skill tracks (FAANG / senior engineer oriented)
+│   ├── track-template.md        # Standard format for all tracks
 │   ├── 01-dsa-coding-interview/
 │   ├── 02-system-design-large-scale/
 │   ├── 03-os-systems-programming/
@@ -98,24 +114,76 @@ tzc-engineering-growth-system/
 
 ---
 
-## 學習系統架構
+## Execution Philosophy
 
-系統分三個時間尺度運作：
+> This is not a curriculum. It is an operating system for engineering growth.
+> The system fails when planning replaces doing.
 
-**每日（15–60 分鐘）**
-- LeetCode：解 1 題或複習 1 個題型
-- 默寫：複習前一天的學習筆記
-- 筆記：記錄當天任何有價值的洞察
+**Rule 1 — Output over consumption.** A written design doc beats three hours of reading. A coded solution beats watching a tutorial. Every session produces an artifact: a note, a snippet, a diagram, a paragraph. If nothing lands in `OUTPUTS/` or `NOTES/`, the session didn't compound.
 
-**每週（1–2 小時，專屬時段）**
-- 深度推進 1 個技術軌道
-- 閱讀書單進度
-- 撰寫每週回顧
+**Rule 2 — Minimum execution beats optimal planning.** On bad days, do the minimum. Five problems in a week beats a perfect plan with zero executions.
 
-**每月（2–4 小時）**
-- 盤點 10 個技術軌道的缺口
-- 更新里程碑與主計畫
-- 撰寫每月回顧並看數據
+**Rule 3 — Adjust weekly, not monthly.** Rigid adherence to a monthly plan despite clear failure signals is a bug, not discipline. Every Sunday, adjust.
+
+**Rule 4 — Three active tracks maximum.** DSA (always) + one main skill + one differentiator. Spreading across all 10 means zero meaningful depth in any.
+
+**Rule 5 — Feedback loops over documentation.** Write the weekly review. Update the dashboard. If you skip reviews, you fly blind.
+
+---
+
+## Daily Operating Model
+
+Three tiers — use whichever fits your actual day:
+
+### Minimum Day *(busy, low energy, travel)*
+> One thing. Non-negotiable.
+- DSA: 1 problem attempted and logged (30 min)
+- If more time: 30 min on main skill
+
+### Normal Day *(standard work + evening block)*
+> Three things.
+- DSA: 2–3 problems (45–60 min)
+- Main skill: focused session, one clear micro-goal (60–90 min)
+- Output: 1 small artifact → `NOTES/` or `OUTPUTS/` (30 min)
+
+### Deep Day *(free block, weekend, or focused sprint)*
+> Go deep on one thing.
+- DSA: 3–5 problems, including one hard (60–90 min)
+- Main skill: build or write (2–4 h) — project, write-up, implementation
+- Output: something substantial → `OUTPUTS/`
+
+**Decision rule:** open `TODAY.md`, declare your day type, fill in the three fields. Done when the three checkboxes are checked.
+
+---
+
+## Mainline vs Sideline Strategy
+
+Not all tracks are equal. Running all 10 in parallel means running none.
+
+### Always-on Mainline (every month, every week)
+| Track | Why always active |
+|---|---|
+| 01 DSA & Coding Interview | Core interview filter — consistency compounds |
+| 02 System Design — Large Scale | Second interview filter — depth takes months |
+| 05 Security & Trusted Systems | Your primary differentiator — maintain and deepen |
+
+### Rotating Sideline (1 track per month, cycled in from `NOW/queue.md`)
+Months 3–8: OS → Network → Distributed Systems → Database → Security OSS → AI/LLM
+
+### Background Mode (low weekly touch, output-focused)
+| Track | Mode |
+|---|---|
+| 08 AI/LLM Systems | Activated Month 7 — leverage existing platform work |
+| 10 Engineering Impact | Month 5+ — one RFC or blog post per month |
+
+### Parked (not touching until scheduled)
+Everything else. See `NOW/queue.md` for activation schedule.
+
+---
+
+## 學習系統節奏
+
+三個時間尺度：
 
 ---
 
@@ -142,33 +210,78 @@ tzc-engineering-growth-system/
 
 ---
 
-## 10 個月 Roadmap（目標：Google SWE 面試水準）
+## 10-Month Execution Strategy
 
-### 優先順序原則
-- **01（DSA）+ 02（System Design）** 全程並行，因為面試考這兩項
-- **05（Security）+ 08（AI）** 是你的差異化資產，持續深化
-- **03 / 04 / 07** 是底層深度，按月輪流加入
-- **10（Engineering Impact）** 從第 5 個月起，準備 behavioral 面試
+> Designed for a working engineer, not a student. Assumes fatigue, interruptions, and shifting priorities.
+> The plan is a guide — the weekly review is where real adjustments happen.
 
-### 月度 Focus 計畫
+### Four Phases
 
-| 月份 | 主力 Track | 配合 Track | 關鍵里程碑 |
-|---|---|---|---|
-| **Month 1** | 01 DSA（密集建底） | 02 System Design 入門 | NeetCode 75 完成；設計 3 個基礎系統 |
-| **Month 2** | 01 DSA（DP / Graph 深化） | 02 System Design 進階 | LeetCode 150 達標；設計 Twitter / YouTube |
-| **Month 3** | 03 OS Internals | 01 DSA 維持 + 06 Network 入門 | xv6 讀完；實作 HTTP server |
-| **Month 4** | 07 Distributed Systems | 02 System Design（分散式專題） | Raft 實作完成；MIT 6.824 Lab 2–3 |
-| **Month 5** | 04 Database Internals | 07 Distributed Systems 收尾 | KV store 實作；CMU 15-445 前 3 個 project |
-| **Month 6** | 02 System Design（Senior level） | 04 DB 收尾 | 10 個系統設計完整 write-up；容量估算模板 |
-| **Month 7** | 05 Security（系統化深化） | 08 AI/LLM Systems | 開源 attestation 庫發布；RAG pipeline 完成 |
-| **Month 8** | 08 AI/LLM（推論優化） | 05 Security 收尾 | vLLM benchmark report；安全推論架構文件 |
-| **Month 9** | 09 Cloud-Native（k8s 深化） | 10 Engineering Impact（RFC 開始）| k8s operator；第 1 篇 RFC；開始 mock interview |
-| **Month 10** | **全面 Mock Interview 衝刺** | 10 Engineering Impact（STAR stories）| 每週 3 場 mock；STAR 故事 5 則；履歷最終版 |
+---
 
-### 每月必做事項
-- **DSA**：每日 5–7 題（Month 1–6 密集，Month 7–10 維持每日 2–3 題）
-- **System Design**：每週 2 個設計題，Month 6+ 寫 full write-up
-- **Security / AI**：每月至少 1 個可交付成果（project / writeup / open-source）
+**Phase 1 — Foundation (Months 1–2)**
+*Build the daily habit. Establish the DSA baseline. Systematize existing security knowledge.*
+
+- DSA: NeetCode 75 → LeetCode 150. Pattern-first, timed, logged daily.
+- System Design: master the fundamentals (capacity estimation, caching, sharding, replication). 5 basic designs with written notes.
+- Security: organize and document your existing TPM/FDO expertise. One publishable writeup.
+- Output target: 2 system design docs, 1 security writeup, DSA pattern cheatsheet.
+- **Is it working?** By end of Month 2: LeetCode 150 done, can sketch any basic system in 30 min.
+
+---
+
+**Phase 2 — Depth (Months 3–5)**
+*Add OS / Network / Distributed / DB as rotating sideline tracks. Ship first real code deliverables.*
+
+- DSA: maintain 3–5 problems/day. Focus shifts to hard problems and pattern combinations.
+- System Design: advance to distributed systems designs. Write full design docs with failure modes.
+- Rotating sideline: Month 3 → OS + Network, Month 4 → Distributed Systems, Month 5 → Database Internals.
+- Output target per month: 1 working implementation (HTTP server → Raft → KV store).
+- **Is it working?** By end of Month 5: Raft implemented, KV store exists, can discuss OS scheduler and LSM-tree in depth.
+
+---
+
+**Phase 3 — Differentiation (Months 6–8)**
+*Produce senior-level outputs. Activate AI/LLM track. Ship open-source security work.*
+
+- DSA: maintain 2–3 problems/day. Quality over quantity — focus on hard problems and mock conditions.
+- System Design: write 3 senior-level full docs (geo-distributed, ML platform, real-time pipeline).
+- Security: publish open-source attestation library. SPIFFE/SPIRE integration. Submit a talk abstract.
+- AI/LLM: RAG pipeline on existing platform. vLLM benchmark. Secure inference architecture doc.
+- **Is it working?** By end of Month 8: can design a distributed system with failure mode analysis, have 2 open-source projects, and have a technical blog post published.
+
+---
+
+**Phase 4 — Interview Sprint (Months 9–10)**
+*Everything becomes interview-oriented. Shift from learning to execution under conditions.*
+
+- DSA: 3 problems/day, timed, no hints. Review every hard problem from previous months.
+- System Design: mock interviews only. 3x/week. Record and self-critique.
+- Behavioral: 5 STAR stories finalized. Cover: leadership, conflict, ambiguity, failure, impact.
+- Portfolio: `OUTPUTS/README.md` as a portfolio page. Resume final version.
+- **Is it working?** By end of Month 10: comfortable in any Google interview format, outputs speak for themselves.
+
+---
+
+### Adjustment Rules (concrete)
+
+**Trigger: downgrade load**
+If sustainability score ≤ 2 for 2 consecutive weeks → switch to Minimum Day as default for 2 weeks. Drop the rotating sideline track. DSA and one differentiator only.
+
+**Trigger: switch main track**
+If a sideline track has had 0 sessions for 3 weeks → park it. Pull the next item from `NOW/queue.md`. Do not force progress that isn't happening.
+
+**Trigger: pause a track**
+If work demands spike for > 2 weeks → explicitly park all sideline tracks. Mainline (DSA + SD + Security) only. Log the pause in `NOW/focus.md`.
+
+**Trigger: increase output focus**
+If you've been consuming (reading, watching, solving) for 3+ weeks without producing → declare an output week. No new learning. Only build, write, or code. Pull from `NOW/queue.md` output queue.
+
+**Trigger: increase mock interviews**
+Month 8 onwards, if you haven't started mocks → force 1 mock/week minimum. Discomfort is the signal that it's working.
+
+**Trigger: new opportunity appears**
+Evaluate against the 10-month goal. If it's directly relevant (e.g., a chance to publish, speak, or ship something security/AI related) → do it, park one sideline track. If it's orthogonal → put it in `NOW/queue.md` and do it after Month 10.
 
 ---
 
