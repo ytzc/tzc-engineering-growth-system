@@ -25,7 +25,8 @@ Three files serve distinct roles. Never mix them.
 Trigger when the user says anything in Chinese that describes:
 - Starting the day → run **Workflow A — Start of Day**
 - Wrapping up or wanting to push → run **Workflow B — End of Day**
-- Mid-session progress update → run **Workflow C — Progress Update**
+- Mid-session checkpoint (before end-of-day) → run **Workflow C — Progress Update**
+- Resuming after end-of-day on the same calendar day → run **Workflow D — Resume Same Day**
 
 **Start triggers:**
 - "開始今天"、"幫我開始今天"、"今天開始"
@@ -35,15 +36,37 @@ Trigger when the user says anything in Chinese that describes:
 **End triggers:**
 - "今天結束"、"今天做完了"、"幫我收尾今天"、"收工"、"今天到這裡"、"幫我 push"
 
-**Progress triggers:**
+**Progress triggers (mid-session only, before End of Day):**
 - "剛完成 X，記錄一下"、"先記一下進度"
+
+**Resume triggers (after End of Day on the same day):**
+- "我回來繼續今天的工作"
+- "晚上回來補一下"
+- "已經收工了但想再做一點"
+- "幫我接著今天做"
+- "我回來了，繼續今天"
+- "收工後回來"
 
 ---
 
 ## Step 0 — Always Do First
 
 1. Run `date +%Y-%m-%d` to get today's date.
-2. Determine intent (start / end / progress) from the user's sentence.
+2. Determine intent using the **Workflow Disambiguation Rule** below.
+
+### Workflow Disambiguation Rule
+
+Apply in order. Use the **first** rule that matches.
+
+| Condition | Workflow |
+|---|---|
+| User says a Resume trigger | **D** — Resume Same Day |
+| User says a Start trigger AND `logs/YYYY-MM-DD.md` does NOT exist | **A** — Start of Day |
+| User says a Start trigger AND `logs/YYYY-MM-DD.md` already exists | **D** — Resume Same Day (do not recreate files) |
+| User says an End trigger | **B** — End of Day |
+| User says a Progress trigger | **C** — Progress Update |
+
+**Key principle:** If today's files already exist and the user wants to continue, always use D. Never re-run A on a day that has already been started.
 
 ---
 
@@ -309,12 +332,65 @@ Anything in inbox that doesn't fit a category: leave it in inbox. Do not force-c
 
 ## Workflow C — Progress Update (mid-session)
 
-Same as Workflow B, but lighter:
-- Update only "做了什麼" and "卡住的地方" in the log
-- Do not touch completion checkboxes unless user says something is done
-- Do not update `progress/dashboard.md`
-- Commit message: `daily: YYYY-MM-DD progress (<summary>)`
-- Push.
+**Use only when:** the user wants a quick checkpoint *during* the working session, before End of Day has been run. If End of Day has already been run and the user is coming back to continue, use **Workflow D** instead.
+
+### Steps
+
+1. Read `inbox/YYYY-MM-DD.md` and `logs/YYYY-MM-DD.md`.
+2. Append new bullets to "做了什麼" based on what the user described.
+3. Update "卡住的地方" if new blockers are mentioned.
+4. Do not touch completion checkboxes.
+5. Do not update `progress/dashboard.md`.
+6. Overwrite `today.md` with updated log content.
+7. Run:
+   ```
+   git add logs/YYYY-MM-DD.md today.md
+   git commit -m "daily: YYYY-MM-DD progress (<summary>)"
+   git push origin main
+   ```
+
+---
+
+## Workflow D — Resume Same Day
+
+**Use when:** the user has already run End of Day (Workflow B) and is returning to continue work on the same calendar day. Do NOT re-run Workflow A. Do NOT recreate any files.
+
+**Triggers:**
+- "我回來繼續今天的工作"
+- "晚上回來補一下"
+- "已經收工了但想再做一點"
+- "幫我接著今天做"
+- "我回來了，繼續今天"
+- "收工後回來"
+- Any Start-of-day trigger where `logs/YYYY-MM-DD.md` already exists
+
+### Steps
+
+1. Read `inbox/YYYY-MM-DD.md`, `logs/YYYY-MM-DD.md`, `today.md`.
+2. Append any new material the user brings to `inbox/YYYY-MM-DD.md` under the appropriate section. Do not overwrite existing content.
+3. Update `logs/YYYY-MM-DD.md`:
+   - Append new bullets to "做了什麼"
+   - Update "卡住的地方" if new blockers are mentioned
+   - Mark completion checkboxes `[x]` **only** if the user explicitly says something is done
+   - If a new output file was produced, add it to "產出" and mark `[x]` with the file path
+4. If new classifiable content exists in inbox (new technical note, problem-solving, memorizable content) — classify it using the Classification Rules from Workflow B.
+5. Overwrite `today.md` with updated log content.
+6. Run:
+   ```
+   git add -A
+   git commit -m "daily: YYYY-MM-DD resume (<summary>)"
+   git push origin main
+   ```
+   - summary: English, ≤ 50 chars
+   - Example: `daily: 2026-04-02 resume (SRK key hierarchy diagram)`
+
+### What Workflow D does NOT do
+
+- Does NOT create `inbox/YYYY-MM-DD.md` (already exists)
+- Does NOT create `logs/YYYY-MM-DD.md` (already exists)
+- Does NOT create `assets/inbox/YYYY-MM-DD/` (already exists)
+- Does NOT reset or overwrite existing log content — only appends
+- Does NOT change the day mode or micro-goal unless user explicitly updates them
 
 ---
 
@@ -371,11 +447,12 @@ If no keyword matches, read `NOW/focus.md` and use the first active track.
 |---|---|
 | Start of day | `daily: YYYY-MM-DD start (plan)` |
 | Progress or end of day | `daily: YYYY-MM-DD progress (<summary>)` |
+| Resume same day | `daily: YYYY-MM-DD resume (<summary>)` |
 
 - summary: English, ≤ 50 chars
 - Never mix daily log commits with skill track edits, README changes, or system restructuring
-- If note files are created at end-of-day, include them in the same progress commit — do not create separate commits
-- Stage specific files, not `git add -A`, unless end-of-day (where multiple classified files need staging)
+- If note files are created at end-of-day or resume, include them in the same commit — do not create separate commits
+- Stage specific files, not `git add -A`, unless end-of-day or resume (where multiple classified files may need staging)
 
 ---
 
