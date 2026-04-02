@@ -23,30 +23,37 @@
 **今天的微目標（一句話）：** 把 tpm-agent 的 persistent handle 拿掉，改成 SRK-based
 
 **做了什麼：**
--
+- 梳理 tpm-agent 現有架構：tree create → SSS → TPM → LUKS 完整流程
+- 確認 P0 問題：per-volume persistent handle 不 scalable、key lifecycle 不完整、create/run 邊界不清
+- 識別 P1 問題：sealed-storage 與 container 綁定靠 pod_id、rsync 非 atomic
+- 發現關鍵設計轉向：應分 Storage（systemd-cryptenroll）與 Identity（attestation + KBS）兩層
+- 核心洞察：TPM + LUKS ≠ sandbox identity；correct key hierarchy 應為 SRK → KEK → volume key
 
 **卡住的地方：**
--
+- systemd-cryptenroll 是否完全取代自建 TPM agent 流程，尚未決定
+- Kata identity 如何綁 key（PCR / attestation / KBS）尚未釐清
+- key 存放位置（TPM NV / LUKS slot / 外部 KMS）尚未決定
 
 ---
 
 ## 產出 — 一個小東西
 
-- [ ] tpm-agent SRK redesign 設計筆記
+- [x] TPM + LUKS sealed storage 架構分析筆記
+  → `NOTES/security/2026-04-02-tpm-luks-sealed-storage-analysis.md`
 
 ---
 
 ## 完成條件
 
 - [ ] 解題：1 題做完並記錄
-- [ ] 技能：focused session（Normal/Deep: 30 min+；Minimum: 任意長度）
-- [ ] 產出：1 個東西歸檔
+- [x] 技能：focused session（deep analysis of tpm-agent architecture）
+- [x] 產出：1 個東西歸檔
 
 ---
 
 ## 備註 / 阻礙
 
--
+- 解題今天未完成，明天補上
 
 ---
 
