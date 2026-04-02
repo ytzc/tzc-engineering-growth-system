@@ -52,11 +52,14 @@ tzc-engineering-growth-system/
 │   ├── milestones.md
 │   └── vision.md
 │
-├── today.md                     # ← 每天第一個打開。永遠與當天 logs/ 同步。
+├── today.md                     # ← 每天操作面板。永遠與當天 logs/ 同步。
 ├── this_week.md                 # ← 週一設定，週日回顧。
 │
-├── logs/                        # 每日執行歷史記錄
-│   └── YYYY-MM-DD.md            # 每天一個檔案，今天的 today.md 鏡像
+├── inbox/                       # 白天原始材料入口（每天一個檔案，不整理）
+│   └── YYYY-MM-DD.md            # 解題、技術思考、知識點、卡點，隨時寫
+│
+├── logs/                        # 每日執行歷史記錄（結構化，Claude 維護）
+│   └── YYYY-MM-DD.md            # 每天一個檔案，today.md 鏡像
 │
 ├── NOW/                         # 當前狀態 — 現在哪些 track 是 active
 │   ├── focus.md                 # Active tracks 與當前 milestone
@@ -565,69 +568,100 @@ cp reviews/weekly/template.md reviews/weekly/$(date +%G-W%V).md
 
 這個 repo 有一個 custom skill：`.claude/commands/daily-repo-operator.md`。
 
-在 Claude Code 裡，只要用一句中文描述你今天要做什麼或今天做完了什麼，Claude 會自動完成：建立或更新 `logs/YYYY-MM-DD.md`、同步 `today.md`、判斷對應的 skill track、把筆記歸到正確位置、執行 git commit 與 push。
+每天分兩段：早上 Claude 幫你建立今天的檔案、開好 inbox；白天你只需要把東西寫進 `inbox/`；晚上 Claude 讀 inbox 並自動分類整理。
 
 ---
 
-#### 開始今天
+### 三個檔案，三個角色
+
+| 檔案 | 用途 | 誰來寫 |
+|---|---|---|
+| `inbox/YYYY-MM-DD.md` | 白天原始材料入口，不需整理 | 你（白天隨時寫） |
+| `logs/YYYY-MM-DD.md` | 正式執行紀錄，結構化、有 checkbox | Claude（早上 + 晚上） |
+| `today.md` | 當天操作面板，永遠與 log 同步 | Claude（每次更新 log 後覆寫） |
+
+**白天只要顧 inbox。晚上讓 Claude 整理。**
+
+---
+
+### 開始今天
 
 對 Claude 說：
 
-> 今天 Normal day，要做 **[解題內容]**，然後做 **[技能工作描述]**。
+> 「開始今天」、「幫我開始今天」、「今天 Normal day，要做 X」
 
 Claude 會：
-- 判斷今天的模式（Minimum / Normal / Deep）
-- 從關鍵字推斷對應的 skill track
-- 建立 `logs/YYYY-MM-DD.md`，填入模式、解題、主技能、micro-goal、預期產出
-- 同步覆寫 `today.md`
-- 執行 `git commit -m "daily: YYYY-MM-DD start (plan)"` 並 push
+1. 建立 `inbox/YYYY-MM-DD.md`（空白模板，等你白天填）
+2. 建立 `logs/YYYY-MM-DD.md`（填入模式、解題、主技能、micro-goal、預期產出）
+3. 同步覆寫 `today.md`
+4. 執行 `git commit -m "daily: YYYY-MM-DD start (plan)"` 並 push
+
+如果你沒說清楚今天要做什麼，Claude 只問一個問題：「今天主要做什麼？」
 
 ---
 
-#### 結束今天
+### 白天：只寫 inbox
+
+打開 `inbox/YYYY-MM-DD.md`，想到什麼就寫在對應區塊：
+
+- 解題思路 / 書本題記錄
+- 技術思考、架構想法、程式碼片段
+- 想記住的知識點
+- 卡住的地方
+- 明天下一步
+
+**不用管格式，不用管分類，晚上 Claude 會處理。**
+
+---
+
+### 今天結束
 
 對 Claude 說：
 
-> 今天結束。完成了 **[做了什麼]**，卡在 **[卡點]**，寫了一份 **[筆記名稱]** 的筆記。
+> 「今天結束」、「今天做完了」、「幫我收尾今天」、「收工」
 
 Claude 會：
-- 更新 `logs/YYYY-MM-DD.md`：填入「做了什麼」、「卡住的地方」、打勾完成條件
-- 把筆記建立到正確位置（例如 `notes/security/` 或 `outputs/designs/`）
-- 在 `outputs/readme.md` 補上 output log 記錄
-- 同步覆寫 `today.md`
-- 執行 `git commit -m "daily: YYYY-MM-DD progress (<summary>)"` 並 push
+1. 讀 `inbox/YYYY-MM-DD.md`，自動分類到正確位置：
+   - 解題記錄 → `leetcode/log/YYYY-MM-DD.md`
+   - 技術筆記 → `notes/security/`、`notes/systems/`、`notes/misc/` 等（依關鍵字路由）
+   - 適合背誦的內容 → `memorization/daily/YYYY-MM-DD.md`
+2. 更新 `logs/YYYY-MM-DD.md`：填「做了什麼」、「卡住的地方」、打勾完成條件
+3. 若有實質進展，更新 `progress/dashboard.md`
+4. 同步覆寫 `today.md`
+5. 執行 `git commit -m "daily: YYYY-MM-DD progress (<summary>)"` 並 push
+
+**inbox 原始材料永遠保留，不刪不改。**
 
 ---
 
-#### 範例：開始今天
+### 範例：開始今天
 
 ```
 今天 Normal day。我要做 C++ 解題入門第 1 章 1-1 ~ 1-3，
 然後做 TPM agent SRK redesign，目標是把 persistent handle 全部移掉。
 ```
 
-Claude 建立的 log 會包含：
-- 模式：Normal
-- 解題：書本，第 1 章 1-1 ~ 1-3，Pattern: Basic I/O / Simulation
-- 主技能：`skills/05-security-trusted-systems/`
-- micro-goal：TPM agent 改用 SRK-based key hierarchy，移除 persistent handle 依賴
-- 預期產出：`notes/security/YYYY-MM-DD-tpm-agent-srk-redesign.md`
+Claude 建立：
+- `inbox/YYYY-MM-DD.md`（空白模板）
+- `logs/YYYY-MM-DD.md`：模式 Normal、書本第 1 章、主技能 05-security、micro-goal：移除 persistent handle
+- `today.md`（鏡像 log）
+- commit: `daily: YYYY-MM-DD start (plan)`
 
 ---
 
-#### 範例：結束今天
+### 範例：今天結束
 
 ```
 今天收工。書本 1-1 ~ 1-3 都解完了，獨立解出。
-TPM 那邊把 key hierarchy 梳理完了，AK 還是要 persistent，
-DevID 可以 transient。寫了一份 SRK redesign 的筆記。
+TPM key hierarchy 梳理完了，AK 要 persistent，DevID 可以 transient。
+寫了一份 SRK redesign 筆記。
 ```
 
 Claude 執行：
-- `logs/YYYY-MM-DD.md`：打勾所有完成條件，填入做了什麼與卡點
-- 建立 `notes/security/YYYY-MM-DD-tpm-agent-srk-redesign.md`
-- `outputs/readme.md` 補上這份筆記的記錄
-- commit：`daily: YYYY-MM-DD progress (TPM SRK key hierarchy, C++ ch1 problems)`
+- inbox 內容 → 建立 `notes/security/YYYY-MM-DD-tpm-agent-srk-redesign.md`
+- 解題記錄 → `leetcode/log/YYYY-MM-DD.md`
+- 更新 `logs/YYYY-MM-DD.md`，打勾完成條件
+- commit: `daily: YYYY-MM-DD progress (TPM SRK key hierarchy, C++ ch1)`
 
 ---
 
@@ -644,8 +678,11 @@ Claude 執行：
 
 ### 原則
 
-- `logs/YYYY-MM-DD.md` 是每日執行的唯一歷史紀錄，不刪不改只追加
-- `today.md` 是當天操作面板，永遠與當天 log 內容保持同步
+- 白天先寫 inbox，不急著分類
+- 晚上再由 Claude 整理，不要手動移動 inbox 內容
+- `inbox/` 保留原始材料，永不刪除
+- `logs/` 是正式執行紀錄，不刪不改只追加
+- `today.md` 是當天面板，永遠與當天 log 同步
 - 每天至少兩次 commit：開始一次（plan），收尾一次（progress）
 - 當日 log 的 commit 不混入其他系統變更
 
