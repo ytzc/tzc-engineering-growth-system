@@ -52,17 +52,17 @@ tzc-engineering-growth-system/
 │   ├── milestones.md
 │   └── vision.md
 │
-├── SKILLS/                      # 10 個技術學習軌道
-│   ├── 01-data-structures-algorithms/
-│   ├── 02-system-design/
-│   ├── 03-backend-engineering/
-│   ├── 04-databases/
-│   ├── 05-security/
-│   ├── 06-networking/
-│   ├── 07-operating-systems/
-│   ├── 08-distributed-systems/
-│   ├── 09-devops-infrastructure/
-│   └── 10-software-engineering-practices/
+├── SKILLS/                      # 10 個技術學習軌道（面向 FAANG / 高階工程師）
+│   ├── 01-dsa-coding-interview/
+│   ├── 02-system-design-large-scale/
+│   ├── 03-os-systems-programming/
+│   ├── 04-database-internals-storage/
+│   ├── 05-security-trusted-systems/
+│   ├── 06-network-protocol-engineering/
+│   ├── 07-distributed-systems-consensus/
+│   ├── 08-ai-llm-systems/
+│   ├── 09-cloud-native-platform/
+│   └── 10-engineering-impact-leadership/
 │
 ├── LEETCODE/                    # 刷題日誌、題型整理、策略
 │   ├── log/
@@ -121,26 +121,54 @@ tzc-engineering-growth-system/
 
 ## 10 個技術學習軌道
 
-每個軌道放在 `SKILLS/XX-track-name/`，包含：
-- `roadmap.md` — 這個技術的學習路徑與里程碑
-- `notes/` — 結構化技術筆記
-- `resources.md` — 精選資源、書籍、課程
-- `log.md` — 每週進度記錄
+**設計原則：** 面向 Google / FAANG 面試 + 高階工程師能力，而非學校課程。
 
-| # | 軌道 | 狀態 |
-|---|---|---|
-| 01 | 資料結構與演算法 | 🔵 進行中 |
-| 02 | 系統設計 | 🔵 進行中 |
-| 03 | 後端工程 | 🔵 進行中 |
-| 04 | 資料庫 | ⬜ 待啟動 |
-| 05 | 資安 | ⬜ 待啟動 |
-| 06 | 網路 | ⬜ 待啟動 |
-| 07 | 作業系統 | ⬜ 待啟動 |
-| 08 | 分散式系統 | ⬜ 待啟動 |
-| 09 | DevOps 與基礎設施 | ⬜ 待啟動 |
-| 10 | 軟體工程實踐 | ⬜ 待啟動 |
+每個軌道放在 `SKILLS/XX-track-name/README.md`，包含：目標（why）、核心知識、練習方式、可交付成果。
 
-> 同時間只專注 2–3 個軌道，每月回顧時視需求輪換。
+| # | 軌道 | 核心定位 | 狀態 |
+|---|---|---|---|
+| 01 | [DSA & Coding Interview](SKILLS/01-dsa-coding-interview/) | 面試通關基礎，題型識別 | 🔵 進行中 |
+| 02 | [System Design — Large Scale](SKILLS/02-system-design-large-scale/) | Senior level 系統設計 | 🔵 進行中 |
+| 03 | [OS Internals & Systems Programming](SKILLS/03-os-systems-programming/) | 底層深度，Rust/C | ⬜ 待啟動 |
+| 04 | [Database Internals & Storage](SKILLS/04-database-internals-storage/) | B-tree / LSM / MVCC | ⬜ 待啟動 |
+| 05 | [Security & Trusted Systems](SKILLS/05-security-trusted-systems/) | **稀缺差異化** — TPM / TEE / Attestation | 🔵 進行中 |
+| 06 | [Network Protocol Engineering](SKILLS/06-network-protocol-engineering/) | TCP/TLS/QUIC/gRPC | ⬜ 待啟動 |
+| 07 | [Distributed Systems & Consensus](SKILLS/07-distributed-systems-consensus/) | Raft / Paxos / CRDT | ⬜ 待啟動 |
+| 08 | [AI/LLM Systems Engineering](SKILLS/08-ai-llm-systems/) | **差異化** — RAG / Inference / Agents | 🔵 進行中 |
+| 09 | [Cloud-Native & Platform Engineering](SKILLS/09-cloud-native-platform/) | k8s internals / SRE / GitOps | ⬜ 待啟動 |
+| 10 | [Engineering Impact & Leadership](SKILLS/10-engineering-impact-leadership/) | RFC / 架構決策 / 工程影響力 | ⬜ 待啟動 |
+
+> 同時間只深耕 2–3 個軌道，每月回顧時調整優先順序。
+
+---
+
+## 10 個月 Roadmap（目標：Google SWE 面試水準）
+
+### 優先順序原則
+- **01（DSA）+ 02（System Design）** 全程並行，因為面試考這兩項
+- **05（Security）+ 08（AI）** 是你的差異化資產，持續深化
+- **03 / 04 / 07** 是底層深度，按月輪流加入
+- **10（Engineering Impact）** 從第 5 個月起，準備 behavioral 面試
+
+### 月度 Focus 計畫
+
+| 月份 | 主力 Track | 配合 Track | 關鍵里程碑 |
+|---|---|---|---|
+| **Month 1** | 01 DSA（密集建底） | 02 System Design 入門 | NeetCode 75 完成；設計 3 個基礎系統 |
+| **Month 2** | 01 DSA（DP / Graph 深化） | 02 System Design 進階 | LeetCode 150 達標；設計 Twitter / YouTube |
+| **Month 3** | 03 OS Internals | 01 DSA 維持 + 06 Network 入門 | xv6 讀完；實作 HTTP server |
+| **Month 4** | 07 Distributed Systems | 02 System Design（分散式專題） | Raft 實作完成；MIT 6.824 Lab 2–3 |
+| **Month 5** | 04 Database Internals | 07 Distributed Systems 收尾 | KV store 實作；CMU 15-445 前 3 個 project |
+| **Month 6** | 02 System Design（Senior level） | 04 DB 收尾 | 10 個系統設計完整 write-up；容量估算模板 |
+| **Month 7** | 05 Security（系統化深化） | 08 AI/LLM Systems | 開源 attestation 庫發布；RAG pipeline 完成 |
+| **Month 8** | 08 AI/LLM（推論優化） | 05 Security 收尾 | vLLM benchmark report；安全推論架構文件 |
+| **Month 9** | 09 Cloud-Native（k8s 深化） | 10 Engineering Impact（RFC 開始）| k8s operator；第 1 篇 RFC；開始 mock interview |
+| **Month 10** | **全面 Mock Interview 衝刺** | 10 Engineering Impact（STAR stories）| 每週 3 場 mock；STAR 故事 5 則；履歷最終版 |
+
+### 每月必做事項
+- **DSA**：每日 5–7 題（Month 1–6 密集，Month 7–10 維持每日 2–3 題）
+- **System Design**：每週 2 個設計題，Month 6+ 寫 full write-up
+- **Security / AI**：每月至少 1 個可交付成果（project / writeup / open-source）
 
 ---
 
