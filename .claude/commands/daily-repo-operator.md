@@ -60,11 +60,16 @@ Trigger when the user says anything in Chinese that describes:
    - **Micro-goal**: extract verbatim from user's sentence; if absent, ask "今天的微目標是什麼？（一句話）"
    - **Problem-solving**: fill from user's input; if not mentioned, leave as template blanks
 3. Create `inbox/YYYY-MM-DD.md` using the Inbox Template below.
-4. Write `logs/YYYY-MM-DD.md` using the Log Template below.
-5. Overwrite `today.md` with identical content to the log.
-6. Run:
+4. Create `assets/inbox/YYYY-MM-DD/` as today's asset staging area:
    ```
-   git add inbox/YYYY-MM-DD.md logs/YYYY-MM-DD.md today.md
+   mkdir -p assets/inbox/YYYY-MM-DD
+   touch assets/inbox/YYYY-MM-DD/.gitkeep
+   ```
+5. Write `logs/YYYY-MM-DD.md` using the Log Template below.
+6. Overwrite `today.md` with identical content to the log.
+7. Run:
+   ```
+   git add inbox/YYYY-MM-DD.md logs/YYYY-MM-DD.md today.md assets/inbox/YYYY-MM-DD/.gitkeep
    git commit -m "daily: YYYY-MM-DD start (plan)"
    git push origin main
    ```
@@ -229,11 +234,76 @@ If inbox has content suitable for active recall → write to `memorization/daily
 
 Format: Q&A pairs or fill-in-the-blank items, 5–10 minutes to review.
 
-#### D. Unprocessed Remainder
+#### D. Assets (圖片 / 架構圖 / draw.io)
+
+**Source directory:** `assets/inbox/YYYY-MM-DD/`
+
+List the directory. If empty or absent, skip this section.
+
+##### D1 — Routing Decision (per file)
+
+For each file, determine: **route** (move to permanent location) or **hold** (leave in `assets/inbox/YYYY-MM-DD/`).
+
+**Route if all of the following are true:**
+- Topic is identifiable (from filename, or from adjacent text in `inbox/YYYY-MM-DD.md`)
+- File is complete enough to be useful (not an empty placeholder, not a temp export)
+
+**Hold (leave in place) if any of the following are true:**
+- Filename gives no topic clue AND no inbox text describes it
+- File appears to be an intermediate export (e.g., `Untitled.png`, `image001.png`)
+- The drawio source file is present but has not been exported yet → hold the `.drawio`, do not force export
+
+**When holding**, add one line to the log under "備註 / 阻礙":
+```
+`assets/inbox/YYYY-MM-DD/<filename>` — topic unclear, held for manual triage
+```
+
+##### D2 — Routing Rules
+
+| File type | Destination |
+|---|---|
+| `.drawio` source file | `assets/diagrams/<topic>/YYYY-MM-DD-<slug>.drawio` |
+| Exported `.png` / `.svg` / `.pdf` from draw.io | `assets/exports/<topic>/YYYY-MM-DD-<slug>.png` |
+| Screenshot or raw sketch photo | `assets/exports/<topic>/YYYY-MM-DD-<slug>.png` |
+
+- `<slug>` is a short lowercase kebab-case description inferred from filename or inbox context (e.g., `srk-key-hierarchy`, `cache-arch`)
+- Create the destination directory if it does not exist: `mkdir -p assets/diagrams/<topic>` or `mkdir -p assets/exports/<topic>`
+- Move with `mv`, do not copy
+
+**Asset Topic Routing:**
+
+| Keywords in filename or adjacent inbox text | Topic folder |
+|---|---|
+| tpm, srk, ek, ak, attestation, pki, fido, tee, secure-boot, devid | `security` |
+| system-design, arch, cache, db, distributed, raft, kv, network, tcp | `systems` |
+| llm, rag, inference, agent, embedding, vllm | `ai` |
+| anything else | `misc` |
+
+##### D3 — Note Image Linking
+
+After routing, for each file moved to `assets/exports/<topic>/`:
+
+1. Find the note that should reference this image. Candidates (in order of priority):
+   - A note created today whose topic matches the asset topic
+   - `inbox/YYYY-MM-DD.md` if no note was created (fallback)
+2. Determine the **relative path** from the note file to the asset:
+   - From `NOTES/security/YYYY-MM-DD-foo.md` → `../../assets/exports/security/YYYY-MM-DD-slug.png`
+   - From `inbox/YYYY-MM-DD.md` → `../assets/exports/<topic>/YYYY-MM-DD-slug.png`
+3. Insert the reference at the **bottom of the relevant section** in the note (not at the very end of the file):
+   ```markdown
+   ![<slug description>](<relative-path>)
+   ```
+4. If the note already contains an image reference to this file, skip — do not duplicate.
+
+For `.drawio` files moved to `assets/diagrams/`, do NOT add an image reference (they are source files, not renderable images).
+
+If no note matches and the inbox fallback is used, add the reference under a new `## 圖片` section at the bottom of the inbox file.
+
+#### E. Unprocessed Remainder
 
 Anything in inbox that doesn't fit a category: leave it in inbox. Do not force-classify.
 
-**inbox is never deleted or modified by the operator.**
+**inbox and inbox/YYYY-MM-DD/ are never deleted by the operator. Only assets explicitly routed above are moved.**
 
 ---
 
