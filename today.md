@@ -1,30 +1,27 @@
-# 今天 — {{YYYY-MM-DD}}
+# 今天 — 2026-04-02
 
-**今天的模式：** `[ ] Minimum` `[ ] Normal` `[ ] Deep`
-
-> 每天第一個打開這個檔案。填完再開始。結束前更新結果。
+**今天的模式：** `[ ] Minimum` `[x] Normal` `[ ] Deep`
 
 ---
 
 ## 解題練習 — 每天必做
 
-- **來源：** `[ ] LeetCode` `[ ] 書本` `[ ] 其他：___`
-- **題目 ID / 章節：** ___（例：LC #704 / 第 3 章 p.87 / 書本習題 2-3）
-- **題目名稱：** ___
-- **Pattern：** ___（例：Binary Search、Two Pointers、Sliding Window、DP）
+- **來源：** `[ ] LeetCode` `[x] 書本` `[ ] 其他`
+- **題目 ID / 章節：** 第 1 章 1-1 ~ 1-3
+- **題目名稱：** 輸入輸出與基本技巧
+- **Pattern：** Basic I/O / Simulation
 - **花費時間：** ___
 - **結果：** `[ ] 獨立解出` `[ ] 看提示後解出` `[ ] 看解答理解`
 - **核心洞察（一句話）：** ___
 
-> 今天多解一題的話，補在這裡：
-> - 題目：___ / 結果：___ / Insight：___
-
 ---
 
-## 主技能 — 從 `NOW/focus.md` 選一條
+## 主技能 — Track 05 Security & Trusted Systems
 
-**Track：** ___
-**今天的微目標（一句話）：** ___
+**Track：** `skills/05-security-trusted-systems/`
+
+**今天的微目標（一句話）：**
+TPM agent 改用 SRK-based key hierarchy，移除 persistent handle 依賴，符合 TCG 架構。
 
 **做了什麼：**
 -
@@ -36,18 +33,16 @@
 
 ## 產出 — 一個小東西
 
-> 一篇筆記、一段程式碼、一個圖、一段文字都算。
-> 完成後記錄到 `OUTPUTS/README.md`。
-
-- [ ] ___
+- [ ] TPM agent SRK redesign 設計筆記
+  → `notes/security/2026-04-02-tpm-agent-srk-redesign.md`
 
 ---
 
 ## 完成條件
 
-- [ ] 解題：1 題做完並記錄到 `LEETCODE/log/`
-- [ ] 技能：任何長度的 focused session（Minimum 天：有做就好；Normal/Deep 天：30 分鐘以上）
-- [ ] 產出：1 個東西歸檔到 `NOTES/` 或 `OUTPUTS/`
+- [ ] 解題：完成書本 1-1 ~ 1-3 並記錄結果與洞察
+- [ ] 技能：TPM SRK redesign 至少 30 分鐘
+- [ ] 產出：完成一份設計筆記並歸檔
 
 ---
 
@@ -58,5 +53,5 @@
 ---
 
 *只能做一件事的話：做解題練習。*
-*有兩小時：解題 + 技能 session。*
-*有四小時以上：解題 + 深度技能工作 + 寫點什麼。*
+*有兩小時：解題 + TPM 設計。*
+*有四小時以上：補完整 key hierarchy architecture 筆記。*
