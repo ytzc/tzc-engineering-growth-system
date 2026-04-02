@@ -18,10 +18,9 @@
 
 ## 主技能 — Track 05 Security & Trusted Systems
 
-**Track：** `skills/05-security-trusted-systems/`
+**Track：** `SKILLS/05-security-trusted-systems/`
 
-**今天的微目標（一句話）：**
-TPM agent 改用 SRK-based key hierarchy，移除 persistent handle 依賴，符合 TCG 架構。
+**今天的微目標（一句話）：** 把 tpm-agent 的 persistent handle 拿掉，改成 SRK-based
 
 **做了什麼：**
 -
@@ -33,16 +32,15 @@ TPM agent 改用 SRK-based key hierarchy，移除 persistent handle 依賴，符
 
 ## 產出 — 一個小東西
 
-- [ ] TPM agent SRK redesign 設計筆記
-  → `notes/security/2026-04-02-tpm-agent-srk-redesign.md`
+- [ ] tpm-agent SRK redesign 設計筆記
 
 ---
 
 ## 完成條件
 
-- [ ] 解題：完成書本 1-1 ~ 1-3 並記錄結果與洞察
-- [ ] 技能：TPM SRK redesign 至少 30 分鐘
-- [ ] 產出：完成一份設計筆記並歸檔
+- [ ] 解題：1 題做完並記錄
+- [ ] 技能：focused session（Normal/Deep: 30 min+；Minimum: 任意長度）
+- [ ] 產出：1 個東西歸檔
 
 ---
 
