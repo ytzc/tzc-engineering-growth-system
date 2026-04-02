@@ -561,27 +561,93 @@ cp reviews/weekly/template.md reviews/weekly/$(date +%G-W%V).md
 
 ## 每日操作流程
 
-### 開始今天
-- 建立或更新 `logs/YYYY-MM-DD.md`
-- 填入今天模式、解題練習、主技能與 micro-goal
-- 同步更新 `today.md`
-- commit 並 push
+### 使用 Claude 自動完成（建議）
 
-commit 格式：`daily: YYYY-MM-DD start (plan)`
+這個 repo 有一個 custom skill：`.claude/commands/daily-repo-operator.md`。
 
-### 結束今天
-- 更新 `logs/YYYY-MM-DD.md` 的實際完成內容
-- 補上產出、卡點與下一步
-- 同步更新 `today.md`
-- commit 並 push
+在 Claude Code 裡，只要用一句中文描述你今天要做什麼或今天做完了什麼，Claude 會自動完成：建立或更新 `logs/YYYY-MM-DD.md`、同步 `today.md`、判斷對應的 skill track、把筆記歸到正確位置、執行 git commit 與 push。
 
-commit 格式：`daily: YYYY-MM-DD progress (<summary>)`
+---
+
+#### 開始今天
+
+對 Claude 說：
+
+> 今天 Normal day，要做 **[解題內容]**，然後做 **[技能工作描述]**。
+
+Claude 會：
+- 判斷今天的模式（Minimum / Normal / Deep）
+- 從關鍵字推斷對應的 skill track
+- 建立 `logs/YYYY-MM-DD.md`，填入模式、解題、主技能、micro-goal、預期產出
+- 同步覆寫 `today.md`
+- 執行 `git commit -m "daily: YYYY-MM-DD start (plan)"` 並 push
+
+---
+
+#### 結束今天
+
+對 Claude 說：
+
+> 今天結束。完成了 **[做了什麼]**，卡在 **[卡點]**，寫了一份 **[筆記名稱]** 的筆記。
+
+Claude 會：
+- 更新 `logs/YYYY-MM-DD.md`：填入「做了什麼」、「卡住的地方」、打勾完成條件
+- 把筆記建立到正確位置（例如 `notes/security/` 或 `outputs/designs/`）
+- 在 `outputs/readme.md` 補上 output log 記錄
+- 同步覆寫 `today.md`
+- 執行 `git commit -m "daily: YYYY-MM-DD progress (<summary>)"` 並 push
+
+---
+
+#### 範例：開始今天
+
+```
+今天 Normal day。我要做 C++ 解題入門第 1 章 1-1 ~ 1-3，
+然後做 TPM agent SRK redesign，目標是把 persistent handle 全部移掉。
+```
+
+Claude 建立的 log 會包含：
+- 模式：Normal
+- 解題：書本，第 1 章 1-1 ~ 1-3，Pattern: Basic I/O / Simulation
+- 主技能：`skills/05-security-trusted-systems/`
+- micro-goal：TPM agent 改用 SRK-based key hierarchy，移除 persistent handle 依賴
+- 預期產出：`notes/security/YYYY-MM-DD-tpm-agent-srk-redesign.md`
+
+---
+
+#### 範例：結束今天
+
+```
+今天收工。書本 1-1 ~ 1-3 都解完了，獨立解出。
+TPM 那邊把 key hierarchy 梳理完了，AK 還是要 persistent，
+DevID 可以 transient。寫了一份 SRK redesign 的筆記。
+```
+
+Claude 執行：
+- `logs/YYYY-MM-DD.md`：打勾所有完成條件，填入做了什麼與卡點
+- 建立 `notes/security/YYYY-MM-DD-tpm-agent-srk-redesign.md`
+- `outputs/readme.md` 補上這份筆記的記錄
+- commit：`daily: YYYY-MM-DD progress (TPM SRK key hierarchy, C++ ch1 problems)`
+
+---
+
+### Commit 規則
+
+| 時機 | 格式 |
+|---|---|
+| 開始今天 | `daily: YYYY-MM-DD start (plan)` |
+| 收尾 / 更新進度 | `daily: YYYY-MM-DD progress (<summary>)` |
+
+`summary` 用英文，不超過 50 字，描述今天實際做了什麼。
+
+---
 
 ### 原則
-- `logs/YYYY-MM-DD.md` 是每日執行的唯一歷史紀錄
-- `today.md` 是當天操作面板，隨時與當天 log 保持同步
-- 每天至少兩次 commit：開始一次，收尾一次
-- 與當日任務無關的變更不要一起 commit
+
+- `logs/YYYY-MM-DD.md` 是每日執行的唯一歷史紀錄，不刪不改只追加
+- `today.md` 是當天操作面板，永遠與當天 log 內容保持同步
+- 每天至少兩次 commit：開始一次（plan），收尾一次（progress）
+- 當日 log 的 commit 不混入其他系統變更
 
 ---
 
