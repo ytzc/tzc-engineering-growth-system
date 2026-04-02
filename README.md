@@ -52,23 +52,23 @@ tzc-engineering-growth-system/
 │   ├── milestones.md
 │   └── vision.md
 │
-├── TODAY.md                     # ← Open this first. What to do today.
-├── THIS_WEEK.md                 # ← Set on Monday. Review on Sunday.
+├── TODAY.md                     # ← 每天第一個打開。今天要做什麼。
+├── THIS_WEEK.md                 # ← 週一設定，週日回顧。
 │
-├── NOW/                         # Current state — what's active right now
-│   ├── focus.md                 # Active tracks, current milestones
-│   └── queue.md                 # Skills and outputs waiting their turn
+├── NOW/                         # 當前狀態 — 現在哪些 track 是 active
+│   ├── focus.md                 # Active tracks 與當前 milestone
+│   └── queue.md                 # 排隊中的 skill 和 output，按優先序
 │
-├── OUTPUTS/                     # Everything produced — your portfolio
-│   ├── README.md                # Index + 10-month output targets
-│   ├── writeups/                # Technical write-ups and blog drafts
-│   ├── designs/                 # System design documents
-│   ├── projects/                # Code implementations and POCs
-│   ├── papers/                  # Paper reading notes with analysis
-│   └── talks/                   # Talk abstracts and slides
+├── OUTPUTS/                     # 所有產出 — 你的 portfolio
+│   ├── README.md                # 索引 + 十個月產出目標
+│   ├── writeups/                # 技術文章、深度分析、部落格草稿
+│   ├── designs/                 # System design 文件
+│   ├── projects/                # 程式實作、POC、開源專案
+│   ├── papers/                  # 論文閱讀筆記（含自己的分析）
+│   └── talks/                   # 演講摘要、投影片、研討會投稿
 │
-├── SKILLS/                      # 10 skill tracks (FAANG / senior engineer oriented)
-│   ├── track-template.md        # Standard format for all tracks
+├── SKILLS/                      # 10 個 skill track（面向 FAANG / 高階工程師）
+│   ├── track-template.md        # 每個 track 的標準可執行格式
 │   ├── 01-dsa-coding-interview/
 │   ├── 02-system-design-large-scale/
 │   ├── 03-os-systems-programming/
@@ -114,76 +114,72 @@ tzc-engineering-growth-system/
 
 ---
 
-## Execution Philosophy
+## 執行哲學
 
-> This is not a curriculum. It is an operating system for engineering growth.
-> The system fails when planning replaces doing.
+> 這不是學習課程，是一套工程師成長的作業系統。
+> 系統失敗的原因只有一個：規劃取代了執行。
 
-**Rule 1 — Output over consumption.** A written design doc beats three hours of reading. A coded solution beats watching a tutorial. Every session produces an artifact: a note, a snippet, a diagram, a paragraph. If nothing lands in `OUTPUTS/` or `NOTES/`, the session didn't compound.
+**規則一 — 產出優於消費。** 寫一份 design doc，比讀三個小時的書更有效。實作一個解法，比看教學影片更有效。每次 session 要產生一個東西：一篇筆記、一段程式碼、一個圖、一段文字。如果 `OUTPUTS/` 和 `NOTES/` 沒有增加，那次 session 沒有複利。
 
-**Rule 2 — Minimum execution beats optimal planning.** On bad days, do the minimum. Five problems in a week beats a perfect plan with zero executions.
+**規則二 — 最低執行勝過最優規劃。** 狀態差的日子，做最少版本就好。一週五題，勝過完美計畫加零次執行。
 
-**Rule 3 — Adjust weekly, not monthly.** Rigid adherence to a monthly plan despite clear failure signals is a bug, not discipline. Every Sunday, adjust.
+**規則三 — 每週調整，不是每月調整。** 面對明顯失敗訊號還死守計畫，是 bug，不是紀律。每個週日，調整。
 
-**Rule 4 — Three active tracks maximum.** DSA (always) + one main skill + one differentiator. Spreading across all 10 means zero meaningful depth in any.
+**規則四 — 同時最多三個 active track。** DSA（永遠）+ 一個主技能 + 一個差異化方向。同時推進全部 10 個，等於每個都沒有真正深度。
 
-**Rule 5 — Feedback loops over documentation.** Write the weekly review. Update the dashboard. If you skip reviews, you fly blind.
-
----
-
-## Daily Operating Model
-
-Three tiers — use whichever fits your actual day:
-
-### Minimum Day *(busy, low energy, travel)*
-> One thing. Non-negotiable.
-- DSA: 1 problem attempted and logged (30 min)
-- If more time: 30 min on main skill
-
-### Normal Day *(standard work + evening block)*
-> Three things.
-- DSA: 2–3 problems (45–60 min)
-- Main skill: focused session, one clear micro-goal (60–90 min)
-- Output: 1 small artifact → `NOTES/` or `OUTPUTS/` (30 min)
-
-### Deep Day *(free block, weekend, or focused sprint)*
-> Go deep on one thing.
-- DSA: 3–5 problems, including one hard (60–90 min)
-- Main skill: build or write (2–4 h) — project, write-up, implementation
-- Output: something substantial → `OUTPUTS/`
-
-**Decision rule:** open `TODAY.md`, declare your day type, fill in the three fields. Done when the three checkboxes are checked.
+**規則五 — feedback loop 勝過文件完整性。** 寫每週回顧。更新 dashboard。跳過回顧，你就是閉著眼睛在飛。
 
 ---
 
-## Mainline vs Sideline Strategy
+## 每日執行模式
 
-Not all tracks are equal. Running all 10 in parallel means running none.
+三種模式，選符合今天實際狀況的那種，不要強行套用理想版本：
 
-### Always-on Mainline (every month, every week)
-| Track | Why always active |
+### Minimum Day（忙碌 / 低能量 / 出差）
+> 一件事，不可跳過。
+- 解題練習：1 題，解完記錄（30 分鐘）
+- 有多餘時間：30 分鐘主技能 session
+
+### Normal Day（一般工作日 + 晚上時段）
+> 三件事。
+- 解題練習：2–3 題（45–60 分鐘）
+- 主技能：有焦點的 session，一個明確的微目標（60–90 分鐘）
+- 產出：1 個小東西 → `NOTES/` 或 `OUTPUTS/`（30 分鐘）
+
+### Deep Day（完整時間塊 / 假日 / 專注衝刺）
+> 深入一件事。
+- 解題練習：3–5 題，含一道 hard（60–90 分鐘）
+- 主技能：build 或 write（2–4 小時）— 專案、文章、實作
+- 產出：有份量的東西 → `OUTPUTS/`
+
+**決策規則：** 打開 `TODAY.md`，宣告今天是哪種模式，填三個欄位，三個 checkbox 全打勾才算完成今天。
+
+---
+
+## 主線 vs 支線策略
+
+十條 track 無法平行推進，全開等於全沒深度。
+
+### 永遠在線的主線（每月、每週都要碰）
+| Track | 為什麼永遠 active |
 |---|---|
-| 01 DSA & Coding Interview | Core interview filter — consistency compounds |
-| 02 System Design — Large Scale | Second interview filter — depth takes months |
-| 05 Security & Trusted Systems | Your primary differentiator — maintain and deepen |
+| 01 DSA & Coding Interview | 面試核心關卡 — 一致性才能累積 |
+| 02 System Design — Large Scale | 第二個面試核心 — 深度需要數個月才能建立 |
+| 05 Security & Trusted Systems | 你的主要差異化優勢 — 維持並持續深化 |
 
-### Rotating Sideline (1 track per month, cycled in from `NOW/queue.md`)
-Months 3–8: OS → Network → Distributed Systems → Database → Security OSS → AI/LLM
+### 輪流支線（每月 1 條，從 `NOW/queue.md` 輪入）
+第 3–8 月：OS → Network → Distributed Systems → Database → Security OSS → AI/LLM
 
-### Background Mode (low weekly touch, output-focused)
-| Track | Mode |
+### 背景模式（低頻接觸，以產出為主）
+| Track | 說明 |
 |---|---|
-| 08 AI/LLM Systems | Activated Month 7 — leverage existing platform work |
-| 10 Engineering Impact | Month 5+ — one RFC or blog post per month |
+| 08 AI/LLM Systems | 第 7 月啟動 — 利用現有平台工作延伸 |
+| 10 Engineering Impact | 第 5 月起 — 每月一篇 RFC 或技術文章 |
 
-### Parked (not touching until scheduled)
-Everything else. See `NOW/queue.md` for activation schedule.
+### 停放（排程到了再啟動）
+其餘 track。啟動時間點見 `NOW/queue.md`。
 
 ---
-
-## 學習系統節奏
-
-三個時間尺度：
 
 ---
 
@@ -210,95 +206,91 @@ Everything else. See `NOW/queue.md` for activation schedule.
 
 ---
 
-## 10-Month Execution Strategy
+## 十個月執行策略
 
-> Designed for a working engineer, not a student. Assumes fatigue, interruptions, and shifting priorities.
-> The plan is a guide — the weekly review is where real adjustments happen.
+> 為在職工程師設計，不是為學生。預設你會有疲勞、中斷和 priority 變動。
+> 計畫是指南，真正的調整發生在每週回顧。
 
-### Four Phases
-
----
-
-**Phase 1 — Foundation (Months 1–2)**
-*Build the daily habit. Establish the DSA baseline. Systematize existing security knowledge.*
-
-- DSA: NeetCode 75 → LeetCode 150. Pattern-first, timed, logged daily.
-- System Design: master the fundamentals (capacity estimation, caching, sharding, replication). 5 basic designs with written notes.
-- Security: organize and document your existing TPM/FDO expertise. One publishable writeup.
-- Output target: 2 system design docs, 1 security writeup, DSA pattern cheatsheet.
-- **Is it working?** By end of Month 2: LeetCode 150 done, can sketch any basic system in 30 min.
+### 四個 Phase
 
 ---
 
-**Phase 2 — Depth (Months 3–5)**
-*Add OS / Network / Distributed / DB as rotating sideline tracks. Ship first real code deliverables.*
+**Phase 1 — Foundation（第 1–2 月）**
+*建立每日習慣。建立解題底子。把現有 security 知識系統化。*
 
-- DSA: maintain 3–5 problems/day. Focus shifts to hard problems and pattern combinations.
-- System Design: advance to distributed systems designs. Write full design docs with failure modes.
-- Rotating sideline: Month 3 → OS + Network, Month 4 → Distributed Systems, Month 5 → Database Internals.
-- Output target per month: 1 working implementation (HTTP server → Raft → KV store).
-- **Is it working?** By end of Month 5: Raft implemented, KV store exists, can discuss OS scheduler and LSM-tree in depth.
-
----
-
-**Phase 3 — Differentiation (Months 6–8)**
-*Produce senior-level outputs. Activate AI/LLM track. Ship open-source security work.*
-
-- DSA: maintain 2–3 problems/day. Quality over quantity — focus on hard problems and mock conditions.
-- System Design: write 3 senior-level full docs (geo-distributed, ML platform, real-time pipeline).
-- Security: publish open-source attestation library. SPIFFE/SPIRE integration. Submit a talk abstract.
-- AI/LLM: RAG pipeline on existing platform. vLLM benchmark. Secure inference architecture doc.
-- **Is it working?** By end of Month 8: can design a distributed system with failure mode analysis, have 2 open-source projects, and have a technical blog post published.
+- 解題練習：NeetCode 75 → LeetCode 150。以 pattern 為主，計時，每日記錄。（書本題目也算，不限平台。）
+- System Design：打穩基礎（容量估算、caching、sharding、replication）。5 個基礎設計附書面筆記。
+- Security：整理並文件化你現有的 TPM/FDO 專業。一篇可公開的技術文章。
+- 產出目標：2 份 system design 文件、1 篇 security writeup、解題 pattern 速查卡。
+- **怎麼知道有沒有效？** 第 2 月底：NeetCode 75 完成，30 分鐘內能草圖任何基礎系統。
 
 ---
 
-**Phase 4 — Interview Sprint (Months 9–10)**
-*Everything becomes interview-oriented. Shift from learning to execution under conditions.*
+**Phase 2 — Depth（第 3–5 月）**
+*加入 OS / Network / Distributed / DB 輪流支線。交付第一批真正的程式碼成果。*
 
-- DSA: 3 problems/day, timed, no hints. Review every hard problem from previous months.
-- System Design: mock interviews only. 3x/week. Record and self-critique.
-- Behavioral: 5 STAR stories finalized. Cover: leadership, conflict, ambiguity, failure, impact.
-- Portfolio: `OUTPUTS/README.md` as a portfolio page. Resume final version.
-- **Is it working?** By end of Month 10: comfortable in any Google interview format, outputs speak for themselves.
-
----
-
-### Adjustment Rules (concrete)
-
-**Trigger: downgrade load**
-If sustainability score ≤ 2 for 2 consecutive weeks → switch to Minimum Day as default for 2 weeks. Drop the rotating sideline track. DSA and one differentiator only.
-
-**Trigger: switch main track**
-If a sideline track has had 0 sessions for 3 weeks → park it. Pull the next item from `NOW/queue.md`. Do not force progress that isn't happening.
-
-**Trigger: pause a track**
-If work demands spike for > 2 weeks → explicitly park all sideline tracks. Mainline (DSA + SD + Security) only. Log the pause in `NOW/focus.md`.
-
-**Trigger: increase output focus**
-If you've been consuming (reading, watching, solving) for 3+ weeks without producing → declare an output week. No new learning. Only build, write, or code. Pull from `NOW/queue.md` output queue.
-
-**Trigger: increase mock interviews**
-Month 8 onwards, if you haven't started mocks → force 1 mock/week minimum. Discomfort is the signal that it's working.
-
-**Trigger: new opportunity appears**
-Evaluate against the 10-month goal. If it's directly relevant (e.g., a chance to publish, speak, or ship something security/AI related) → do it, park one sideline track. If it's orthogonal → put it in `NOW/queue.md` and do it after Month 10.
+- 解題練習：維持每天 3–5 題。重心轉移到 hard 題和 pattern 組合。
+- System Design：進入分散式系統設計。寫完整 design doc，含 failure mode 分析。
+- 輪流支線：第 3 月 → OS + Network，第 4 月 → Distributed Systems，第 5 月 → Database Internals。
+- 每月產出目標：1 個可運作的實作（HTTP server → Raft → KV store）。
+- **怎麼知道有沒有效？** 第 5 月底：Raft 實作完成，KV store 存在，能深入討論 OS scheduler 和 LSM-tree。
 
 ---
 
-## LeetCode 策略
+**Phase 3 — Differentiation（第 6–8 月）**
+*交付 senior level 產出。啟動 AI/LLM track。發布開源 security 作品。*
 
-**目標：建立題型識別能力，而非背解法。**
+- 解題練習：維持每天 2–3 題。質量優於數量 — 專注 hard 題和模擬面試條件。
+- System Design：寫 3 份 senior level 完整文件（geo-distributed、ML platform、real-time pipeline）。
+- Security：發布開源 attestation library。SPIFFE/SPIRE 整合。提交 talk abstract。
+- AI/LLM：在現有平台上建 RAG pipeline。vLLM benchmark 報告。Secure inference 架構文件。
+- **怎麼知道有沒有效？** 第 8 月底：能設計帶 failure mode 分析的分散式系統，有 2 個開源專案，有 1 篇技術文章公開發布。
+
+---
+
+**Phase 4 — Interview Sprint（第 9–10 月）**
+*所有事情都面向面試。從學習轉為在壓力下執行。*
+
+- 解題練習：每天 3 題，計時，不看提示。回顧前幾個月每一道 hard 題。
+- System Design：只做 mock interview。每週 3 次，錄影自我檢討。
+- Behavioral：5 則 STAR 故事定稿。涵蓋：leadership、conflict、ambiguity、failure、impact。
+- Portfolio：整理 `OUTPUTS/README.md` 成 portfolio 頁面。履歷最終版。
+- **怎麼知道有沒有效？** 第 10 月底：任何 Google 面試格式都能從容應對，產出本身會說話。
+
+---
+
+## 調整規則
+
+> 明確的 if-then，不是模糊建議。遇到狀況時直接查這裡。
+
+**降載：** sustainability 評分連續兩週 ≤ 2 → 預設切換 Minimum Day 兩週。暫停輪流支線，只維持 DSA + 一個差異化方向。
+
+**切換主技能：** 某支線連續三週 session 次數為零 → 停放它，從 `NOW/queue.md` 拉入下一條。不要強迫沒有發生的進度。
+
+**暫停 track：** 工作突然爆量超過兩週 → 明確停放所有支線。只維持主線三條（DSA + System Design + Security）。在 `NOW/focus.md` 記錄暫停原因與預計恢復時間。
+
+**切換成產出模式：** 如果連續三週以上都是消費（讀書、看影片、解題）卻沒有產出 → 宣告「產出週」。不學新東西，只 build、write、code。從 `NOW/queue.md` 的 output queue 拉清單。
+
+**增加 mock interview：** 第 8 月起，如果還沒開始做 mock → 強制每週至少 1 場。不舒適感就是有效的訊號。
+
+**新機會出現：** 對照十個月目標評估。如果直接相關（例如有機會發表、演講、或交付 security/AI 相關作品）→ 做，停放一條支線。如果無關 → 放進 `NOW/queue.md`，第 10 月後再做。
+
+---
+
+## 解題訓練策略
+
+**目標：建立 pattern 識別能力，而非背解法。來源不限 LeetCode，書本題目同等有效。**
 
 **做法：**
-1. 依題型分類（雙指針、滑動視窗、BFS/DFS、DP 等）
-2. 每題記錄：難度、花費時間、解題思路、錯誤點、核心洞察
-3. 錯題或超時題，一週後重解
-4. 在 `LEETCODE/patterns/` 維護題型速查卡
+1. 依 pattern 分類，而不是依難度或平台（Two Pointers、Sliding Window、BFS/DFS、DP 等）
+2. 每題記錄：來源、章節或題號、花費時間、解題思路、錯誤點、核心洞察
+3. 沒解出或超時的題目，一週後盲解（不看自己的筆記）
+4. 在 `LEETCODE/patterns/` 維護 pattern 速查卡，書本題目同樣以 pattern 歸類
 
 ```
 LEETCODE/
 ├── log/
-│   └── YYYY-MM-DD.md          # 每日刷題日誌
+│   └── YYYY-MM-DD.md          # 每日解題日誌（來源可以是 LeetCode 或書本）
 ├── patterns/
 │   ├── sliding-window.md
 │   ├── two-pointers.md
@@ -307,11 +299,11 @@ LEETCODE/
 └── strategy.md
 ```
 
-**每週目標：** 5–7 題，深度研讀 1 個題型。
+**每週目標：** 5–7 題，深度研讀 1 個 pattern。
 
-### 初始 10 題清單（啟動用）
+### 初始 10 題（啟動用，LeetCode 或書本皆可）
 
-| # | 題目 | 類型 | 難度 | 狀態 |
+| # | 題目 | Pattern | 難度 | 狀態 |
 |---|---|---|---|---|
 | 1 | Two Sum | Hash Map | Easy | ⬜ |
 | 2 | Valid Parentheses | Stack | Easy | ⬜ |
@@ -547,41 +539,45 @@ RESUME/
 git clone https://github.com/YOUR_USERNAME/tzc-engineering-growth-system.git
 cd tzc-engineering-growth-system
 
-# 讀主計畫
-open PLAN/master-plan.md
+# 每天的入口
+open TODAY.md
 
-# 開啟今天的刷題日誌
+# 查看現在哪些 track 是 active
+open NOW/focus.md
+
+# 開啟今天的解題日誌
 touch LEETCODE/log/$(date +%Y-%m-%d).md
 
-# 開啟本週回顧
-touch REVIEWS/weekly/$(date +%G-W%V).md
+# 本週回顧（複製 template）
+cp REVIEWS/weekly/template.md REVIEWS/weekly/$(date +%G-W%V).md
 ```
 
-從 `PLAN/master-plan.md` 開始。先定義你的 1 年目標、前三優先技術方向、每日承諾時間。其餘一切都從這裡展開。
+每天打開 `TODAY.md`，宣告今天是哪種模式（Minimum / Normal / Deep），填三個欄位，完成三個 checkbox。就這樣。
 
 ---
 
 ## 使用規則
 
 **每日（必做）：**
-- [ ] 最少：打開一個檔案、新增一筆記錄、或解一道題
-- [ ] 更新 `PROGRESS/habits.md` 今日打卡
+- 填寫 `TODAY.md`，三個 checkbox 全打勾才算完成
+- 更新 `PROGRESS/habits.md` 今日打卡
+- 把任何產出歸檔到 `NOTES/` 或 `OUTPUTS/`
 
-**每週（必做）：**
-- [ ] 完成每週回顧 `REVIEWS/weekly/`
-- [ ] 更新 `PROGRESS/dashboard.md`
-- [ ] 至少推進一個技術軌道
+**每週（必做，週日）：**
+- 完成每週回顧 → `REVIEWS/weekly/YYYY-WXX.md`（複製 template）
+- 更新 `PROGRESS/dashboard.md`
+- 填寫下週的 `THIS_WEEK.md`
 
 **每月（必做）：**
-- [ ] 完成每月回顧 `REVIEWS/monthly/`
-- [ ] 盤點技術軌道狀態，視需要輪換
-- [ ] 更新 `PLAN/milestones.md`
+- 完成每月回顧 → `REVIEWS/monthly/YYYY-MM.md`（複製 template）
+- 更新 `NOW/focus.md` — 調整 active track，從 `NOW/queue.md` 輪入新支線
+- 更新 `PROGRESS/dashboard.md` 月度欄位
 
 **一般原則：**
-- 沒有孤兒檔案——每個檔案都有歸屬
-- 小而一致的 commit 優於大批次
+- 系統感覺太重 → 簡化它，不要硬撐。可持續運作才是目標
+- 跳過回顧 = 在沒有 feedback loop 的情況下繼續 — 這比進度落後更危險
 - 筆記是寫給自己的，清楚即可，不必過度打磨
-- 如果系統感覺太重，就簡化它——可持續運作才是目標
+- 小而一致的 commit 優於大批次
 
 ---
 

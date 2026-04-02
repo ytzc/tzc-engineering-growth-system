@@ -1,57 +1,62 @@
-# Today — {{YYYY-MM-DD}}
+# 今天 — {{YYYY-MM-DD}}
 
-**Day type:** `[ ] Minimum` `[ ] Normal` `[ ] Deep`
+**今天的模式：** `[ ] Minimum` `[ ] Normal` `[ ] Deep`
 
-> Open this file first. Fill it in before starting. Update it at end of day.
-
----
-
-## DSA — always
-
-- **Problem:** [LC #___] ___
-- **Pattern:** ___
-- **Time taken:** ___
-- **Result:** `[ ] Solved clean` `[ ] Solved with hints` `[ ] Reviewed solution`
-- **Key insight (1 line):** ___
+> 每天第一個打開這個檔案。填完再開始。結束前更新結果。
 
 ---
 
-## Main Skill — pick one from `NOW/focus.md`
+## 解題練習 — 每天必做
 
-**Track:** ___
-**Today's micro-goal (1 sentence):** ___
+- **來源：** `[ ] LeetCode` `[ ] 書本` `[ ] 其他：___`
+- **題目 ID / 章節：** ___（例：LC #704 / 第 3 章 p.87 / 書本習題 2-3）
+- **題目名稱：** ___
+- **Pattern：** ___（例：Binary Search、Two Pointers、Sliding Window、DP）
+- **花費時間：** ___
+- **結果：** `[ ] 獨立解出` `[ ] 看提示後解出` `[ ] 看解答理解`
+- **核心洞察（一句話）：** ___
 
-**What I did:**
+> 今天多解一題的話，補在這裡：
+> - 題目：___ / 結果：___ / Insight：___
+
+---
+
+## 主技能 — 從 `NOW/focus.md` 選一條
+
+**Track：** ___
+**今天的微目標（一句話）：** ___
+
+**做了什麼：**
 -
 
-**Stuck on:**
+**卡住的地方：**
 -
 
 ---
 
-## Output — one small artifact
+## 產出 — 一個小東西
 
-> A note, a code snippet, a diagram, a paragraph of a write-up. Anything concrete.
-> Log it in `OUTPUTS/README.md`.
+> 一篇筆記、一段程式碼、一個圖、一段文字都算。
+> 完成後記錄到 `OUTPUTS/README.md`。
 
 - [ ] ___
 
 ---
 
-## Done When
+## 完成條件
 
-- [ ] DSA: 1 problem attempted + logged in `LEETCODE/log/`
-- [ ] Skill: any focused session (minimum 30 min on Normal/Deep days; any on Minimum days)
-- [ ] Output: 1 artifact created and filed
+- [ ] 解題：1 題做完並記錄到 `LEETCODE/log/`
+- [ ] 技能：任何長度的 focused session（Minimum 天：有做就好；Normal/Deep 天：30 分鐘以上）
+- [ ] 產出：1 個東西歸檔到 `NOTES/` 或 `OUTPUTS/`
 
 ---
 
-## Notes / Blockers
+## 備註 / 阻礙
 
 -
 
 ---
 
-*If you can only do one thing today: do DSA.*
-*If you have 2 hours: DSA + skill session.*
-*If you have 4+ hours: DSA + deep skill work + write something.*
+*只能做一件事的話：做解題練習。*
+*有兩小時：解題 + 技能 session。*
+*有四小時以上：解題 + 深度技能工作 + 寫點什麼。*
