@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Sandbox Fecp | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="container-sandbox-fecp">Container Sandbox Fecp</h1>
+<h2 id="1122">11/22</h2>
+<ul>
+<li>軍民meeting<ul>
+<li>狄瑞<ul>
+<li>VPN tunnel(device ID cert from TWCA)<ul>
+<li>AK deviceID cert</li>
+<li>或是應用和軟體生產商cert<ul>
+<li>另外做一個單純CSR apply cert</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>codesign做e2e file tranfer(option)<ul>
+<li>ccsars整合fecb-file</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>軍民A3<ul>
+<li>CCSaaS<ul>
+<li>codesign blob</li>
+<li>燒錄韌體 整合service</li>
+<li>韌體demo</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>劇本<ul>
+<li>camera<ul>
+<li>device container</li>
+<li></li>
+</ul>
+</li>
+<li>hc<ul>
+<li>gpu container</li>
+<li>wifi driver 簽名</li>
+</ul>
+</li>
+<li>app<ul>
+<li>app container</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>金要登錄平台</p>
+<ul>
+<li>ek cert chain</li>
+<li>private.pfx ap憑證申請<ul>
+<li>以</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>gary sumarize</p>
+</li>
+<li>11/21狄瑞 邊信連RD meeting<ul>
+<li>fECP v1.5(k8s aws)</li>
+<li>Run update script from sandbox on vHub 筆電更新</li>
+<li>Deploy update using network IP</li>
+<li>VPN tunnel(device ID cert from TWCA)</li>
+<li>codesign做e2e file tranfer(option)</li>
+</ul>
+</li>
+</ul>
+<h1 id="1121">11/21</h1>
+<ul>
+<li>srs spec</li>
+<li>harbor架構 ota</li>
+<li>trusted thing架構<ul>
+<li>sequence diagram</li>
+<li>use case</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> Note
+Trusted Things 可信物聯網設備解決方案 – 信任鏈概念
+簡要描述軟體系統，包括目的、範圍、定義、引用文檔和總體描述。
+
+<span class="k">*</span> mtls通訊
+    <span class="k">*</span> 資料交換驗證雙方身分
+    <span class="k">*</span> 建立加密通道確保資料傳輸機密
+<span class="k">*</span> 容器化應用程式 (cosnar) 
+    <span class="k">*</span> 驗證容器來源及完整性
+<span class="k">*</span> 設備上運行容器化應用程式的sandbox  TEE-REE 執行環境(CCSars) 韌體codesign
+    <span class="k">*</span>  TEE-REE 執行環境
+    <span class="k">*</span>  隔離應用與設備，運算資料無法經硬體存取 
+    <span class="k">*</span>  隱私計算
+<span class="k">*</span> 啟動時驗證預載程式簽章(韌體 驅動 CCSars)
+    <span class="k">*</span> UEFI
+    <span class="k">*</span> TPM AK證明身分憑證
+<span class="k">*</span> 信任供應商 信任設備清單
+<span class="k">*</span> TPM產生信任跟
+
+
+<span class="k">*</span> A1註冊AK 金鑰登陸平台
+    <span class="k">*</span> 在每一個設備發起applycert, activatecredential
+<span class="k">*</span> A2申請AK憑證 物聯網
+<span class="k">*</span> A3系統軟體認證服務
+    <span class="k">*</span> CCSars
+    <span class="k">*</span> 軟體供應商對軟體簽章，簽名完提供給設備供應商
+    <span class="k">*</span> 設備供應商拿到簽名軟體，透過信任跟驗證簽名燒錄
+    <span class="k">*</span> 安全開機
+<span class="k">*</span> B1應用軟體認證服務
+    <span class="k">*</span> Cosnar
+<span class="k">*</span> B2安全容器沙箱
+    <span class="k">*</span> fECP
+    <span class="k">*</span> harbor OTA, notary signer
+</code></pre></div>
+
+<h2 id="117">11/7</h2>
+<ul>
+<li>fECP v1.5 spec summary</li>
+<li>畫一張圖給owen <ul>
+<li>container OTA update(用harbor)</li>
+</ul>
+</li>
+<li>tss-esapi走完activate credential</li>
+</ul>
+<h1 id="1024">10/24</h1>
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="nx">grpc_health_probe</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">ca</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">/</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="kd">addr</span><span class="w"> </span><span class="m m-Double">172.3.0.1</span><span class="p">:</span><span class="mi">30891</span><span class="p">;</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">done</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="nx">grpc_health_probe</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">-</span><span class="nx">node</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">-</span><span class="nx">node</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">ca</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">-</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="kd">addr</span><span class="w"> </span><span class="m m-Double">172.3.0.1</span><span class="p">:</span><span class="mi">30891</span><span class="w"> </span><span class="o">-</span><span class="nx">connect</span><span class="o">-</span><span class="nx">timeout</span><span class="w"> </span><span class="mi">1</span><span class="nx">s</span><span class="p">;</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">done</span>
+
+<span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="nx">grpcurl</span><span class="w"> </span><span class="o">--</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">-</span><span class="nx">node</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">--</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">-</span><span class="nx">node</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">cacert</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">-</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">d</span><span class="w"> </span><span class="s">&quot;{\&quot;service_name\&quot;:\&quot;\&quot;,\&quot;permission\&quot;:\&quot;\&quot;,\&quot;namespaces\&quot;:\&quot;resource-sandbox\&quot;}&quot;</span><span class="w"> </span><span class="o">-</span><span class="kn">import</span><span class="o">-</span><span class="nx">path</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="nx">proto</span><span class="w"> </span><span class="o">-</span><span class="nx">proto</span><span class="w"> </span><span class="nx">capability</span><span class="o">-</span><span class="kn">api</span><span class="p">.</span><span class="nx">proto</span><span class="w"> </span><span class="m m-Double">172.3.0.1</span><span class="p">:</span><span class="mi">30891</span><span class="w"> </span><span class="nx">capability</span><span class="p">.</span><span class="nx">CapabilityService</span><span class="o">/</span><span class="nx">CreateCapability</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="nx">grpc_health_probe</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">-</span><span class="nx">node</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">-</span><span class="nx">node</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">ca</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">-</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="kd">addr</span><span class="w"> </span><span class="m m-Double">172.3.0.1</span><span class="p">:</span><span class="mi">30891</span><span class="w"> </span><span class="o">-</span><span class="nx">connect</span><span class="o">-</span><span class="nx">timeout</span><span class="w"> </span><span class="mi">1</span><span class="nx">s</span><span class="p">;</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">done</span>
+
+<span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="nx">grpcurl</span><span class="w"> </span><span class="o">--</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">-</span><span class="nx">node</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">--</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">-</span><span class="nx">node</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">cacert</span><span class="w"> </span><span class="o">/</span><span class="nx">opt</span><span class="o">/</span><span class="nx">fiducia</span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">-</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">d</span><span class="w"> </span><span class="s">&quot;{\&quot;service_name\&quot;:\&quot;\&quot;,\&quot;permission\&quot;:\&quot;\&quot;,\&quot;namespaces\&quot;:\&quot;resource-sandbox\&quot;}&quot;</span><span class="w"> </span><span class="o">-</span><span class="kn">import</span><span class="o">-</span><span class="nx">path</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="nx">proto</span><span class="w"> </span><span class="o">-</span><span class="nx">proto</span><span class="w"> </span><span class="nx">capability</span><span class="o">-</span><span class="kn">api</span><span class="p">.</span><span class="nx">proto</span><span class="w"> </span><span class="m m-Double">172.3.0.1</span><span class="p">:</span><span class="mi">30891</span><span class="w"> </span><span class="nx">capability</span><span class="p">.</span><span class="nx">CapabilityService</span><span class="o">/</span><span class="nx">CreateCapability</span>
+</code></pre></div>
+
+<ul>
+<li>uninstall hook<ul>
+<li>remove IPPOOL</li>
+</ul>
+</li>
+<li>init-container</li>
+<li>test-script</li>
+<li>file-api</li>
+<li>ota-api
+sudo kubectl get pods -l app=device-pod -n resource-sandbox --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}'</li>
+</ul>
+<p>libvirt lxc init path sbin init w</p>
+<div class="codehilite"><pre><span></span><code>curl -o /usr/local/bin/kubectl -L &quot;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&quot;
+chmod +x /usr/local/bin/kubectl
+sudo kubectl get pods -l app=device-pod -n resource-sandbox --sort-by=.metadata.creationTimestamp -o jsonpath=&#39;{.items[0].metadata.name}&#39;
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="nx">grpc_health_probe</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">ca</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">/</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="kd">addr</span><span class="w"> </span><span class="m m-Double">172.3.0.1</span><span class="p">:</span><span class="mi">30891</span><span class="p">;</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">done</span>
+
+<span class="k">while</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="nx">grpc_health_probe</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">ca</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">/</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="kd">addr</span><span class="w"> </span><span class="m m-Double">172.3.0.1</span><span class="p">:</span><span class="mi">30891</span><span class="w"> </span><span class="o">-</span><span class="nx">connect</span><span class="o">-</span><span class="nx">timeout</span><span class="w"> </span><span class="mi">250</span><span class="nx">ms</span><span class="p">;</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">done</span>
+
+
+<span class="k">while</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="nx">grpc_health_probe</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">ca</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">/</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="kd">addr</span><span class="w"> </span><span class="m m-Double">172.3.0.1</span><span class="p">:</span><span class="mi">30891</span><span class="w"> </span><span class="o">-</span><span class="nx">connect</span><span class="o">-</span><span class="nx">timeout</span><span class="w"> </span><span class="mi">5</span><span class="nx">s</span><span class="p">;</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">done</span>
+
+<span class="k">while</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="nx">grpc_health_probe</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">client</span><span class="o">-</span><span class="nx">key</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">client</span><span class="o">/</span><span class="nx">tls</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">-</span><span class="nx">tls</span><span class="o">-</span><span class="nx">ca</span><span class="o">-</span><span class="nx">cert</span><span class="w"> </span><span class="o">/</span><span class="nx">tls</span><span class="o">/</span><span class="nx">server</span><span class="o">/</span><span class="nx">ca</span><span class="p">.</span><span class="nx">crt</span><span class="w"> </span><span class="o">-</span><span class="kd">addr</span><span class="w"> </span><span class="p">:</span><span class="mi">65256</span><span class="w"> </span><span class="o">-</span><span class="nx">connect</span><span class="o">-</span><span class="nx">timeout</span><span class="w"> </span><span class="mi">1</span><span class="nx">s</span><span class="p">;</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">done</span>
+<span class="w">            </span><span class="nx">Server</span><span class="o">::</span><span class="nx">builder</span><span class="p">()</span>
+<span class="w">                </span><span class="p">.</span><span class="nx">tls_config</span><span class="p">(</span><span class="nx">identity</span><span class="p">.</span><span class="nx">server_mtls</span><span class="p">().</span><span class="nx">await</span><span class="p">)?</span>
+<span class="w">                </span><span class="p">.</span><span class="nx">add_service</span><span class="p">(</span><span class="nx">health_service</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="nx">add_service</span><span class="p">(</span><span class="nx">CapabilityServiceServer</span><span class="o">::</span><span class="nx">new</span><span class="p">(</span><span class="nx">capability_service</span><span class="p">))</span>
+<span class="w">                </span><span class="p">.</span><span class="nx">serve</span><span class="p">(</span><span class="kd">addr</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="nx">await</span><span class="p">?;</span>
+
+
+
+<span class="w">  </span><span class="nx">timeout</span><span class="p">:</span><span class="w"> </span><span class="nx">failed</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">connect</span><span class="w"> </span><span class="nx">service</span><span class="w"> </span><span class="s">&quot;172.3.0.1:30891&quot;</span><span class="w"> </span><span class="nx">within</span><span class="w"> </span><span class="mi">1</span><span class="nx">s</span><span class="w">              </span>
+</code></pre></div>
+
+<h2 id="1019">10/19</h2>
+<p>https://wiki.fiduciaedge.work/engineering/docs/docker-multiarch-image-build/setup/start?s[]=buildx
+lvresize -l +100%FREE ubuntu-vg/ubuntu-lv --resizefs</p>
+<p>Warning  FailedScheduling  26s   default-scheduler  0/2 nodes are available: 2 node(s) had taint {node.kubernetes.io/disk-pressure: }, that the pod didn't tolerate.</p>
+<p>Warning  Failed     18s (x2 over 36s)  kubelet            Failed to pull image "fiduciaedge/calico-job:0.1": rpc error: code = Unknown desc = failed to pull and unpack image "docker.io/fiduciaedge/calico-job:0.1": failed to resolve reference "docker.io/fiduciaedge/calico-job:0.1": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+RUN apk --update add python3</p>
+<p>pip3 install requests</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Unable</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">connect</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="nl">server:</span><span class="w"> </span><span class="nl">tls:</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">verify</span><span class="w"> </span><span class="nl">certificate:</span><span class="w"> </span><span class="nl">x509:</span><span class="w"> </span><span class="n">certificate</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">unknown</span><span class="w"> </span><span class="n">authority</span>
+
+<span class="nl">https:</span><span class="c1">//blog.csdn.net/a5534789/article/details/112848404</span>
+
+
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">cni</span><span class="o">/</span><span class="n">net</span><span class="p">.</span><span class="n">d</span>
+<span class="w">  </span><span class="n">Warning</span><span class="w">  </span><span class="n">FailedScheduling</span><span class="w">  </span><span class="o">&lt;</span><span class="n">invalid</span><span class="o">&gt;</span><span class="w">  </span><span class="k">default</span><span class="o">-</span><span class="n">scheduler</span><span class="w">  </span><span class="mh">0</span><span class="o">/</span><span class="mh">2</span><span class="w"> </span><span class="n">nodes</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="nl">available:</span><span class="w"> </span><span class="mh">1</span><span class="w"> </span><span class="n">node</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="n">had</span><span class="w"> </span><span class="n">taint</span><span class="w"> </span><span class="p">{</span><span class="n">node</span><span class="p">.</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">disk</span><span class="o">-</span><span class="nl">pressure:</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">pod</span><span class="w"> </span><span class="n">didn</span><span class="p">&#39;</span><span class="n">t</span><span class="w"> </span><span class="n">tolerate</span><span class="p">,</span><span class="w"> </span><span class="mh">1</span><span class="w"> </span><span class="n">node</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="n">had</span><span class="w"> </span><span class="n">taint</span><span class="w"> </span><span class="p">{</span><span class="n">node</span><span class="p">.</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="k">not</span><span class="o">-</span><span class="nl">ready:</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">pod</span><span class="w"> </span><span class="n">didn</span><span class="p">&#39;</span><span class="n">t</span><span class="w"> </span><span class="n">tolerate</span><span class="p">.</span>
+
+
+
+<span class="w"> </span><span class="n">bootstrap</span>
+
+<span class="w">   </span><span class="n">Normal</span><span class="w">   </span><span class="n">Scheduled</span><span class="w">  </span><span class="mh">85</span><span class="n">s</span><span class="w">                </span><span class="k">default</span><span class="o">-</span><span class="n">scheduler</span><span class="w">  </span><span class="n">Successfully</span><span class="w"> </span><span class="n">assigned</span><span class="w"> </span><span class="n">fecb</span><span class="o">-</span><span class="n">system</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">cert</span><span class="o">-</span><span class="n">bootstrap</span><span class="o">-</span><span class="n">gkq2h</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">jerry</span><span class="o">-</span><span class="n">worker</span>
+<span class="w">  </span><span class="n">Normal</span><span class="w">   </span><span class="n">Pulled</span><span class="w">     </span><span class="mh">78</span><span class="n">s</span><span class="w">                </span><span class="n">kubelet</span><span class="w">            </span><span class="n">Successfully</span><span class="w"> </span><span class="n">pulled</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="s">&quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot;</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mf">2.630814969</span><span class="n">s</span>
+<span class="w">  </span><span class="n">Normal</span><span class="w">   </span><span class="n">Pulled</span><span class="w">     </span><span class="mh">76</span><span class="n">s</span><span class="w">                </span><span class="n">kubelet</span><span class="w">            </span><span class="n">Successfully</span><span class="w"> </span><span class="n">pulled</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="s">&quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot;</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mf">2.169203747</span><span class="n">s</span>
+<span class="w">  </span><span class="n">Normal</span><span class="w">   </span><span class="n">Pulled</span><span class="w">     </span><span class="mh">60</span><span class="n">s</span><span class="w">                </span><span class="n">kubelet</span><span class="w">            </span><span class="n">Successfully</span><span class="w"> </span><span class="n">pulled</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="s">&quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot;</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mf">2.257289114</span><span class="n">s</span>
+<span class="w">  </span><span class="n">Normal</span><span class="w">   </span><span class="n">Pulling</span><span class="w">    </span><span class="mh">30</span><span class="n">s</span><span class="w"> </span><span class="p">(</span><span class="n">x4</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="mh">81</span><span class="n">s</span><span class="p">)</span><span class="w">  </span><span class="n">kubelet</span><span class="w">            </span><span class="n">Pulling</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="s">&quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot;</span>
+<span class="w">  </span><span class="n">Normal</span><span class="w">   </span><span class="n">Created</span><span class="w">    </span><span class="mh">28</span><span class="n">s</span><span class="w"> </span><span class="p">(</span><span class="n">x4</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="mh">78</span><span class="n">s</span><span class="p">)</span><span class="w">  </span><span class="n">kubelet</span><span class="w">            </span><span class="n">Created</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">fecb</span><span class="o">-</span><span class="n">tls</span><span class="o">-</span><span class="n">bootstrap</span>
+<span class="w">  </span><span class="n">Normal</span><span class="w">   </span><span class="n">Started</span><span class="w">    </span><span class="mh">28</span><span class="n">s</span><span class="w"> </span><span class="p">(</span><span class="n">x4</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="mh">78</span><span class="n">s</span><span class="p">)</span><span class="w">  </span><span class="n">kubelet</span><span class="w">            </span><span class="n">Started</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">fecb</span><span class="o">-</span><span class="n">tls</span><span class="o">-</span><span class="n">bootstrap</span>
+<span class="w">  </span><span class="n">Normal</span><span class="w">   </span><span class="n">Pulled</span><span class="w">     </span><span class="mh">28</span><span class="n">s</span><span class="w">                </span><span class="n">kubelet</span><span class="w">            </span><span class="n">Successfully</span><span class="w"> </span><span class="n">pulled</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="s">&quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot;</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mf">2.123075718</span><span class="n">s</span>
+<span class="w">  </span><span class="n">Warning</span><span class="w">  </span><span class="n">BackOff</span><span class="w">    </span><span class="mh">4</span><span class="n">s</span><span class="w"> </span><span class="p">(</span><span class="n">x7</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="mh">75</span><span class="n">s</span><span class="p">)</span><span class="w">   </span><span class="n">kubelet</span><span class="w">            </span><span class="n">Back</span><span class="o">-</span><span class="n">off</span><span class="w"> </span><span class="n">restarting</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="n">container</span>
+</code></pre></div>
+
+<h1 id="1013">10/13</h1>
+<ul>
+<li>default-ns不能刪除 雞生蛋</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>sudo su
+calicoctl apply -f calico-ip-pool.yaml 
+calicoctl get ippools
+calicoctl delete -f calico-ip-pool.yaml 
+
+
+calicoctl apply -f agent-ns-ippool.yaml 
+calicoctl delete -f agent-ns-ippool.yaml 
+</code></pre></div>
+
+<ul>
+<li>agent-ns.ippool</li>
+<li>default-namespace.ippool</li>
+<li>fecb-system.ippool</li>
+<li>mgmt-ns.ippool</li>
+<li>resource-sandbox.ippool</li>
+</ul>
+<h2 id="919">9/19</h2>
+<ul>
+<li>fECB API<ul>
+<li>Fix mtls environment variables to follow naming convention &amp; set system-api mtls</li>
+</ul>
+</li>
+<li>自建cluster<ul>
+<li>watch</li>
+</ul>
+</li>
+<li>proto 放api pod</li>
+<li>ota api</li>
+<li>修改file-api</li>
+<li>grafana/loki<ul>
+<li>動態hostname</li>
+</ul>
+</li>
+<li>
+<p>k8s</p>
+<ul>
+<li>https://wiki.fiduciaedge.work/engineering/products/fecp/fecp_installation/start</li>
+<li>eddie<ul>
+<li>https://hackmd.io/L1iAITrpRpSJUKuSBxvpjQ</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>度假攜帶</p>
+<ul>
+<li>手機 耳機 手錶 手電筒 露營燈 喇叭 耳罩</li>
+<li>QuietComfort Ultra</li>
+</ul>
+</li>
+</ul>
+<h2 id="94">9/4</h2>
+<ul>
+<li>helm 書</li>
+<li>harbor helm佈署</li>
+<li>data helm</li>
+</ul>
+<h3 id="select2pod2ip2db">select2pod2ip2db</h3>
+<ul>
+<li>selector</li>
+<li>deploy_name</li>
+<li>找到最新pod</li>
+<li>
+<p>找到ip</p>
+</li>
+<li>
+<p>selector -&gt; pod/status/time -&gt; latest pod name</p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>sudo kubectl get pod -l app=device-selector -n resource-sandbox --no-headers -o jsonpath=&#39;{.items}&#39;
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox --sort-by=.metadata.creationTimestamp -o jsonpath=&#39;{.items[0].metadata.name}&#39;
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox -o jsonpath=&#39;{.items[0].metadata.creationTimestamp}&#39;
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>sudo kubectl get deployment -l app=device-selector -n resource-sandbox -o jsonpath=&#39;{.items[0].metadata.name}&#39;
+
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox --no-headers
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox -o jsonpath=&#39;{.items[0].metadata.creationTimestamp}&#39;
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox -o jsonpath=&#39;{.items[0].metadata.name}&#39;
+</code></pre></div>
+
+<h2 id="828">8/28</h2>
+<ul>
+<li>database pod</li>
+</ul>
+<p>https://github.com/docker-library/docs/blob/master/mariadb/README.md
+* cleanup
+* init-container
+* fecb bug
+    * create capability不見
+    * init container</p>
+<h2 id="821">8/21</h2>
+<p>mender 只會被mender.conf影響
+* api
+    * config mender client
+    * config mender from conf
+* ota-api
+    * config client json
+        * cp file done
+    * health
+        * 等待實作system api 搭配
+    * status 
+        * 先不做 坐在health
+    * config inventory 
+    * container pod
+        * https://stackoverflow.com/questions/32163955/how-to-run-shell-script-on-host-from-docker-container
+* todo
+    * system get ver
+    * ota health check
+    * </p>
+<h2 id="727">7/27</h2>
+<ul>
+<li>Amazon Simple Storage Service (Amazon S3)</li>
+<li>Key Encryption Service (KES) </li>
+<li>
+<p>Key Management Service (KMS)</p>
+</li>
+<li>
+<p>pitis-cloud minio畫圖(2000-install)</p>
+<ul>
+<li>kms</li>
+<li>kes</li>
+<li>minio</li>
+<li>vault</li>
+</ul>
+</li>
+<li>
+<p>修改/etc/hosts通過</p>
+<ul>
+<li>確認kubernetes的host resolve</li>
+</ul>
+</li>
+</ul>
+<h3 id="meeting">meeting</h3>
+<ul>
+<li>實作harbor對接scanner</li>
+<li>討論registry要架設到那些政府雲是可用的(TWCC)</li>
+</ul>
+<h3 id="issue">issue</h3>
+<ul>
+<li>docker login https://harbor.tiip.internal:30003<ul>
+<li>才會有綠勾勾</li>
+<li>push harbor.tiip.internal:30003</li>
+</ul>
+</li>
+<li>docker login https://harbor.twca.com.tw<ul>
+<li>host resolve才會成功</li>
+</ul>
+</li>
+</ul>
+<h2 id="73">7/3</h2>
+<ul>
+<li>測試報告<ul>
+<li>https://harbor.twca.com.tw/</li>
+<li>https://notary.twca.com.tw/</li>
+</ul>
+</li>
+<li>使用手冊</li>
+<li>錄影CosNAR</li>
+</ul>
+<h1 id="621">6/21</h1>
+<ul>
+<li>harbor, vm, rust</li>
+</ul>
+<h2 id="620">6/20</h2>
+<ul>
+<li>docker doc</li>
+<li>notary 成功</li>
+</ul>
+<h2 id="614">6/14</h2>
+<ul>
+<li>自架pistis cloud-harbor-server</li>
+<li>自架notary signer</li>
+<li>client呼叫</li>
+</ul>
+<p>parse error: Invalid numeric literal at line 1, column 6
+* dekra
+    * 先確定gary runall
+    * 跑jerry debug8 密集測試 capability
+    * 確認check function
+* 先後順序
+    * 先確定pod stable
+    * 包裝roll up
+    * annotation
+    * 解checking function(plus)
+    * sqlite3 改成postgres</p>
+<ul>
+<li>meeting<ul>
+<li>rollout 確保unit (podip)</li>
+<li>annotation (clean up podip)
+rollout
+timestamp</li>
+</ul>
+</li>
+<li>svc account</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>curl -H &quot;Authorization: Bearer $K3S_TOKEN&quot; https://kubernetes.default.svc.cluster.local/api/v1/namespaces/fecb-system/secrets/root-ca -k 
+
+curl -H &quot;Authorization: Bearer $K3S_TOKEN&quot; https://kubernetes.default.svc.cluster.local/api/v1/namespaces/resource-sandbox/pods -k
+</code></pre></div>
+
+<ul>
+<li>create issue1 dvc (debug6)<ul>
+<li>E0611 20:55:30.517865    4575 memcache.go:121] couldn't get resource list for external.metrics.k8s.io/v1beta1: the server is currently unable to handle the request</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="ow">in</span><span class="w"> </span><span class="n">capability</span>
+
+<span class="n">sudo</span><span class="w"> </span><span class="n">kubectl</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">pods</span><span class="w"> </span><span class="n">device</span><span class="o">-</span><span class="n">python</span><span class="o">-</span><span class="n">f9f899cff</span><span class="o">-</span><span class="n">jd2kl</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="n">resource</span><span class="o">-</span><span class="n">sandbox</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.phase}&#39;</span>
+
+<span class="o">!</span><span class="p">[](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">hackmd</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">_uploads</span><span class="o">/</span><span class="n">H1MENnmDh</span><span class="o">.</span><span class="n">png</span><span class="p">)</span>
+
+
+<span class="n">sudo</span><span class="w"> </span><span class="n">kubectl</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">pods</span><span class="w"> </span><span class="n">device</span><span class="o">-</span><span class="n">python</span><span class="o">-</span><span class="n">f9f899cff</span><span class="o">-</span><span class="mi">8</span><span class="n">ppfm</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="n">resource</span><span class="o">-</span><span class="n">sandbox</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.phase}&#39;</span><span class="w">  </span><span class="o">&gt;</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="n">error</span>
+
+
+<span class="n">kubectl</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">apiservice</span>
+<span class="n">v1beta1</span><span class="o">.</span><span class="n">external</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">k8s</span><span class="o">.</span><span class="n">io</span><span class="w">        </span><span class="n">monitoring</span><span class="o">/</span><span class="n">prometheus</span><span class="o">-</span><span class="n">adapter</span><span class="w">   </span><span class="n">False</span><span class="w"> </span><span class="p">(</span><span class="n">FailedDiscoveryCheck</span><span class="p">)</span><span class="w"> </span>
+
+<span class="err">取得其他</span><span class="n">pod</span><span class="w"> </span><span class="n">ip</span>
+
+<span class="err">改用</span>
+<span class="n">curl</span><span class="w"> </span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">namespaces</span><span class="o">/</span><span class="n">default</span><span class="o">/</span><span class="n">pods</span>
+
+<span class="k">export</span><span class="w"> </span><span class="n">K3S_TOKEN</span><span class="o">=$</span><span class="p">(</span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">secrets</span><span class="o">/</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">serviceaccount</span><span class="o">/</span><span class="n">token</span><span class="p">)</span>
+
+<span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s2">&quot;Authorization: Bearer $K3S_TOKEN&quot;</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">default</span><span class="o">.</span><span class="n">svc</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">local</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">namespaces</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">system</span><span class="o">/</span><span class="n">secrets</span><span class="o">/</span><span class="n">root</span><span class="o">-</span><span class="n">ca</span><span class="w"> </span><span class="o">-</span><span class="n">k</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">jq</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="s1">&#39;.data[&quot;portainer-rootca.crt&quot;]&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">base64</span><span class="w"> </span><span class="o">-</span><span class="n">d</span>
+</code></pre></div>
+
+<p>https://aptakube.com/blog/troubleshooting-api-resource-list</p>
+<ul>
+<li>測試capability pod (debug8)</li>
+<li>create issue1 app(debug3)</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>sudo kubectl get pod -l app=app-selector -n default -o jsonpath=&#39;{.items[0].metadata.name}&#39;
+sudo kubectl get pod -l app=app-selector -n default -o json
+</code></pre></div>
+
+<h1 id="612">6/12</h1>
+<ul>
+<li>書<ul>
+<li>rust 程式設計</li>
+<li>harbor</li>
+</ul>
+</li>
+</ul>
+<h2 id="611">6/11</h2>
+<ul>
+<li>兩個pod用相同selector輩分狀態(terminating, init)</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">[{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span><span class="p">,</span><span class="s2">&quot;kind&quot;</span><span class="p">:</span><span class="s2">&quot;Pod&quot;</span><span class="p">,</span><span class="s2">&quot;metadata&quot;</span><span class="p">:{</span><span class="s2">&quot;annotations&quot;</span><span class="p">:{</span><span class="s2">&quot;cni.projectcalico.org/containerID&quot;</span><span class="p">:</span><span class="s2">&quot;8968f26013722d779ceeb3bd25cf41f376f5ad79bbb521a274cba801da88cfe1&quot;</span><span class="p">,</span><span class="s2">&quot;cni.projectcalico.org/podIP&quot;</span><span class="p">:</span><span class="s2">&quot;172.5.19.174/32&quot;</span><span class="p">,</span><span class="s2">&quot;cni.projectcalico.org/podIPs&quot;</span><span class="p">:</span><span class="s2">&quot;172.5.19.174/32&quot;</span><span class="p">},</span><span class="s2">&quot;creationTimestamp&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:44Z&quot;</span><span class="p">,</span><span class="s2">&quot;deletionGracePeriodSeconds&quot;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="s2">&quot;deletionTimestamp&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T10:39:16Z&quot;</span><span class="p">,</span><span class="s2">&quot;generateName&quot;</span><span class="p">:</span><span class="s2">&quot;app-python-55f76665f8-&quot;</span><span class="p">,</span><span class="s2">&quot;labels&quot;</span><span class="p">:{</span><span class="s2">&quot;app&quot;</span><span class="p">:</span><span class="s2">&quot;app-selector&quot;</span><span class="p">,</span><span class="s2">&quot;pod-template-hash&quot;</span><span class="p">:</span><span class="s2">&quot;55f76665f8&quot;</span><span class="p">},</span><span class="s2">&quot;managedFields&quot;</span><span class="p">:[{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldsType&quot;</span><span class="p">:</span><span class="s2">&quot;FieldsV1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldsV1&quot;</span><span class="p">:{</span><span class="s2">&quot;f:metadata&quot;</span><span class="p">:{</span><span class="s2">&quot;f:annotations&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:cni.projectcalico.org/containerID&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:cni.projectcalico.org/podIP&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:cni.projectcalico.org/podIPs&quot;</span><span class="p">:{}}}},</span><span class="s2">&quot;manager&quot;</span><span class="p">:</span><span class="s2">&quot;calico&quot;</span><span class="p">,</span><span class="s2">&quot;operation&quot;</span><span class="p">:</span><span class="s2">&quot;Update&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:45Z&quot;</span><span class="p">},{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldsType&quot;</span><span class="p">:</span><span class="s2">&quot;FieldsV1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldsV1&quot;</span><span class="p">:{</span><span class="s2">&quot;f:metadata&quot;</span><span class="p">:{</span><span class="s2">&quot;f:generateName&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:labels&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:app&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:pod-template-hash&quot;</span><span class="p">:{}},</span><span class="s2">&quot;f:ownerReferences&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">uid</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">b3eb2a0f-ca93-46a6-ac09-5b3b951da68d</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:apiVersion&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:blockOwnerDeletion&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:controller&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:kind&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:uid&quot;</span><span class="p">:{}}}},</span><span class="s2">&quot;f:spec&quot;</span><span class="p">:{</span><span class="s2">&quot;f:containers&quot;</span><span class="p">:{</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">my-pod</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:args&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:command&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:env&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">NETWORK_INTERFACE</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:image&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:imagePullPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:ports&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">containerPort</span><span class="se">\&quot;</span><span class="s2">:30502,</span><span class="se">\&quot;</span><span class="s2">protocol</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">TCP</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:containerPort&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:protocol&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:volumeMounts&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">mountPath</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">/.cache</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:mountPath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{}}}}},</span><span class="s2">&quot;f:dnsPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:enableServiceLinks&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:initContainers&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">clear</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:args&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:command&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:env&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">SERVICE_SELECTOR_NAME</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:image&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:imagePullPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:volumeMounts&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">mountPath</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">/.cache</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:mountPath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{}}}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">init-myservice</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:args&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:command&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:env&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">DECRYPTED_FOLDER_PATH</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">FECB_CAPABILITY_API_SERVER_URL</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">FECB_FILE_API_SERVER_URL</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:image&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:imagePullPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:volumeMounts&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">mountPath</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">/.cache</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:mountPath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{}}}}},</span><span class="s2">&quot;f:restartPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:runtimeClassName&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:schedulerName&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:securityContext&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:serviceAccount&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:serviceAccountName&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationGracePeriodSeconds&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:volumes&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">cache-volume</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:emptyDir&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{}}}},</span><span class="s2">&quot;f:status&quot;</span><span class="p">:{</span><span class="s2">&quot;f:conditions&quot;</span><span class="p">:{</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">type</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">ContainersReady</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastProbeTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastTransitionTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:message&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:reason&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:status&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:type&quot;</span><span class="p">:{}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">type</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">Initialized</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastProbeTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastTransitionTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:message&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:reason&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:status&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:type&quot;</span><span class="p">:{}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">type</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">Ready</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastProbeTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastTransitionTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:message&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:reason&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:status&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:type&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:containerStatuses&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:hostIP&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:initContainerStatuses&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:podIP&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:podIPs&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">ip</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">172.5.19.174</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:ip&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:startTime&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;manager&quot;</span><span class="p">:</span><span class="s2">&quot;k3s&quot;</span><span class="p">,</span><span class="s2">&quot;operation&quot;</span><span class="p">:</span><span class="s2">&quot;Update&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:48Z&quot;</span><span class="p">}],</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;app-python-55f76665f8-xxzfc&quot;</span><span class="p">,</span><span class="s2">&quot;namespace&quot;</span><span class="p">:</span><span class="s2">&quot;default&quot;</span><span class="p">,</span><span class="s2">&quot;ownerReferences&quot;</span><span class="p">:[{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;apps/v1&quot;</span><span class="p">,</span><span class="s2">&quot;blockOwnerDeletion&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">,</span><span class="s2">&quot;controller&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">,</span><span class="s2">&quot;kind&quot;</span><span class="p">:</span><span class="s2">&quot;ReplicaSet&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;app-python-55f76665f8&quot;</span><span class="p">,</span><span class="s2">&quot;uid&quot;</span><span class="p">:</span><span class="s2">&quot;b3eb2a0f-ca93-46a6-ac09-5b3b951da68d&quot;</span><span class="p">}],</span><span class="s2">&quot;resourceVersion&quot;</span><span class="p">:</span><span class="s2">&quot;20309950&quot;</span><span class="p">,</span><span class="s2">&quot;uid&quot;</span><span class="p">:</span><span class="s2">&quot;21914a1e-73c2-4396-ae55-d635f56cd0ab&quot;</span><span class="p">},</span><span class="s2">&quot;spec&quot;</span><span class="p">:{</span><span class="s2">&quot;containers&quot;</span><span class="p">:[{</span><span class="s2">&quot;args&quot;</span><span class="p">:[</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span><span class="s2">&quot;while true; do echo hello; sleep 10;done&quot;</span><span class="p">],</span><span class="s2">&quot;command&quot;</span><span class="p">:[</span><span class="s2">&quot;/bin/sh&quot;</span><span class="p">],</span><span class="s2">&quot;env&quot;</span><span class="p">:[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;NETWORK_INTERFACE&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;172.3.0.1:&quot;</span><span class="p">}],</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;fiduciaedge/fecb-sdk-python-example-app-sandbox:v1.4.1-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imagePullPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;Always&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;my-pod&quot;</span><span class="p">,</span><span class="s2">&quot;ports&quot;</span><span class="p">:[{</span><span class="s2">&quot;containerPort&quot;</span><span class="p">:</span><span class="mi">30502</span><span class="p">,</span><span class="s2">&quot;protocol&quot;</span><span class="p">:</span><span class="s2">&quot;TCP&quot;</span><span class="p">}],</span><span class="s2">&quot;resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;terminationMessagePath&quot;</span><span class="p">:</span><span class="s2">&quot;/dev/termination-log&quot;</span><span class="p">,</span><span class="s2">&quot;terminationMessagePolicy&quot;</span><span class="p">:</span><span class="s2">&quot;File&quot;</span><span class="p">,</span><span class="s2">&quot;volumeMounts&quot;</span><span class="p">:[{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/.cache&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;cache-volume&quot;</span><span class="p">},{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-api-access-8t4vw&quot;</span><span class="p">,</span><span class="s2">&quot;readOnly&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">}]}],</span><span class="s2">&quot;dnsPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;ClusterFirst&quot;</span><span class="p">,</span><span class="s2">&quot;enableServiceLinks&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">,</span><span class="s2">&quot;initContainers&quot;</span><span class="p">:[{</span><span class="s2">&quot;args&quot;</span><span class="p">:[</span><span class="s2">&quot;ls&quot;</span><span class="p">],</span><span class="s2">&quot;command&quot;</span><span class="p">:[</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">,</span><span class="s2">&quot;-c&quot;</span><span class="p">],</span><span class="s2">&quot;env&quot;</span><span class="p">:[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;SERVICE_SELECTOR_NAME&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;app-selector&quot;</span><span class="p">}],</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;fiduciaedge/fecb-sdk-clear-sandbox:v1.4.3-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imagePullPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;Always&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;clear&quot;</span><span class="p">,</span><span class="s2">&quot;resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;terminationMessagePath&quot;</span><span class="p">:</span><span class="s2">&quot;/dev/termination-log&quot;</span><span class="p">,</span><span class="s2">&quot;terminationMessagePolicy&quot;</span><span class="p">:</span><span class="s2">&quot;File&quot;</span><span class="p">,</span><span class="s2">&quot;volumeMounts&quot;</span><span class="p">:[{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/.cache&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;cache-volume&quot;</span><span class="p">},{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-api-access-8t4vw&quot;</span><span class="p">,</span><span class="s2">&quot;readOnly&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">}]},{</span><span class="s2">&quot;args&quot;</span><span class="p">:[</span><span class="s2">&quot;./init.sh </span><span class="se">\u003e</span><span class="s2"> /.cache/log&quot;</span><span class="p">],</span><span class="s2">&quot;command&quot;</span><span class="p">:[</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">,</span><span class="s2">&quot;-c&quot;</span><span class="p">],</span><span class="s2">&quot;env&quot;</span><span class="p">:[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;FECB_CAPABILITY_API_SERVER_URL&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;172.3.0.1:30891&quot;</span><span class="p">},{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;DECRYPTED_FOLDER_PATH&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;/.cache/files&quot;</span><span class="p">},{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;FECB_FILE_API_SERVER_URL&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;http://172.3.0.1:30893&quot;</span><span class="p">}],</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;fiduciaedge/fecb-sdk-init-sandbox:v1.4.3-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imagePullPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;Always&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;init-myservice&quot;</span><span class="p">,</span><span class="s2">&quot;resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;terminationMessagePath&quot;</span><span class="p">:</span><span class="s2">&quot;/dev/termination-log&quot;</span><span class="p">,</span><span class="s2">&quot;terminationMessagePolicy&quot;</span><span class="p">:</span><span class="s2">&quot;File&quot;</span><span class="p">,</span><span class="s2">&quot;volumeMounts&quot;</span><span class="p">:[{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/.cache&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;cache-volume&quot;</span><span class="p">},{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-api-access-8t4vw&quot;</span><span class="p">,</span><span class="s2">&quot;readOnly&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">}]}],</span><span class="s2">&quot;nodeName&quot;</span><span class="p">:</span><span class="s2">&quot;staging-worker&quot;</span><span class="p">,</span><span class="s2">&quot;nodeSelector&quot;</span><span class="p">:{</span><span class="s2">&quot;katacontainers.io/kata-runtime&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span><span class="p">},</span><span class="s2">&quot;overhead&quot;</span><span class="p">:{</span><span class="s2">&quot;cpu&quot;</span><span class="p">:</span><span class="s2">&quot;250m&quot;</span><span class="p">,</span><span class="s2">&quot;memory&quot;</span><span class="p">:</span><span class="s2">&quot;160Mi&quot;</span><span class="p">},</span><span class="s2">&quot;preemptionPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;PreemptLowerPriority&quot;</span><span class="p">,</span><span class="s2">&quot;priority&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;restartPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;Always&quot;</span><span class="p">,</span><span class="s2">&quot;runtimeClassName&quot;</span><span class="p">:</span><span class="s2">&quot;kata-qemu&quot;</span><span class="p">,</span><span class="s2">&quot;schedulerName&quot;</span><span class="p">:</span><span class="s2">&quot;default-scheduler&quot;</span><span class="p">,</span><span class="s2">&quot;securityContext&quot;</span><span class="p">:{},</span><span class="s2">&quot;serviceAccount&quot;</span><span class="p">:</span><span class="s2">&quot;fecb-init-container-app&quot;</span><span class="p">,</span><span class="s2">&quot;serviceAccountName&quot;</span><span class="p">:</span><span class="s2">&quot;fecb-init-container-app&quot;</span><span class="p">,</span><span class="s2">&quot;terminationGracePeriodSeconds&quot;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="s2">&quot;tolerations&quot;</span><span class="p">:[{</span><span class="s2">&quot;effect&quot;</span><span class="p">:</span><span class="s2">&quot;NoExecute&quot;</span><span class="p">,</span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="s2">&quot;node.kubernetes.io/not-ready&quot;</span><span class="p">,</span><span class="s2">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;Exists&quot;</span><span class="p">,</span><span class="s2">&quot;tolerationSeconds&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="s2">&quot;effect&quot;</span><span class="p">:</span><span class="s2">&quot;NoExecute&quot;</span><span class="p">,</span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="s2">&quot;node.kubernetes.io/unreachable&quot;</span><span class="p">,</span><span class="s2">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;Exists&quot;</span><span class="p">,</span><span class="s2">&quot;tolerationSeconds&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">}],</span><span class="s2">&quot;volumes&quot;</span><span class="p">:[{</span><span class="s2">&quot;emptyDir&quot;</span><span class="p">:{},</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;cache-volume&quot;</span><span class="p">},{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-api-access-8t4vw&quot;</span><span class="p">,</span><span class="s2">&quot;projected&quot;</span><span class="p">:{</span><span class="s2">&quot;defaultMode&quot;</span><span class="p">:</span><span class="mi">420</span><span class="p">,</span><span class="s2">&quot;sources&quot;</span><span class="p">:[{</span><span class="s2">&quot;serviceAccountToken&quot;</span><span class="p">:{</span><span class="s2">&quot;expirationSeconds&quot;</span><span class="p">:</span><span class="mi">3607</span><span class="p">,</span><span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;token&quot;</span><span class="p">}},{</span><span class="s2">&quot;configMap&quot;</span><span class="p">:{</span><span class="s2">&quot;items&quot;</span><span class="p">:[{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="s2">&quot;ca.crt&quot;</span><span class="p">,</span><span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;ca.crt&quot;</span><span class="p">}],</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-root-ca.crt&quot;</span><span class="p">}},{</span><span class="s2">&quot;downwardAPI&quot;</span><span class="p">:{</span><span class="s2">&quot;items&quot;</span><span class="p">:[{</span><span class="s2">&quot;fieldRef&quot;</span><span class="p">:{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldPath&quot;</span><span class="p">:</span><span class="s2">&quot;metadata.namespace&quot;</span><span class="p">},</span><span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;namespace&quot;</span><span class="p">}]}}]}}]},</span><span class="s2">&quot;status&quot;</span><span class="p">:{</span><span class="s2">&quot;conditions&quot;</span><span class="p">:[{</span><span class="s2">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nb nb-Type">null</span><span class="p">,</span><span class="s2">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:44Z&quot;</span><span class="p">,</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;containers with incomplete status: [init-myservice]&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;ContainersNotInitialized&quot;</span><span class="p">,</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;False&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Initialized&quot;</span><span class="p">},{</span><span class="s2">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nb nb-Type">null</span><span class="p">,</span><span class="s2">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:44Z&quot;</span><span class="p">,</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;containers with unready status: [my-pod]&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;ContainersNotReady&quot;</span><span class="p">,</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;False&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Ready&quot;</span><span class="p">},{</span><span class="s2">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nb nb-Type">null</span><span class="p">,</span><span class="s2">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:44Z&quot;</span><span class="p">,</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;containers with unready status: [my-pod]&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;ContainersNotReady&quot;</span><span class="p">,</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;False&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;ContainersReady&quot;</span><span class="p">},{</span><span class="s2">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nb nb-Type">null</span><span class="p">,</span><span class="s2">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:44Z&quot;</span><span class="p">,</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;True&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;PodScheduled&quot;</span><span class="p">}],</span><span class="s2">&quot;containerStatuses&quot;</span><span class="p">:[{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;fiduciaedge/fecb-sdk-python-example-app-sandbox:v1.4.1-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imageID&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;lastState&quot;</span><span class="p">:{},</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;my-pod&quot;</span><span class="p">,</span><span class="s2">&quot;ready&quot;</span><span class="p">:</span><span class="bp">false</span><span class="p">,</span><span class="s2">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;started&quot;</span><span class="p">:</span><span class="bp">false</span><span class="p">,</span><span class="s2">&quot;state&quot;</span><span class="p">:{</span><span class="s2">&quot;waiting&quot;</span><span class="p">:{</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;PodInitializing&quot;</span><span class="p">}}}],</span><span class="s2">&quot;hostIP&quot;</span><span class="p">:</span><span class="s2">&quot;192.168.50.66&quot;</span><span class="p">,</span><span class="s2">&quot;initContainerStatuses&quot;</span><span class="p">:[{</span><span class="s2">&quot;containerID&quot;</span><span class="p">:</span><span class="s2">&quot;containerd://8a62d5a33400f32fccfa4836f7a6abcda0832452fb339661041f3187a649cb30&quot;</span><span class="p">,</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;docker.io/fiduciaedge/fecb-sdk-clear-sandbox:v1.4.3-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imageID&quot;</span><span class="p">:</span><span class="s2">&quot;docker.io/fiduciaedge/fecb-sdk-clear-sandbox@sha256:93d7e663ee23841a25d67f4263910e677549ea155e350a14ef977b87083a20e9&quot;</span><span class="p">,</span><span class="s2">&quot;lastState&quot;</span><span class="p">:{},</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;clear&quot;</span><span class="p">,</span><span class="s2">&quot;ready&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">,</span><span class="s2">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;state&quot;</span><span class="p">:{</span><span class="s2">&quot;terminated&quot;</span><span class="p">:{</span><span class="s2">&quot;containerID&quot;</span><span class="p">:</span><span class="s2">&quot;containerd://8a62d5a33400f32fccfa4836f7a6abcda0832452fb339661041f3187a649cb30&quot;</span><span class="p">,</span><span class="s2">&quot;exitCode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;finishedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:48Z&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;Completed&quot;</span><span class="p">,</span><span class="s2">&quot;startedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:48Z&quot;</span><span class="p">}}},{</span><span class="s2">&quot;containerID&quot;</span><span class="p">:</span><span class="s2">&quot;containerd://f78fbd60f5ce8c640d83863c38857835680a58bcb6222fa07ccd4b7208f9da4b&quot;</span><span class="p">,</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox:v1.4.3-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imageID&quot;</span><span class="p">:</span><span class="s2">&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox@sha256:645cf7a519a302b82825423946775a8ef90d7c29126bef1a58e04bd0c3b7000c&quot;</span><span class="p">,</span><span class="s2">&quot;lastState&quot;</span><span class="p">:{</span><span class="s2">&quot;terminated&quot;</span><span class="p">:{</span><span class="s2">&quot;containerID&quot;</span><span class="p">:</span><span class="s2">&quot;containerd://f78fbd60f5ce8c640d83863c38857835680a58bcb6222fa07ccd4b7208f9da4b&quot;</span><span class="p">,</span><span class="s2">&quot;exitCode&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;finishedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T10:33:44Z&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span><span class="s2">&quot;startedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T10:33:38Z&quot;</span><span class="p">}},</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;init-myservice&quot;</span><span class="p">,</span><span class="s2">&quot;ready&quot;</span><span class="p">:</span><span class="bp">false</span><span class="p">,</span><span class="s2">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">17</span><span class="p">,</span><span class="s2">&quot;state&quot;</span><span class="p">:{</span><span class="s2">&quot;waiting&quot;</span><span class="p">:{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;back-off 5m0s restarting failed container=init-myservice pod=app-python-55f76665f8-xxzfc_default(21914a1e-73c2-4396-ae55-d635f56cd0ab)&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;CrashLoopBackOff&quot;</span><span class="p">}}}],</span><span class="s2">&quot;phase&quot;</span><span class="p">:</span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span><span class="s2">&quot;podIP&quot;</span><span class="p">:</span><span class="s2">&quot;172.5.19.174&quot;</span><span class="p">,</span><span class="s2">&quot;podIPs&quot;</span><span class="p">:[{</span><span class="s2">&quot;ip&quot;</span><span class="p">:</span><span class="s2">&quot;172.5.19.174&quot;</span><span class="p">}],</span><span class="s2">&quot;qosClass&quot;</span><span class="p">:</span><span class="s2">&quot;BestEffort&quot;</span><span class="p">,</span><span class="s2">&quot;startTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-11T09:28:44Z&quot;</span><span class="p">}},{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span><span class="p">,</span><span class="s2">&quot;kind&quot;</span><span class="p">:</span><span class="s2">&quot;Pod&quot;</span><span class="p">,</span><span class="s2">&quot;metadata&quot;</span><span class="p">:{</span><span class="s2">&quot;annotations&quot;</span><span class="p">:{</span><span class="s2">&quot;cni.projectcalico.org/containerID&quot;</span><span class="p">:</span><span class="s2">&quot;cf89f283739f9383c9a09282f9ac33b039a9dc7cf7eb1b6209f275175ca5489d&quot;</span><span class="p">,</span><span class="s2">&quot;cni.projectcalico.org/podIP&quot;</span><span class="p">:</span><span class="s2">&quot;172.5.19.186/32&quot;</span><span class="p">,</span><span class="s2">&quot;cni.projectcalico.org/podIPs&quot;</span><span class="p">:</span><span class="s2">&quot;172.5.19.186/32&quot;</span><span class="p">},</span><span class="s2">&quot;creationTimestamp&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:13:42Z&quot;</span><span class="p">,</span><span class="s2">&quot;generateName&quot;</span><span class="p">:</span><span class="s2">&quot;app-python-78674bc8d9-&quot;</span><span class="p">,</span><span class="s2">&quot;labels&quot;</span><span class="p">:{</span><span class="s2">&quot;app&quot;</span><span class="p">:</span><span class="s2">&quot;app-selector&quot;</span><span class="p">,</span><span class="s2">&quot;pod-template-hash&quot;</span><span class="p">:</span><span class="s2">&quot;78674bc8d9&quot;</span><span class="p">},</span><span class="s2">&quot;managedFields&quot;</span><span class="p">:[{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldsType&quot;</span><span class="p">:</span><span class="s2">&quot;FieldsV1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldsV1&quot;</span><span class="p">:{</span><span class="s2">&quot;f:metadata&quot;</span><span class="p">:{</span><span class="s2">&quot;f:annotations&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:cni.projectcalico.org/containerID&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:cni.projectcalico.org/podIP&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:cni.projectcalico.org/podIPs&quot;</span><span class="p">:{}}}},</span><span class="s2">&quot;manager&quot;</span><span class="p">:</span><span class="s2">&quot;calico&quot;</span><span class="p">,</span><span class="s2">&quot;operation&quot;</span><span class="p">:</span><span class="s2">&quot;Update&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:13:43Z&quot;</span><span class="p">},{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldsType&quot;</span><span class="p">:</span><span class="s2">&quot;FieldsV1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldsV1&quot;</span><span class="p">:{</span><span class="s2">&quot;f:metadata&quot;</span><span class="p">:{</span><span class="s2">&quot;f:generateName&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:labels&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:app&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:pod-template-hash&quot;</span><span class="p">:{}},</span><span class="s2">&quot;f:ownerReferences&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">uid</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">e8485c53-af96-4445-8edc-ffbf03614dc1</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:apiVersion&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:blockOwnerDeletion&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:controller&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:kind&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:uid&quot;</span><span class="p">:{}}}},</span><span class="s2">&quot;f:spec&quot;</span><span class="p">:{</span><span class="s2">&quot;f:containers&quot;</span><span class="p">:{</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">my-pod</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:args&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:command&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:env&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">NETWORK_INTERFACE</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:image&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:imagePullPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:ports&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">containerPort</span><span class="se">\&quot;</span><span class="s2">:30502,</span><span class="se">\&quot;</span><span class="s2">protocol</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">TCP</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:containerPort&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:protocol&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:volumeMounts&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">mountPath</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">/.cache</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:mountPath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{}}}}},</span><span class="s2">&quot;f:dnsPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:enableServiceLinks&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:initContainers&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">init-myservice</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:args&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:command&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:env&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">DECRYPTED_FOLDER_PATH</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">FECB_CAPABILITY_API_SERVER_URL</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">FECB_FILE_API_SERVER_URL</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:value&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:image&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:imagePullPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationMessagePolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:volumeMounts&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">mountPath</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">/.cache</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:mountPath&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{}}}}},</span><span class="s2">&quot;f:restartPolicy&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:runtimeClassName&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:schedulerName&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:securityContext&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:serviceAccount&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:serviceAccountName&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:terminationGracePeriodSeconds&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:volumes&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">cache-volume</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:emptyDir&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:name&quot;</span><span class="p">:{}}}},</span><span class="s2">&quot;f:status&quot;</span><span class="p">:{</span><span class="s2">&quot;f:conditions&quot;</span><span class="p">:{</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">type</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">ContainersReady</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastProbeTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastTransitionTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:message&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:reason&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:status&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:type&quot;</span><span class="p">:{}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">type</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">Initialized</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastProbeTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastTransitionTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:message&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:reason&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:status&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:type&quot;</span><span class="p">:{}},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">type</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">Ready</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastProbeTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:lastTransitionTime&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:message&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:reason&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:status&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:type&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:containerStatuses&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:hostIP&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:initContainerStatuses&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:podIP&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:podIPs&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;k:{</span><span class="se">\&quot;</span><span class="s2">ip</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">172.5.19.186</span><span class="se">\&quot;</span><span class="s2">}&quot;</span><span class="p">:{</span><span class="s2">&quot;.&quot;</span><span class="p">:{},</span><span class="s2">&quot;f:ip&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;f:startTime&quot;</span><span class="p">:{}}},</span><span class="s2">&quot;manager&quot;</span><span class="p">:</span><span class="s2">&quot;k3s&quot;</span><span class="p">,</span><span class="s2">&quot;operation&quot;</span><span class="p">:</span><span class="s2">&quot;Update&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:13:45Z&quot;</span><span class="p">}],</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;app-python-78674bc8d9-kc9fh&quot;</span><span class="p">,</span><span class="s2">&quot;namespace&quot;</span><span class="p">:</span><span class="s2">&quot;default&quot;</span><span class="p">,</span><span class="s2">&quot;ownerReferences&quot;</span><span class="p">:[{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;apps/v1&quot;</span><span class="p">,</span><span class="s2">&quot;blockOwnerDeletion&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">,</span><span class="s2">&quot;controller&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">,</span><span class="s2">&quot;kind&quot;</span><span class="p">:</span><span class="s2">&quot;ReplicaSet&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;app-python-78674bc8d9&quot;</span><span class="p">,</span><span class="s2">&quot;uid&quot;</span><span class="p">:</span><span class="s2">&quot;e8485c53-af96-4445-8edc-ffbf03614dc1&quot;</span><span class="p">}],</span><span class="s2">&quot;resourceVersion&quot;</span><span class="p">:</span><span class="s2">&quot;20524951&quot;</span><span class="p">,</span><span class="s2">&quot;uid&quot;</span><span class="p">:</span><span class="s2">&quot;45034ce9-13fe-4af9-ad19-295971fb1e97&quot;</span><span class="p">},</span><span class="s2">&quot;spec&quot;</span><span class="p">:{</span><span class="s2">&quot;containers&quot;</span><span class="p">:[{</span><span class="s2">&quot;args&quot;</span><span class="p">:[</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span><span class="s2">&quot;while true; do echo hello; sleep 10;done&quot;</span><span class="p">],</span><span class="s2">&quot;command&quot;</span><span class="p">:[</span><span class="s2">&quot;/bin/sh&quot;</span><span class="p">],</span><span class="s2">&quot;env&quot;</span><span class="p">:[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;NETWORK_INTERFACE&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;172.3.0.1:&quot;</span><span class="p">}],</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;fiduciaedge/fecb-sdk-python-example-app-sandbox:v1.4.1-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imagePullPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;Always&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;my-pod&quot;</span><span class="p">,</span><span class="s2">&quot;ports&quot;</span><span class="p">:[{</span><span class="s2">&quot;containerPort&quot;</span><span class="p">:</span><span class="mi">30502</span><span class="p">,</span><span class="s2">&quot;protocol&quot;</span><span class="p">:</span><span class="s2">&quot;TCP&quot;</span><span class="p">}],</span><span class="s2">&quot;resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;terminationMessagePath&quot;</span><span class="p">:</span><span class="s2">&quot;/dev/termination-log&quot;</span><span class="p">,</span><span class="s2">&quot;terminationMessagePolicy&quot;</span><span class="p">:</span><span class="s2">&quot;File&quot;</span><span class="p">,</span><span class="s2">&quot;volumeMounts&quot;</span><span class="p">:[{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/.cache&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;cache-volume&quot;</span><span class="p">},{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-api-access-wz64g&quot;</span><span class="p">,</span><span class="s2">&quot;readOnly&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">}]}],</span><span class="s2">&quot;dnsPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;ClusterFirst&quot;</span><span class="p">,</span><span class="s2">&quot;enableServiceLinks&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">,</span><span class="s2">&quot;initContainers&quot;</span><span class="p">:[{</span><span class="s2">&quot;args&quot;</span><span class="p">:[</span><span class="s2">&quot;./init.sh </span><span class="se">\u003e</span><span class="s2"> /.cache/log&quot;</span><span class="p">],</span><span class="s2">&quot;command&quot;</span><span class="p">:[</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">,</span><span class="s2">&quot;-c&quot;</span><span class="p">],</span><span class="s2">&quot;env&quot;</span><span class="p">:[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;FECB_CAPABILITY_API_SERVER_URL&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;172.3.0.1:30891&quot;</span><span class="p">},{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;DECRYPTED_FOLDER_PATH&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;/.cache/files&quot;</span><span class="p">},{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;FECB_FILE_API_SERVER_URL&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;http://172.3.0.1:30893&quot;</span><span class="p">}],</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;fiduciaedge/fecb-sdk-init-sandbox:v1.4.3-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imagePullPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;Always&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;init-myservice&quot;</span><span class="p">,</span><span class="s2">&quot;resources&quot;</span><span class="p">:{},</span><span class="s2">&quot;terminationMessagePath&quot;</span><span class="p">:</span><span class="s2">&quot;/dev/termination-log&quot;</span><span class="p">,</span><span class="s2">&quot;terminationMessagePolicy&quot;</span><span class="p">:</span><span class="s2">&quot;File&quot;</span><span class="p">,</span><span class="s2">&quot;volumeMounts&quot;</span><span class="p">:[{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/.cache&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;cache-volume&quot;</span><span class="p">},{</span><span class="s2">&quot;mountPath&quot;</span><span class="p">:</span><span class="s2">&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-api-access-wz64g&quot;</span><span class="p">,</span><span class="s2">&quot;readOnly&quot;</span><span class="p">:</span><span class="bp">true</span><span class="p">}]}],</span><span class="s2">&quot;nodeName&quot;</span><span class="p">:</span><span class="s2">&quot;staging-worker&quot;</span><span class="p">,</span><span class="s2">&quot;nodeSelector&quot;</span><span class="p">:{</span><span class="s2">&quot;katacontainers.io/kata-runtime&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span><span class="p">},</span><span class="s2">&quot;overhead&quot;</span><span class="p">:{</span><span class="s2">&quot;cpu&quot;</span><span class="p">:</span><span class="s2">&quot;250m&quot;</span><span class="p">,</span><span class="s2">&quot;memory&quot;</span><span class="p">:</span><span class="s2">&quot;160Mi&quot;</span><span class="p">},</span><span class="s2">&quot;preemptionPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;PreemptLowerPriority&quot;</span><span class="p">,</span><span class="s2">&quot;priority&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;restartPolicy&quot;</span><span class="p">:</span><span class="s2">&quot;Always&quot;</span><span class="p">,</span><span class="s2">&quot;runtimeClassName&quot;</span><span class="p">:</span><span class="s2">&quot;kata-qemu&quot;</span><span class="p">,</span><span class="s2">&quot;schedulerName&quot;</span><span class="p">:</span><span class="s2">&quot;default-scheduler&quot;</span><span class="p">,</span><span class="s2">&quot;securityContext&quot;</span><span class="p">:{},</span><span class="s2">&quot;serviceAccount&quot;</span><span class="p">:</span><span class="s2">&quot;fecb-init-container-app&quot;</span><span class="p">,</span><span class="s2">&quot;serviceAccountName&quot;</span><span class="p">:</span><span class="s2">&quot;fecb-init-container-app&quot;</span><span class="p">,</span><span class="s2">&quot;terminationGracePeriodSeconds&quot;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="s2">&quot;tolerations&quot;</span><span class="p">:[{</span><span class="s2">&quot;effect&quot;</span><span class="p">:</span><span class="s2">&quot;NoExecute&quot;</span><span class="p">,</span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="s2">&quot;node.kubernetes.io/not-ready&quot;</span><span class="p">,</span><span class="s2">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;Exists&quot;</span><span class="p">,</span><span class="s2">&quot;tolerationSeconds&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="s2">&quot;effect&quot;</span><span class="p">:</span><span class="s2">&quot;NoExecute&quot;</span><span class="p">,</span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="s2">&quot;node.kubernetes.io/unreachable&quot;</span><span class="p">,</span><span class="s2">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;Exists&quot;</span><span class="p">,</span><span class="s2">&quot;tolerationSeconds&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">}],</span><span class="s2">&quot;volumes&quot;</span><span class="p">:[{</span><span class="s2">&quot;emptyDir&quot;</span><span class="p">:{},</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;cache-volume&quot;</span><span class="p">},{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-api-access-wz64g&quot;</span><span class="p">,</span><span class="s2">&quot;projected&quot;</span><span class="p">:{</span><span class="s2">&quot;defaultMode&quot;</span><span class="p">:</span><span class="mi">420</span><span class="p">,</span><span class="s2">&quot;sources&quot;</span><span class="p">:[{</span><span class="s2">&quot;serviceAccountToken&quot;</span><span class="p">:{</span><span class="s2">&quot;expirationSeconds&quot;</span><span class="p">:</span><span class="mi">3607</span><span class="p">,</span><span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;token&quot;</span><span class="p">}},{</span><span class="s2">&quot;configMap&quot;</span><span class="p">:{</span><span class="s2">&quot;items&quot;</span><span class="p">:[{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span><span class="s2">&quot;ca.crt&quot;</span><span class="p">,</span><span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;ca.crt&quot;</span><span class="p">}],</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;kube-root-ca.crt&quot;</span><span class="p">}},{</span><span class="s2">&quot;downwardAPI&quot;</span><span class="p">:{</span><span class="s2">&quot;items&quot;</span><span class="p">:[{</span><span class="s2">&quot;fieldRef&quot;</span><span class="p">:{</span><span class="s2">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span><span class="p">,</span><span class="s2">&quot;fieldPath&quot;</span><span class="p">:</span><span class="s2">&quot;metadata.namespace&quot;</span><span class="p">},</span><span class="s2">&quot;path&quot;</span><span class="p">:</span><span class="s2">&quot;namespace&quot;</span><span class="p">}]}}]}}]},</span><span class="s2">&quot;status&quot;</span><span class="p">:{</span><span class="s2">&quot;conditions&quot;</span><span class="p">:[{</span><span class="s2">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nb nb-Type">null</span><span class="p">,</span><span class="s2">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:13:42Z&quot;</span><span class="p">,</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;containers with incomplete status: [init-myservice]&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;ContainersNotInitialized&quot;</span><span class="p">,</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;False&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Initialized&quot;</span><span class="p">},{</span><span class="s2">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nb nb-Type">null</span><span class="p">,</span><span class="s2">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:13:42Z&quot;</span><span class="p">,</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;containers with unready status: [my-pod]&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;ContainersNotReady&quot;</span><span class="p">,</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;False&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Ready&quot;</span><span class="p">},{</span><span class="s2">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nb nb-Type">null</span><span class="p">,</span><span class="s2">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:13:42Z&quot;</span><span class="p">,</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;containers with unready status: [my-pod]&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;ContainersNotReady&quot;</span><span class="p">,</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;False&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;ContainersReady&quot;</span><span class="p">},{</span><span class="s2">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nb nb-Type">null</span><span class="p">,</span><span class="s2">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:13:42Z&quot;</span><span class="p">,</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;True&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;PodScheduled&quot;</span><span class="p">}],</span><span class="s2">&quot;containerStatuses&quot;</span><span class="p">:[{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;fiduciaedge/fecb-sdk-python-example-app-sandbox:v1.4.1-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imageID&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;lastState&quot;</span><span class="p">:{},</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;my-pod&quot;</span><span class="p">,</span><span class="s2">&quot;ready&quot;</span><span class="p">:</span><span class="bp">false</span><span class="p">,</span><span class="s2">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;started&quot;</span><span class="p">:</span><span class="bp">false</span><span class="p">,</span><span class="s2">&quot;state&quot;</span><span class="p">:{</span><span class="s2">&quot;waiting&quot;</span><span class="p">:{</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;PodInitializing&quot;</span><span class="p">}}}],</span><span class="s2">&quot;hostIP&quot;</span><span class="p">:</span><span class="s2">&quot;192.168.50.66&quot;</span><span class="p">,</span><span class="s2">&quot;initContainerStatuses&quot;</span><span class="p">:[{</span><span class="s2">&quot;containerID&quot;</span><span class="p">:</span><span class="s2">&quot;containerd://de3078d297a5e2e00ef11302a411d145cb04c535b77f6b01e621afa23251193b&quot;</span><span class="p">,</span><span class="s2">&quot;image&quot;</span><span class="p">:</span><span class="s2">&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox:v1.4.3-x86_64&quot;</span><span class="p">,</span><span class="s2">&quot;imageID&quot;</span><span class="p">:</span><span class="s2">&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox@sha256:645cf7a519a302b82825423946775a8ef90d7c29126bef1a58e04bd0c3b7000c&quot;</span><span class="p">,</span><span class="s2">&quot;lastState&quot;</span><span class="p">:{</span><span class="s2">&quot;terminated&quot;</span><span class="p">:{</span><span class="s2">&quot;containerID&quot;</span><span class="p">:</span><span class="s2">&quot;containerd://2ce022af5888ec72b8277aa11d1c1ecd48133ce2b220819776920986427dda70&quot;</span><span class="p">,</span><span class="s2">&quot;exitCode&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;finishedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:15:36Z&quot;</span><span class="p">,</span><span class="s2">&quot;reason&quot;</span><span class="p">:</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span><span class="s2">&quot;startedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:15:05Z&quot;</span><span class="p">}},</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;init-myservice&quot;</span><span class="p">,</span><span class="s2">&quot;ready&quot;</span><span class="p">:</span><span class="bp">false</span><span class="p">,</span><span class="s2">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="s2">&quot;state&quot;</span><span class="p">:{</span><span class="s2">&quot;running&quot;</span><span class="p">:{</span><span class="s2">&quot;startedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:16:01Z&quot;</span><span class="p">}}}],</span><span class="s2">&quot;phase&quot;</span><span class="p">:</span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span><span class="s2">&quot;podIP&quot;</span><span class="p">:</span><span class="s2">&quot;172.5.19.186&quot;</span><span class="p">,</span><span class="s2">&quot;podIPs&quot;</span><span class="p">:[{</span><span class="s2">&quot;ip&quot;</span><span class="p">:</span><span class="s2">&quot;172.5.19.186&quot;</span><span class="p">}],</span><span class="s2">&quot;qosClass&quot;</span><span class="p">:</span><span class="s2">&quot;BestEffort&quot;</span><span class="p">,</span><span class="s2">&quot;startTime&quot;</span><span class="p">:</span><span class="s2">&quot;2023-06-12T00:13:42Z&quot;</span><span class="p">}}]</span>
+</code></pre></div>
+
+<ul>
+<li>redploy</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="n">fecb</span><span class="o">-</span><span class="n">supplements</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">api</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">api</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">fiducia</span><span class="o">/</span><span class="n">bin</span>
+
+<span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">fecb</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">api</span><span class="o">.</span><span class="n">service</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">enable</span><span class="w"> </span><span class="n">fecb</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">api</span><span class="o">.</span><span class="n">service</span>
+</code></pre></div>
+
+<ul>
+<li>發現<ul>
+<li>worker 跑去cloud(device)</li>
+<li>rusqlite -&gt;sqlx</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>DELETE FROM CAPABILITY WHERE ServiceName=&quot;app-selector&quot;;
+</code></pre></div>
+
+<h3 id="flow">flow</h3>
+<ul>
+<li>apply<ul>
+<li>gettoken(wait capability)</li>
+<li>getservice(wait svc running/db)</li>
+<li>getfile(wait prefetch)</li>
+</ul>
+</li>
+<li>todo<ul>
+<li>init<ul>
+<li>Dockerfile-x86_64</li>
+<li>init.sh</li>
+</ul>
+</li>
+<li>demo<ul>
+<li>demo.sh</li>
+</ul>
+</li>
+<li>capability<ul>
+<li>select改成svc</li>
+<li>permission 改成用svc name(getservice) todo<ul>
+<li>createservice<ul>
+<li>check_podip_exist_and_write_to_database只放db查詢不用改</li>
+<li>get_pods_name要改</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="524">5/24</h2>
+<p>https://juejin.cn/post/7073390068483751972
+* 攻防情境
+https://github.com/zj1244/Blog/blob/master/2019/harbor%E7%9A%84Notary%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95.md
+* ingress了解</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">{{</span><span class="o">-</span> <span class="nv">define</span> <span class="s2">&quot;harbor.ingress&quot;</span> -<span class="cp">}}</span>
+<span class="x">  </span><span class="cp">{{</span><span class="o">-</span> <span class="nv">printf</span> <span class="s2">&quot;%s-ingress&quot;</span> <span class="o">(</span><span class="nv">include</span> <span class="s2">&quot;harbor.fullname&quot;</span> <span class="err">.</span><span class="o">)</span> -<span class="cp">}}</span>
+<span class="cp">{{</span><span class="o">-</span> <span class="nv">end</span> -<span class="cp">}}</span>
+</code></pre></div>
+
+<ul>
+<li>traefik了解</li>
+<li>drawio</li>
+</ul>
+<h2 id="523">5/23</h2>
+<ul>
+<li>dns mapping path<ul>
+<li>內部不要tls</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>get secret -o yaml
+</code></pre></div>
+
+<ul>
+<li>notaery-servier.json</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="s">&quot;server&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s">&quot;http_addr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;:4443&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s">&quot;tls_key_file&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/etc/ssl/notary-server/tls.key&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s">&quot;tls_cert_file&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/etc/ssl/notary-server/tls.crt&quot;</span><span class="w">   </span>
+<span class="w">    </span><span class="p">},</span>
+</code></pre></div>
+
+<ul>
+<li>notary-server.yaml</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>        - name: notary-server
+          mountPath: &quot;/etc/ssl/notary-server&quot;
+          readOnly: true
+
+      volumes:
+      - name: notary-server
+        secret:
+          secretName: &quot;harbor-ingress&quot;
+
+secret name 要去修 改對照
+</code></pre></div>
+
+<ul>
+<li>get ca.crt</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">kubectl</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="n">container</span><span class="o">-</span><span class="n">registry</span><span class="w"> </span><span class="n">harbor</span><span class="o">-</span><span class="n">ingress</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">jq</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="p">&#39;.</span><span class="n">data</span><span class="p">[</span><span class="s">&quot;ca.crt&quot;</span><span class="p">]&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">base64</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="o">-</span>
+</code></pre></div>
+
+<h2 id="522">5/22</h2>
+<ul>
+<li>寫自己的helm chart(ok)</li>
+<li>secret selector(ok)</li>
+<li>notary server設定完成(ok)</li>
+<li>hc</li>
+<li>capability</li>
+<li>device</li>
+<li>fECB init.sh 1.4.3</li>
+<li>
+<p>meeting</p>
+<ul>
+<li>planet uml (design)<ul>
+<li>https://www.containerlabs.kubedaily.com/Kubernetes/beginner/Deployment-process.html</li>
+</ul>
+</li>
+<li>security</li>
+</ul>
+</li>
+<li>
+<p>docker manifest</p>
+</li>
+<li>fECB helm</li>
+<li>todo<ul>
+<li>Pod 的 Health Check
+https://ithelp.ithome.com.tw/articles/10193956</li>
+</ul>
+</li>
+</ul>
+<h2 id="515">5/15</h2>
+<ul>
+<li>
+<p>v1.4.3    </p>
+<ul>
+<li>
+<ul>
+<li>demo</li>
+</ul>
+</li>
+<li>dvc</li>
+<li>hc</li>
+<li>capability<ul>
+<li>重複create error code</li>
+<li>確認selector需要性</li>
+</ul>
+</li>
+<li>
+<p>file</p>
+</li>
+<li>
+<p>docker manifest</p>
+</li>
+<li>get ver</li>
+<li>harbor</li>
+</ul>
+</li>
+</ul>
+<h2 id="58">5/8</h2>
+<ul>
+<li>getsvc all</li>
+<li>pooling</li>
+<li>harbor</li>
+</ul>
+<h3 id="pooling">pooling</h3>
+<ul>
+<li>muti svc</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>kubectl get svc device-service-py -n resource-sandbox -o jsonpath=&#39;{.spec.clusterIP}&#39;
+
+kubectl get svc device-service-py -n resource-sandbox -o jsonpath=&#39;{.spec.ports[0].port}&#39;
+
+kubectl get svc device-service-py -n resource-sandbox -o jsonpath=&#39;{.spec.ports}&#39;
+
+
+kubectl get svc device-service-py -n resource-sandbox -o jsonpath=&#39;{.spec.ports}&#39;
+</code></pre></div>
+
+<ul>
+<li>K8S_API_SERVER_QUERY_RETRY_COUNTER</li>
+<li>K8S_API_SERVER_QUERY_TIMEOUT_DURATION_SEC</li>
+<li>svc-&gt;</li>
+<li>v1.4.2<ul>
+<li>capability: CapabilityName 移除</li>
+<li>ProxyUUID</li>
+</ul>
+</li>
+</ul>
+<h2 id="426">4/26</h2>
+<ul>
+<li>muti svc</li>
+<li>harbor</li>
+</ul>
+<h2 id="425">4/25</h2>
+<ul>
+<li>check_podip_exist_and_write_to_database</li>
+</ul>
+<p>kubectl get pods -n resource-sandbox device-service-py-56f5487d54-78jrg -o jsonpath='{.status}'</p>
+<p>kubectl get pods -n resource-sandbox device-service-py-56f5487d54-78jrg -o jsonpath='{.status.initContainerStatuses.state}'</p>
+<ul>
+<li>正確status</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s">&quot;conditions&quot;</span><span class="p">:[{</span><span class="s">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">,</span><span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;containers with incomplete status: [init-myservice]&quot;</span><span class="p">,</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;ContainersNotInitialized&quot;</span><span class="p">,</span><span class="s">&quot;status&quot;</span><span class="p">:</span><span class="s">&quot;False&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;Initialized&quot;</span><span class="p">},{</span><span class="s">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">,</span><span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;containers with unready status: [my-pod]&quot;</span><span class="p">,</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;ContainersNotReady&quot;</span><span class="p">,</span><span class="s">&quot;status&quot;</span><span class="p">:</span><span class="s">&quot;False&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;Ready&quot;</span><span class="p">},{</span><span class="s">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">,</span><span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;containers with unready status: [my-pod]&quot;</span><span class="p">,</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;ContainersNotReady&quot;</span><span class="p">,</span><span class="s">&quot;status&quot;</span><span class="p">:</span><span class="s">&quot;False&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;ContainersReady&quot;</span><span class="p">},{</span><span class="s">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">,</span><span class="s">&quot;status&quot;</span><span class="p">:</span><span class="s">&quot;True&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;PodScheduled&quot;</span><span class="p">}],</span><span class="s">&quot;containerStatuses&quot;</span><span class="p">:[{</span><span class="s">&quot;image&quot;</span><span class="p">:</span><span class="s">&quot;fiduciaedge/fecb-sdk-python-example-device-sandbox:v1.4.1-x86_64&quot;</span><span class="p">,</span><span class="s">&quot;imageID&quot;</span><span class="p">:</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="s">&quot;lastState&quot;</span><span class="p">:{},</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;my-pod&quot;</span><span class="p">,</span><span class="s">&quot;ready&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="s">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;started&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="s">&quot;state&quot;</span><span class="p">:{</span><span class="s">&quot;waiting&quot;</span><span class="p">:{</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;PodInitializing&quot;</span><span class="p">}}}],</span><span class="s">&quot;hostIP&quot;</span><span class="p">:</span><span class="s">&quot;192.168.50.66&quot;</span><span class="p">,</span><span class="s">&quot;initContainerStatuses&quot;</span><span class="p">:[{</span><span class="s">&quot;containerID&quot;</span><span class="p">:</span><span class="s">&quot;containerd://ba2b80e538b16c3165fc6314f22964be342defd76728a988c1be1e78e7b47230&quot;</span><span class="p">,</span><span class="s">&quot;image&quot;</span><span class="p">:</span><span class="s">&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox:v1.4.1-x86_64&quot;</span><span class="p">,</span><span class="s">&quot;imageID&quot;</span><span class="p">:</span><span class="s">&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox@sha256:9ec5ff33a3e9ce6eabfda0e0c3e103140e6358f60d5e32a30ab99ea70a4e4742&quot;</span><span class="p">,</span><span class="s">&quot;lastState&quot;</span><span class="p">:{},</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;init-myservice&quot;</span><span class="p">,</span><span class="s">&quot;ready&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="s">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;state&quot;</span><span class="p">:{</span><span class="s">&quot;terminated&quot;</span><span class="p">:{</span><span class="s">&quot;exitCode&quot;</span><span class="p">:</span><span class="mi">137</span><span class="p">,</span><span class="s">&quot;finishedAt&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;The container could not be located when the pod was terminated&quot;</span><span class="p">,</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;ContainerStatusUnknown&quot;</span><span class="p">,</span><span class="s">&quot;startedAt&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">}}}],</span><span class="s">&quot;phase&quot;</span><span class="p">:</span><span class="s">&quot;Pending&quot;</span><span class="p">,</span><span class="s">&quot;podIP&quot;</span><span class="p">:</span><span class="s">&quot;172.5.147.134&quot;</span><span class="p">,</span><span class="s">&quot;podIPs&quot;</span><span class="p">:[{</span><span class="s">&quot;ip&quot;</span><span class="p">:</span><span class="s">&quot;172.5.147.134&quot;</span><span class="p">}],</span><span class="s">&quot;qosClass&quot;</span><span class="p">:</span><span class="s">&quot;BestEffort&quot;</span><span class="p">,</span><span class="s">&quot;startTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>錯誤status</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s">&quot;conditions&quot;</span><span class="p">:[{</span><span class="s">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">,</span><span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;containers with incomplete status: [init-myservice]&quot;</span><span class="p">,</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;ContainersNotInitialized&quot;</span><span class="p">,</span><span class="s">&quot;status&quot;</span><span class="p">:</span><span class="s">&quot;False&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;Initialized&quot;</span><span class="p">},{</span><span class="s">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">,</span><span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;containers with unready status: [my-pod]&quot;</span><span class="p">,</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;ContainersNotReady&quot;</span><span class="p">,</span><span class="s">&quot;status&quot;</span><span class="p">:</span><span class="s">&quot;False&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;Ready&quot;</span><span class="p">},{</span><span class="s">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">,</span><span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;containers with unready status: [my-pod]&quot;</span><span class="p">,</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;ContainersNotReady&quot;</span><span class="p">,</span><span class="s">&quot;status&quot;</span><span class="p">:</span><span class="s">&quot;False&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;ContainersReady&quot;</span><span class="p">},{</span><span class="s">&quot;lastProbeTime&quot;</span><span class="p">:</span><span class="nx">null</span><span class="p">,</span><span class="s">&quot;lastTransitionTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">,</span><span class="s">&quot;status&quot;</span><span class="p">:</span><span class="s">&quot;True&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;PodScheduled&quot;</span><span class="p">}],</span><span class="s">&quot;containerStatuses&quot;</span><span class="p">:[{</span><span class="s">&quot;image&quot;</span><span class="p">:</span><span class="s">&quot;fiduciaedge/fecb-sdk-python-example-device-sandbox:v1.4.1-x86_64&quot;</span><span class="p">,</span><span class="s">&quot;imageID&quot;</span><span class="p">:</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="s">&quot;lastState&quot;</span><span class="p">:{},</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;my-pod&quot;</span><span class="p">,</span><span class="s">&quot;ready&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="s">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;started&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="s">&quot;state&quot;</span><span class="p">:{</span><span class="s">&quot;waiting&quot;</span><span class="p">:{</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;PodInitializing&quot;</span><span class="p">}}}],</span><span class="s">&quot;hostIP&quot;</span><span class="p">:</span><span class="s">&quot;192.168.50.66&quot;</span><span class="p">,</span><span class="s">&quot;initContainerStatuses&quot;</span><span class="p">:[{</span><span class="s">&quot;image&quot;</span><span class="p">:</span><span class="s">&quot;fiduciaedge/fecb-sdk-init-sandbox:v1.4.1-x86_64&quot;</span><span class="p">,</span><span class="s">&quot;imageID&quot;</span><span class="p">:</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="s">&quot;lastState&quot;</span><span class="p">:{},</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;init-myservice&quot;</span><span class="p">,</span><span class="s">&quot;ready&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="s">&quot;restartCount&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;state&quot;</span><span class="p">:{</span><span class="s">&quot;waiting&quot;</span><span class="p">:{</span><span class="s">&quot;reason&quot;</span><span class="p">:</span><span class="s">&quot;PodInitializing&quot;</span><span class="p">}}}],</span><span class="s">&quot;phase&quot;</span><span class="p">:</span><span class="s">&quot;Pending&quot;</span><span class="p">,</span><span class="s">&quot;qosClass&quot;</span><span class="p">:</span><span class="s">&quot;BestEffort&quot;</span><span class="p">,</span><span class="s">&quot;startTime&quot;</span><span class="p">:</span><span class="s">&quot;2023-04-24T17:32:35Z&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>創建馬上拿pod ip</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>    kubectl apply -f $DVC_YAML -n resource-sandbox
+| 
+
+
+kubectl get pod -l app=device-service-py -n resource-sandbox -o jsonpath=&#39;{.items[0].metadata.name}&#39; 
+
+
+kubectl get pods  -n resource-sandbox -o jsonpath=&#39;{.status.podIP}&#39;
+</code></pre></div>
+
+<ul>
+<li>create capability fail</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>service/device-service-py created
+deployment.apps/device-service-py created
+ERROR:
+  Code: Aborted
+  Message:  [operation::create_user] create_user failed, DB: &quot;transport error&quot; 
+13|usr-shaggy-grip|hc-service-py|hc-service-py-7b5c96994-h6555||resource-sandbox|HC_hc-service-py,Device_webcam-py|oFxHAVOBzAwjdx0fCrW4i_xnY2T3FubyhgQjBCZ7fDY=|2023-04-21 06:52:55
+
+
+
+ INFO  fecb_capability_api::operation &gt; enter create_capability
+ INFO  fecb_capability_api::operation &gt; permission: &quot;&quot;
+ INFO  fecb_capability_api::utils     &gt; ======== Try to get pod&#39;s name for service_name : device-service-py 
+ INFO  fecb_capability_api::utils     &gt; ======== Try to get pod&#39;s name for namespace : resource-sandbox 
+ INFO  fecb_capability_api::operation &gt; [operation::create_user::get_pods_name] get_pods_name success
+ INFO  fecb_capability_api::utils     &gt; [operation::utils::check_pod_exist_and_write_to_database] get pods
+ INFO  fecb_capability_api::utils     &gt; [operation::utils::check_pod_exist_and_write_to_database] pods status:&quot;Pending&quot;
+ INFO  fecb_capability_api::utils     &gt; [operation::utils::check_pod_exist_and_write_to_database] pods IP:&quot;&quot;
+ INFO  fecb_capability_api::utils     &gt; [operation::utils::check_pod_exist_and_write_to_database] db params &quot;usr-longing-property, device-service-py, device-service-py-56f5487d54-lghtm, , resource-sandbox, , GerTAFvpq4q8NFLiobe240xPlzt863O9yQo8K4_75lQ=&quot;
+ ERROR fecb_capability_api::utils     &gt; [operation::create_user] create_user failed, Msg= Write to DB error, transport error
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>watch -n 1 sudo kubectl get pods -n resource-sandbox device-service-py-7d8c8b9d9-kc8jr  -o jsonpath=&#39;{.status.phase}&#39;
+
+
+
+./grpcurl  -cacert /opt/client/tls/ca-cert.pem -d &quot;{\&quot;token\&quot;:\&quot;K-az10T5r-wYsL-vCg2NVbROVvt9m7msQ7HIKjA6tP4=\&quot;}&quot; -import-path ./proto -proto capability-api.proto $FECB_CAPABILITY_API_SERVER_URL capability.CapabilityService/GetService | jq .svcAddress &gt;&gt; /.cache/svc.json
+</code></pre></div>
+
+<h2 id="424">4/24</h2>
+<ul>
+<li>
+<p>capability api
+    string service_name = 1;
+    string permission = 2;
+    string namespaces = 3;</p>
+</li>
+<li>
+<p>new device</p>
+</li>
+<li>
+<p>new hc</p>
+</li>
+<li>
+<p>sql server kubernete
+SQL Server on Kubernetes: Designing and Building a Modern Data Platform</p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nv">Ask</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">afternoon</span><span class="w"> </span><span class="nv">off</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="mi">4</span><span class="o">/</span><span class="mi">28</span>,<span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">day</span><span class="w"> </span><span class="nv">leave</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span>
+<span class="nv">Dear</span><span class="w"> </span><span class="nv">john</span>,
+
+<span class="nv">I</span><span class="w"> </span><span class="nv">am</span><span class="w"> </span><span class="nv">writing</span><span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">letter</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">apply</span><span class="w"> </span>
+<span class="nv">my</span><span class="w"> </span><span class="nv">compensatory</span><span class="w"> </span><span class="nv">leave</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">taking</span><span class="w"> </span><span class="nv">afternoon</span><span class="w"> </span><span class="nv">off</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="mi">4</span><span class="o">/</span><span class="mi">28</span><span class="ss">(</span><span class="nv">Friday</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="nv">PM</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="nv">PM</span><span class="ss">)</span>,<span class="w"> </span>
+<span class="nv">my</span><span class="w"> </span>初心假<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">taking</span><span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">day</span><span class="w"> </span><span class="nv">leave</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span>
+<span class="nv">I</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="nv">be</span><span class="w"> </span><span class="nv">back</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">work</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="mi">5</span><span class="o">/</span><span class="mi">3</span><span class="w"> </span><span class="ss">(</span><span class="nv">Thursday</span><span class="ss">)</span>,<span class="w"> </span>
+<span class="nv">kindly</span><span class="w"> </span><span class="nv">please</span><span class="w"> </span><span class="nv">approve</span>.
+
+<span class="nv">Best</span><span class="w"> </span><span class="nv">Regards</span>,
+<span class="nv">Jerry</span>
+</code></pre></div>
+
+<p>lens ide</p>
+<p>TFhHos45lR1912uSIEzxe_XzcWp5Mpj2d2B4wsCNZDA=
+TFhHos45lR1912uSIEzxe_XzcWp5Mpj2d2B4wsCNZDA=</p>
+<div class="codehilite"><pre><span></span><code> INFO  fecb_file_api::reception &gt; Get file request
+ INFO  fecb_file_api::utils     &gt; user_token : jerV8xvJGnqg7g3hhP5ksFpbxljdFq6aDebnqsa8Xgg=
+ INFO  fecb_file_api::utils     &gt; permission File_Y2EucGVt,HC_hc-service-py,Device_webcam-py
+ INFO  fecb_file_api::reception &gt; Get file Y2EucGVt
+ INFO  fecb_file_api::reception &gt; path : /media/hdd/data/sealed/Y2EucGVt
+ INFO  fecb_file_api::utils     &gt; machine_decrypt_data
+ INFO  fecb_file_api::utils     &gt; Machine key: &quot;a964604696b13e86d0e296c786c8a2baa3f9612a9aa8c64634086bf4fedefe50&quot;
+ INFO  fecb_file_api::utils     &gt; read rst 1048576
+ INFO  fecb_file_api::utils     &gt; read rst 1048576
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">FECB_FILE_API_SERVER_URL</span><span class="o">=</span><span class="s2">&quot;http://172.3.0.1:30893&quot;</span>
+
+<span class="n">mkdir</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">tls</span>
+<span class="n">docker</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">tls</span><span class="o">/*</span><span class="w"> </span><span class="n">fb4a5055959e</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">tls</span>
+
+<span class="n">mkdir</span><span class="w"> </span><span class="o">/.</span><span class="n">cahce</span>
+
+<span class="w"> </span><span class="o">./</span><span class="n">getfile</span><span class="w"> </span><span class="n">PzNfjT_AkwLkHYYesp</span><span class="o">-</span><span class="n">L6LzyU3ABEYMxNqGddlrXm80</span><span class="o">=</span><span class="w"> </span><span class="o">.</span>
+
+
+<span class="k">export</span><span class="w"> </span><span class="n">DECRYPTED_FOLDER_PATH</span><span class="o">=/.</span><span class="n">cache</span><span class="o">/</span><span class="n">files</span>
+
+
+<span class="o">./</span><span class="n">getfile</span><span class="w"> </span><span class="n">PzNfjT_AkwLkHYYesp</span><span class="o">-</span><span class="n">L6LzyU3ABEYMxNqGddlrXm80</span><span class="o">=</span><span class="w"> </span><span class="o">/.</span><span class="n">cache</span><span class="o">/</span><span class="n">files</span>
+
+<span class="n">fiduciaedge</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">sdk</span><span class="o">-</span><span class="n">init</span><span class="o">-</span><span class="n">sandbox</span><span class="p">:</span><span class="n">v1</span><span class="o">.</span><span class="mf">4.1</span><span class="o">-</span><span class="n">aarch64</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>kubectl get pods device-service-py-6d868fd774-z8qkm -o jsonpath=&#39;{.spec.containers[0].ports[0].containerPort}&#39; -n resource-sandbox 
+
+kubectl get pods device-service-py-65c687d97d-ln646 -o jsonpath=&#39;{.spec.containers[0].ports[0].containerPort}&#39; -n resource-sandbox 
+
+
+
+device-service-py-6d868fd774-z8qkm
+</code></pre></div>
+
+<ul>
+<li>harbor helm chart HA筆記完成</li>
+<li>1筆記完成(4/8)</li>
+<li>harbor HA部屬驗證</li>
+<li>3,4筆記完成</li>
+</ul>
+<h2 id="414">4/14</h2>
+<ul>
+<li>harbor</li>
+<li>notary</li>
+</ul>
+<h1 id="228">2/28</h1>
+<ul>
+<li>ckpt meeting<ul>
+<li>ccsars cosnar有兩個模型需要準備(yolo)</li>
+<li>攻擊情境 攻擊驗證服務 準備攻擊</li>
+<li>查核點逐項備著說明</li>
+<li>終極警探4<ul>
+<li>現場展示iot攻擊成功 demo編劇</li>
+</ul>
+</li>
+<li>三階段<ul>
+<li>1.腦力激盪(現場展示攻擊劇本)用餐</li>
+<li>2.收斂變成事項清單</li>
+<li>3.執行過程</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="213">2/13</h2>
+<ul>
+<li>harbor登入</li>
+<li>上傳映像檔成功</li>
+<li>trivy報告</li>
+<li>SBOM報告</li>
+<li>IO狀態</li>
+</ul>
+<h2 id="27">2/7</h2>
+<ul>
+<li>device cert影片</li>
+<li>notary sign 影片<ul>
+<li>架設harbor server</li>
+<li>架設notary server</li>
+</ul>
+</li>
+<li>
+<p>notary sign架構</p>
+</li>
+<li>
+<p>notary</p>
+<ul>
+<li>沒有notary sign的push(DOCKER_CONTENT_TRUST=0) 實作push差異</li>
+</ul>
+</li>
+</ul>
+<h2 id="22">2/2</h2>
+<ul>
+<li>ccsars影片 2分鐘</li>
+<li>
+<p>cosnar影片 3分鐘</p>
+</li>
+<li>
+<p>ccsars</p>
+<ul>
+<li>demo整理 ~2000</li>
+<li>6450測試 ~2030</li>
+<li>架構圖 ~2100</li>
+<li>錄影片 ~0000</li>
+</ul>
+</li>
+</ul>
+<h2 id="130">1/30</h2>
+<ul>
+<li>massfuse</li>
+<li>tiip demo</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">certs</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="n">certs</span><span class="o">/</span><span class="n">harbor</span><span class="o">-</span><span class="n">registry</span><span class="o">.</span><span class="n">crt</span><span class="w"> </span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">certs</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="n">certs</span><span class="o">/</span><span class="n">harbor</span><span class="o">-</span><span class="n">registry</span><span class="o">.</span><span class="n">key</span><span class="w"> </span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">certs</span><span class="w">    </span>
+
+<span class="o">./</span><span class="n">prepare</span><span class="w">  </span><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">trivy</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="o">-</span><span class="n">d</span>
+<span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="n">ps</span>
+
+<span class="err">開瀏覽器</span>
+
+
+<span class="n">docker</span><span class="w"> </span><span class="n">login</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">10.215</span><span class="p">:</span><span class="mi">343</span><span class="w"> </span><span class="o">-</span><span class="n">u</span><span class="w"> </span><span class="n">admin</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">Harbor12345</span>
+<span class="k">export</span><span class="w"> </span><span class="n">DOCKER_CONTENT_TRUST</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="n">docker</span><span class="w"> </span><span class="n">pull</span><span class="w"> </span><span class="n">fiduciaedge</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">agent</span><span class="p">:</span><span class="n">v1</span><span class="o">.</span><span class="mf">4.1</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="n">test</span>
+<span class="n">docker</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="n">fiduciaedge</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">agent</span><span class="p">:</span><span class="n">v1</span><span class="o">.</span><span class="mf">4.1</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="n">test</span><span class="w"> </span><span class="mf">192.168</span><span class="o">.</span><span class="mf">10.215</span><span class="p">:</span><span class="mi">343</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">agent</span><span class="p">:</span><span class="n">test</span>
+<span class="n">docker</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="mf">192.168</span><span class="o">.</span><span class="mf">10.215</span><span class="p">:</span><span class="mi">343</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">agent</span><span class="p">:</span><span class="n">test</span>
+
+<span class="err">瀏覽器</span><span class="w"> </span><span class="err">漏洞游標</span><span class="w"> </span><span class="k">export</span><span class="w"> </span><span class="n">CVE</span>
+
+
+
+<span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">rm</span><span class="w"> </span><span class="n">fiduciaedge</span><span class="o">/</span><span class="n">tern</span><span class="p">:</span><span class="n">v1</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">fiduciaedge</span><span class="o">/</span><span class="n">fecb</span><span class="o">-</span><span class="n">agent</span><span class="p">:</span><span class="n">v1</span><span class="o">.</span><span class="mf">4.1</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="n">test</span>
+
+<span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="w"> </span><span class="o">--</span><span class="n">rm</span><span class="w"> </span><span class="n">fiduciaedge</span><span class="o">/</span><span class="n">dfimage</span><span class="p">:</span><span class="n">v1</span><span class="w"> </span><span class="n">a5a7f6285c2b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Dockerfile</span>
+
+<span class="n">trivy</span><span class="w"> </span><span class="n">fs</span><span class="w"> </span><span class="o">--</span><span class="n">security</span><span class="o">-</span><span class="n">checks</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">./</span><span class="n">Dockerfile</span>
+
+
+<span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="mi">9000</span><span class="p">:</span><span class="mi">9000</span><span class="w"> </span><span class="o">--</span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="w"> </span><span class="n">fiduciaedge</span><span class="o">/</span><span class="n">container</span><span class="o">-</span><span class="n">webui</span><span class="p">:</span><span class="n">v1</span>
+</code></pre></div>
+
+<h3 id="docker-compose">docker compose 理解</h3>
+<h2 id="1214">12/14</h2>
+<ul>
+<li>pistis</li>
+<li>錄製api sdk</li>
+</ul>
+<h2 id="1213">12/13</h2>
+<ul>
+<li>wifi dongle</li>
+<li>openvpn</li>
+<li>pistis</li>
+<li>錄製api sdk</li>
+</ul>
+<h2 id="915">9/15</h2>
+<ul>
+<li>harbor notary server溝通</li>
+<li>container cncf notary</li>
+<li>signer 簽名</li>
+</ul>
+<h1 id="95">9/5</h1>
+<p>KUBERNETES_MASTER
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+172.10.89.54</p>
+<div class="codehilite"><pre><span></span><code>IP 172.10.89.54 is in use
+Attributes:
+  namespace: default
+  node: staging-worker
+  pod: example-java-f64c8dd98-kbrzg
+  timestamp: 2022-09-05 07:43:43.555475347 +0000 UTC
+
+  IP 172.7.69.69 is in use
+Attributes:
+  pod: fecb-capability-api-5fcdbcbbcf-9q77z
+  timestamp: 2022-09-05 08:12:33.957289787 +0000 UTC
+  namespace: fecb-system
+  node: staging-worker
+</code></pre></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

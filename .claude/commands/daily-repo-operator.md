@@ -12,9 +12,9 @@ Three files serve distinct roles. Never mix them.
 
 | File | Role | Who writes it |
 |---|---|---|
-| `inbox/YYYY-MM-DD.md` | Raw materials — everything written during the day, unfiltered | User (during the day) |
-| `logs/YYYY-MM-DD.md` | Official execution record — structured, final | Operator (at start + end of day) |
-| `today.md` | Daily dashboard — always mirrors today's log | Operator (after every write to logs/) |
+| `journals/daily/YYYY-MM-DD-inbox.md` | Raw materials — everything written during the day, unfiltered | User (during the day) |
+| `journals/daily/YYYY-MM-DD.md` | Official execution record — structured, final | Operator (at start + end of day) |
+| `journals/daily/today.md` | Daily dashboard — always mirrors today's log | Operator (after every write to journals/daily/) |
 
 **inbox** is the only file the user needs to write during the day. It is preserved as-is. The operator reads it at end-of-day and distributes the content to the right places.
 
@@ -61,8 +61,8 @@ Apply in order. Use the **first** rule that matches.
 | Condition | Workflow |
 |---|---|
 | User says a Resume trigger | **D** — Resume Same Day |
-| User says a Start trigger AND `logs/YYYY-MM-DD.md` does NOT exist | **A** — Start of Day |
-| User says a Start trigger AND `logs/YYYY-MM-DD.md` already exists | **D** — Resume Same Day (do not recreate files) |
+| User says a Start trigger AND `journals/daily/YYYY-MM-DD.md` does NOT exist | **A** — Start of Day |
+| User says a Start trigger AND `journals/daily/YYYY-MM-DD.md` already exists | **D** — Resume Same Day (do not recreate files) |
 | User says an End trigger | **B** — End of Day |
 | User says a Progress trigger | **C** — Progress Update |
 
@@ -72,27 +72,27 @@ Apply in order. Use the **first** rule that matches.
 
 ## Workflow A — Start of Day
 
-**Goal:** Create `inbox/YYYY-MM-DD.md`, `logs/YYYY-MM-DD.md`, `today.md`. Commit and push.
+**Goal:** Create `journals/daily/YYYY-MM-DD-inbox.md`, `journals/daily/YYYY-MM-DD.md`, `journals/daily/today.md`. Commit and push.
 
 ### Steps
 
-1. Read `NOW/focus.md` to identify the current active track.
+1. Read `dashboard/focus.md` to identify the current active track.
 2. Infer from the user's sentence:
    - **Day mode**: use Inference — Day Mode table (default: Normal)
    - **Main track**: use Inference — Track table
    - **Micro-goal**: extract verbatim from user's sentence; if absent, ask "今天的微目標是什麼？（一句話）"
    - **Problem-solving**: fill from user's input; if not mentioned, leave as template blanks
-3. Create `inbox/YYYY-MM-DD.md` using the Inbox Template below.
-4. Create `assets/inbox/YYYY-MM-DD/` as today's asset staging area:
+3. Create `journals/daily/YYYY-MM-DD-inbox.md` using the Inbox Template below.
+4. Create `assets/journals/daily/YYYY-MM-DD/` as today's asset staging area:
    ```
-   mkdir -p assets/inbox/YYYY-MM-DD
-   touch assets/inbox/YYYY-MM-DD/.gitkeep
+   mkdir -p assets/journals/daily/YYYY-MM-DD
+   touch assets/journals/daily/YYYY-MM-DD/.gitkeep
    ```
-5. Write `logs/YYYY-MM-DD.md` using the Log Template below.
-6. Overwrite `today.md` with identical content to the log.
+5. Write `journals/daily/YYYY-MM-DD.md` using the Log Template below.
+6. Overwrite `journals/daily/today.md` with identical content to the log.
 7. Run:
    ```
-   git add inbox/YYYY-MM-DD.md logs/YYYY-MM-DD.md today.md assets/inbox/YYYY-MM-DD/.gitkeep
+   git add journals/daily/YYYY-MM-DD-inbox.md journals/daily/YYYY-MM-DD.md journals/daily/today.md assets/journals/daily/YYYY-MM-DD/.gitkeep
    git commit -m "daily: YYYY-MM-DD start (plan)"
    git push origin main
    ```
@@ -203,19 +203,19 @@ Apply in order. Use the **first** rule that matches.
 
 ## Workflow B — End of Day
 
-**Goal:** Read `inbox/YYYY-MM-DD.md`, classify its contents into the correct destinations, update `logs/YYYY-MM-DD.md` and `today.md`, update `progress/dashboard.md` if significant progress, commit and push.
+**Goal:** Read `journals/daily/YYYY-MM-DD-inbox.md`, classify its contents into the correct destinations, update `journals/daily/YYYY-MM-DD.md` and `journals/daily/today.md`, update `dashboard/dashboard.md` if significant progress, commit and push.
 
 ### Steps
 
-1. Read `inbox/YYYY-MM-DD.md`, `logs/YYYY-MM-DD.md`, `today.md`.
+1. Read `journals/daily/YYYY-MM-DD-inbox.md`, `journals/daily/YYYY-MM-DD.md`, `journals/daily/today.md`.
 2. Classify inbox content and write to destinations (see Classification Rules below).
-3. Update `logs/YYYY-MM-DD.md`:
+3. Update `journals/daily/YYYY-MM-DD.md`:
    - Fill "做了什麼" bullets from what the user described in inbox
    - Fill "卡住的地方" from any blockers in inbox
    - Mark completed outputs with `[x]` and add actual file path
    - Mark completion checkboxes `[x]` for completed items
-4. Overwrite `today.md` with updated log content.
-5. If significant progress (new note, skill track pushed, problems solved), update `progress/dashboard.md`.
+4. Overwrite `journals/daily/today.md` with updated log content.
+5. If significant progress (new note, skill track pushed, problems solved), update `dashboard/dashboard.md`.
 6. Run:
    ```
    git add -A
@@ -229,7 +229,7 @@ Apply in order. Use the **first** rule that matches.
 
 #### A. Problem Solving (解題 / 書本題)
 
-If inbox contains any problem-solving entries → write to `leetcode/log/YYYY-MM-DD.md`.
+If inbox contains any problem-solving entries → write to `domains/01-dsa-coding-interview/log/YYYY-MM-DD.md`.
 
 Format:
 ```markdown
@@ -249,26 +249,26 @@ Format:
 
 Route using the File Routing Table. Create file at destination.
 - Filename: `YYYY-MM-DD-short-topic-slug.md`
-- Append a row to `OUTPUTS/README.md` output log table if the note is substantial (design-quality)
+- Append a row to `outputs/README.md` output log table if the note is substantial (design-quality)
 
 #### C. Memorizable Content (想記住的知識點)
 
-If inbox has content suitable for active recall → write to `memorization/daily/YYYY-MM-DD.md`.
+If inbox has content suitable for active recall → write to `domains/memorization/daily/YYYY-MM-DD.md`.
 
 Format: Q&A pairs or fill-in-the-blank items, 5–10 minutes to review.
 
 #### D. Assets (圖片 / 架構圖 / draw.io)
 
-**Source directory:** `assets/inbox/YYYY-MM-DD/`
+**Source directory:** `assets/journals/daily/YYYY-MM-DD/`
 
 List the directory. If empty or absent, skip this section.
 
 ##### D1 — Routing Decision (per file)
 
-For each file, determine: **route** (move to permanent location) or **hold** (leave in `assets/inbox/YYYY-MM-DD/`).
+For each file, determine: **route** (move to permanent location) or **hold** (leave in `assets/journals/daily/YYYY-MM-DD/`).
 
 **Route if all of the following are true:**
-- Topic is identifiable (from filename, or from adjacent text in `inbox/YYYY-MM-DD.md`)
+- Topic is identifiable (from filename, or from adjacent text in `journals/daily/YYYY-MM-DD-inbox.md`)
 - File is complete enough to be useful (not an empty placeholder, not a temp export)
 
 **Hold (leave in place) if any of the following are true:**
@@ -278,7 +278,7 @@ For each file, determine: **route** (move to permanent location) or **hold** (le
 
 **When holding**, add one line to the log under "備註 / 阻礙":
 ```
-`assets/inbox/YYYY-MM-DD/<filename>` — topic unclear, held for manual triage
+`assets/journals/daily/YYYY-MM-DD/<filename>` — topic unclear, held for manual triage
 ```
 
 ##### D2 — Routing Rules
@@ -308,10 +308,10 @@ After routing, for each file moved to `assets/exports/<topic>/`:
 
 1. Find the note that should reference this image. Candidates (in order of priority):
    - A note created today whose topic matches the asset topic
-   - `inbox/YYYY-MM-DD.md` if no note was created (fallback)
+   - `journals/daily/YYYY-MM-DD-inbox.md` if no note was created (fallback)
 2. Determine the **relative path** from the note file to the asset:
-   - From `NOTES/security/YYYY-MM-DD-foo.md` → `../../assets/exports/security/YYYY-MM-DD-slug.png`
-   - From `inbox/YYYY-MM-DD.md` → `../assets/exports/<topic>/YYYY-MM-DD-slug.png`
+   - From `domains/05-security-trusted-systems/YYYY-MM-DD-foo.md` → `../../assets/exports/security/YYYY-MM-DD-slug.png`
+   - From `journals/daily/YYYY-MM-DD-inbox.md` → `../../assets/exports/<topic>/YYYY-MM-DD-slug.png`
 3. Insert the reference at the **bottom of the relevant section** in the note (not at the very end of the file):
    ```markdown
    ![<slug description>](<relative-path>)
@@ -326,7 +326,7 @@ If no note matches and the inbox fallback is used, add the reference under a new
 
 Anything in inbox that doesn't fit a category: leave it in inbox. Do not force-classify.
 
-**inbox and inbox/YYYY-MM-DD/ are never deleted by the operator. Only assets explicitly routed above are moved.**
+**inbox and assets/journals/daily/YYYY-MM-DD/ are never deleted by the operator. Only assets explicitly routed above are moved.**
 
 ---
 
@@ -336,15 +336,15 @@ Anything in inbox that doesn't fit a category: leave it in inbox. Do not force-c
 
 ### Steps
 
-1. Read `inbox/YYYY-MM-DD.md` and `logs/YYYY-MM-DD.md`.
+1. Read `journals/daily/YYYY-MM-DD-inbox.md` and `journals/daily/YYYY-MM-DD.md`.
 2. Append new bullets to "做了什麼" based on what the user described.
 3. Update "卡住的地方" if new blockers are mentioned.
 4. Do not touch completion checkboxes.
-5. Do not update `progress/dashboard.md`.
-6. Overwrite `today.md` with updated log content.
+5. Do not update `dashboard/dashboard.md`.
+6. Overwrite `journals/daily/today.md` with updated log content.
 7. Run:
    ```
-   git add logs/YYYY-MM-DD.md today.md
+   git add journals/daily/YYYY-MM-DD.md journals/daily/today.md
    git commit -m "daily: YYYY-MM-DD progress (<summary>)"
    git push origin main
    ```
@@ -362,19 +362,19 @@ Anything in inbox that doesn't fit a category: leave it in inbox. Do not force-c
 - "幫我接著今天做"
 - "我回來了，繼續今天"
 - "收工後回來"
-- Any Start-of-day trigger where `logs/YYYY-MM-DD.md` already exists
+- Any Start-of-day trigger where `journals/daily/YYYY-MM-DD.md` already exists
 
 ### Steps
 
-1. Read `inbox/YYYY-MM-DD.md`, `logs/YYYY-MM-DD.md`, `today.md`.
-2. Append any new material the user brings to `inbox/YYYY-MM-DD.md` under the appropriate section. Do not overwrite existing content.
-3. Update `logs/YYYY-MM-DD.md`:
+1. Read `journals/daily/YYYY-MM-DD-inbox.md`, `journals/daily/YYYY-MM-DD.md`, `journals/daily/today.md`.
+2. Append any new material the user brings to `journals/daily/YYYY-MM-DD-inbox.md` under the appropriate section. Do not overwrite existing content.
+3. Update `journals/daily/YYYY-MM-DD.md`:
    - Append new bullets to "做了什麼"
    - Update "卡住的地方" if new blockers are mentioned
    - Mark completion checkboxes `[x]` **only** if the user explicitly says something is done
    - If a new output file was produced, add it to "產出" and mark `[x]` with the file path
 4. If new classifiable content exists in inbox (new technical note, problem-solving, memorizable content) — classify it using the Classification Rules from Workflow B.
-5. Overwrite `today.md` with updated log content.
+5. Overwrite `journals/daily/today.md` with updated log content.
 6. Run:
    ```
    git add -A
@@ -386,9 +386,9 @@ Anything in inbox that doesn't fit a category: leave it in inbox. Do not force-c
 
 ### What Workflow D does NOT do
 
-- Does NOT create `inbox/YYYY-MM-DD.md` (already exists)
-- Does NOT create `logs/YYYY-MM-DD.md` (already exists)
-- Does NOT create `assets/inbox/YYYY-MM-DD/` (already exists)
+- Does NOT create `journals/daily/YYYY-MM-DD-inbox.md` (already exists)
+- Does NOT create `journals/daily/YYYY-MM-DD.md` (already exists)
+- Does NOT create `assets/journals/daily/YYYY-MM-DD/` (already exists)
 - Does NOT reset or overwrite existing log content — only appends
 - Does NOT change the day mode or micro-goal unless user explicitly updates them
 
@@ -398,16 +398,16 @@ Anything in inbox that doesn't fit a category: leave it in inbox. Do not force-c
 
 | Topic keywords | Destination |
 |---|---|
-| TPM, attestation, key hierarchy, EK, AK, SRK, PKI, FIDO, TEE, TCG, secure boot, DevID | `NOTES/security/` |
-| system design, distributed, cache, sharding, rate limiter, URL shortener | `NOTES/systems/` |
-| OS, scheduler, memory, virtual memory, process, mmap, inode | `NOTES/systems/` |
-| network, TCP, TLS, HTTP, gRPC, QUIC | `NOTES/systems/` |
-| LLM, inference, RAG, vLLM, embedding, agent, prompt | `NOTES/misc/` |
-| Full architecture or design documents (RFC-quality) | `OUTPUTS/designs/` |
-| Technical writeups (blog-quality, publishable) | `OUTPUTS/writeups/` |
-| Paper reading notes | `OUTPUTS/papers/` |
-| Code implementations or project POCs | `OUTPUTS/projects/` |
-| Everything else | `NOTES/misc/` |
+| TPM, attestation, key hierarchy, EK, AK, SRK, PKI, FIDO, TEE, TCG, secure boot, DevID | `domains/05-security-trusted-systems/` |
+| system design, distributed, cache, sharding, rate limiter, URL shortener | `domains/02-system-design-large-scale/` |
+| OS, scheduler, memory, virtual memory, process, mmap, inode | `domains/03-os-systems-programming/` |
+| network, TCP, TLS, HTTP, gRPC, QUIC | `domains/06-network-protocol-engineering/` |
+| LLM, inference, RAG, vLLM, embedding, agent, prompt | `domains/08-ai-llm-systems/` |
+| Full architecture or design documents (RFC-quality) | `outputs/designs/` |
+| Technical writeups (blog-quality, publishable) | `outputs/writeups/` |
+| Paper reading notes | `outputs/papers/` |
+| Code implementations or project POCs | `outputs/projects/` |
+| Everything else | `domains/misc/` |
 
 **Filename convention:** `YYYY-MM-DD-short-topic-slug.md`
 
@@ -417,17 +417,17 @@ Anything in inbox that doesn't fit a category: leave it in inbox. Do not force-c
 
 | Keywords | Track |
 |---|---|
-| TPM, SRK, EK, AK, attestation, DevID, PKI, key hierarchy, FIDO, TEE, hardware trust | `SKILLS/05-security-trusted-systems/` |
-| LeetCode, 刷題, 解題, array, DP, BFS, DFS, tree, graph, 書本題 | `SKILLS/01-dsa-coding-interview/` |
-| system design, 系統設計, cache, sharding, rate limiter, URL shortener | `SKILLS/02-system-design-large-scale/` |
-| OS, scheduler, memory, mmap, virtual memory, xv6 | `SKILLS/03-os-systems-programming/` |
-| database, B-tree, LSM, MVCC, transaction, KV store | `SKILLS/04-database-internals-storage/` |
-| TCP, TLS, HTTP, gRPC, QUIC, protocol, socket | `SKILLS/06-network-protocol-engineering/` |
-| Raft, Paxos, consensus, distributed, CRDT, MIT 6.824 | `SKILLS/07-distributed-systems-consensus/` |
-| LLM, inference, RAG, vLLM, embedding, agent, on-prem AI | `SKILLS/08-ai-llm-systems/` |
-| k8s, kubernetes, container, helm, GitOps, operator | `SKILLS/09-cloud-native-platform/` |
+| TPM, SRK, EK, AK, attestation, DevID, PKI, key hierarchy, FIDO, TEE, hardware trust | `domains/05-security-trusted-systems/` |
+| LeetCode, 刷題, 解題, array, DP, BFS, DFS, tree, graph, 書本題 | `domains/01-dsa-coding-interview/` |
+| system design, 系統設計, cache, sharding, rate limiter, URL shortener | `domains/02-system-design-large-scale/` |
+| OS, scheduler, memory, mmap, virtual memory, xv6 | `domains/03-os-systems-programming/` |
+| database, B-tree, LSM, MVCC, transaction, KV store | `domains/04-database-internals-storage/` |
+| TCP, TLS, HTTP, gRPC, QUIC, protocol, socket | `domains/06-network-protocol-engineering/` |
+| Raft, Paxos, consensus, distributed, CRDT, MIT 6.824 | `domains/07-distributed-systems-consensus/` |
+| LLM, inference, RAG, vLLM, embedding, agent, on-prem AI | `domains/08-ai-llm-systems/` |
+| k8s, kubernetes, container, helm, GitOps, operator | `domains/09-cloud-native-platform/` |
 
-If no keyword matches, read `NOW/focus.md` and use the first active track.
+If no keyword matches, read `dashboard/focus.md` and use the first active track.
 
 ---
 
@@ -469,4 +469,4 @@ Do not ask about track (infer it). Do not ask about day mode (infer it).
 
 ## TODAY.md Sync Rule
 
-`today.md` always mirrors the current day's `logs/YYYY-MM-DD.md`. After every write, overwrite `today.md` with the same content. The two files are always identical for the current day.
+`journals/daily/today.md` always mirrors the current day's `journals/daily/YYYY-MM-DD.md`. After every write, overwrite `journals/daily/today.md` with the same content. The two files are always identical for the current day.

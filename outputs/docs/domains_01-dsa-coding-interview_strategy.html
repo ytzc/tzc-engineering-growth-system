@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode 策略 | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="leetcode">LeetCode 策略</h1>
+<h2 id="_1">核心原則</h2>
+<p><strong>目標是題型識別，不是背解法。</strong></p>
+<p>看到一道題，腦中要能立刻問：「這是什麼結構？適合哪種模式？」
+這個能力是刷出來的，不是看解答看出來的。</p>
+<hr />
+<h2 id="_2">每題記錄格式</h2>
+<div class="codehilite"><pre><span></span><code><span class="gu">## [題號] 題目名稱</span>
+
+<span class="k">-</span><span class="w"> </span><span class="gs">**難度：**</span> Easy / Medium / Hard
+<span class="k">-</span><span class="w"> </span><span class="gs">**題型：**</span> Sliding Window / DP / BFS / ...
+<span class="k">-</span><span class="w"> </span><span class="gs">**花費時間：**</span> XX 分鐘
+<span class="k">-</span><span class="w"> </span><span class="gs">**狀態：**</span> AC / WA / TLE / 看提示
+
+<span class="gu">### 解題思路</span>
+（用自己的話描述，不要複製貼上）
+
+<span class="gu">### 關鍵洞察</span>
+（這題最重要的一個觀察是什麼）
+
+<span class="gu">### 錯誤 / 陷阱</span>
+（自己踩到的坑，或常見錯誤）
+
+<span class="gu">### 時間 / 空間複雜度</span>
+<span class="k">-</span><span class="w"> </span>Time: O(?)
+<span class="k">-</span><span class="w"> </span>Space: O(?)
+</code></pre></div>
+
+<hr />
+<h2 id="_3">每週目標</h2>
+<ul>
+<li><strong>題數：</strong> 5–7 題</li>
+<li><strong>題型深讀：</strong> 每週選 1 個題型，深度理解並更新 <code>patterns/</code></li>
+<li><strong>複習：</strong> 上週錯題 / 慢題，重新解一遍</li>
+</ul>
+<hr />
+<h2 id="10">初始 10 題（啟動清單）</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>題目</th>
+<th>類型</th>
+<th>難度</th>
+<th>狀態</th>
+<th>日期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC1</td>
+<td>Two Sum</td>
+<td>Hash Map</td>
+<td>Easy</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC20</td>
+<td>Valid Parentheses</td>
+<td>Stack</td>
+<td>Easy</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC21</td>
+<td>Merge Two Sorted Lists</td>
+<td>Linked List</td>
+<td>Easy</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC121</td>
+<td>Best Time to Buy and Sell Stock</td>
+<td>Sliding Window</td>
+<td>Easy</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC53</td>
+<td>Maximum Subarray</td>
+<td>Kadane's / DP</td>
+<td>Medium</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC200</td>
+<td>Number of Islands</td>
+<td>BFS/DFS</td>
+<td>Medium</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC322</td>
+<td>Coin Change</td>
+<td>DP</td>
+<td>Medium</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC3</td>
+<td>Longest Substring Without Repeating Chars</td>
+<td>Sliding Window</td>
+<td>Medium</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC704</td>
+<td>Binary Search</td>
+<td>Binary Search</td>
+<td>Easy</td>
+<td>⬜</td>
+<td></td>
+</tr>
+<tr>
+<td>LC70</td>
+<td>Climbing Stairs</td>
+<td>DP</td>
+<td>Easy</td>
+<td>⬜</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_4">題型索引</h2>
+<table>
+<thead>
+<tr>
+<th>題型</th>
+<th>說明檔</th>
+<th>常見題</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sliding Window</td>
+<td><code>patterns/sliding-window.md</code></td>
+<td>LC3, LC121, LC209</td>
+</tr>
+<tr>
+<td>Two Pointers</td>
+<td><code>patterns/two-pointers.md</code></td>
+<td>LC167, LC15, LC11</td>
+</tr>
+<tr>
+<td>BFS / DFS</td>
+<td><code>patterns/bfs-dfs.md</code></td>
+<td>LC200, LC102, LC133</td>
+</tr>
+<tr>
+<td>Dynamic Programming</td>
+<td><code>patterns/dynamic-programming.md</code></td>
+<td>LC70, LC322, LC53</td>
+</tr>
+<tr>
+<td>Binary Search</td>
+<td><code>patterns/binary-search.md</code></td>
+<td>LC704, LC33, LC153</td>
+</tr>
+<tr>
+<td>Hash Map</td>
+<td><code>patterns/hash-map.md</code></td>
+<td>LC1, LC49, LC128</td>
+</tr>
+<tr>
+<td>Stack</td>
+<td><code>patterns/stack.md</code></td>
+<td>LC20, LC42, LC84</td>
+</tr>
+<tr>
+<td>Linked List</td>
+<td><code>patterns/linked-list.md</code></td>
+<td>LC21, LC206, LC141</td>
+</tr>
+</tbody>
+</table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miscellaneous Security Notes | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="miscellaneous-security-notes">Miscellaneous Security Notes</h1>
+<h1 id="1128">11/28</h1>
+<ul>
+<li>CIAAC</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">邊信聯科技股份有限公司</span><span class="w"> </span><span class="p">(</span><span class="n">台北辦公室</span><span class="p">)</span>
+<span class="n">FiduciaEdge</span><span class="w"> </span><span class="n">Technologies</span><span class="w"> </span><span class="n">Co</span><span class="p">.,</span><span class="w"> </span><span class="n">Ltd</span><span class="p">.</span><span class="w"> </span><span class="p">(</span><span class="n">Taipei</span><span class="w"> </span><span class="n">office</span><span class="p">)</span>
+<span class="n">楊子擎</span><span class="w"> </span><span class="n">Jerry</span><span class="w">  </span><span class="n">Yang</span>
+<span class="n">jerry</span><span class="p">.</span><span class="n">yang</span><span class="nv">@fiduciaedge</span><span class="p">.</span><span class="n">com</span>
+<span class="w"> </span><span class="o">+</span><span class="mi">886</span><span class="w"> </span><span class="mi">966</span><span class="w"> </span><span class="mi">765</span><span class="w"> </span><span class="mi">256</span>
+<span class="p">(</span><span class="mi">03</span><span class="p">)</span><span class="w"> </span><span class="mi">668</span><span class="o">-</span><span class="mi">7008</span><span class="w"> </span><span class="n">分機304</span>
+<span class="n">軟體工程師</span>
+<span class="n">software</span><span class="w"> </span><span class="n">engineer</span><span class="w"> </span>
+<span class="mi">105</span><span class="n">台北市松山區南京東路四段2號3樓</span><span class="w"> </span><span class="p">(</span><span class="n">台灣科技新創基地</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Taiwan</span><span class="w"> </span><span class="n">Tech</span><span class="w"> </span><span class="n">Arena</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="mi">3</span><span class="n">F</span><span class="p">.,</span><span class="w"> </span><span class="k">No</span><span class="p">.</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">Sec</span><span class="p">.</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">Nanjing</span><span class="w"> </span><span class="n">E</span><span class="p">.</span><span class="w"> </span><span class="n">Rd</span><span class="p">.,</span><span class="w"> </span><span class="n">Songshan</span><span class="w"> </span><span class="n">Dist</span><span class="p">.,</span><span class="w"> </span><span class="n">Taipei</span><span class="w"> </span><span class="n">City</span><span class="w"> </span><span class="mi">105</span><span class="p">,</span><span class="w"> </span><span class="n">Taiwan</span><span class="w"> </span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">O</span><span class="p">.</span><span class="n">C</span><span class="p">.)</span><span class="w"> </span>
+
+<span class="p">(</span><span class="n">中文</span><span class="p">)</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">fiduciaedge</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zh</span><span class="o">/</span><span class="n">home</span><span class="o">-</span><span class="n">tw</span><span class="o">/</span>
+<span class="p">(</span><span class="n">English</span><span class="p">)</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">fiduciaedge</span><span class="p">.</span><span class="n">com</span><span class="o">/</span>
+</code></pre></div>
+
+<h1 id="1114">11/14</h1>
+<h2 id="1021">10/21</h2>
+<ul>
+<li>livenessprobe</li>
+<li>create wait 1s</li>
+<li>file api</li>
+</ul>
+<h2 id="1018">10/18</h2>
+<ul>
+<li>todo <ul>
+<li>unauth-cluster issue</li>
+<li>pre-install and uninstall for  helm-chart to setup ippool</li>
+<li>test network policy</li>
+<li>test script for fECB-API (mTLS)</li>
+</ul>
+</li>
+</ul>
+<h1 id="1011">10/11</h1>
+<h2 id="104">10/4</h2>
+<ul>
+<li>meeting<ul>
+<li>test-pod</li>
+<li>job -&gt; daemonset -&gt; mount</li>
+<li>ota-api</li>
+<li>file-api<ul>
+<li>沒用的刪掉</li>
+</ul>
+</li>
+<li>自動掛載<ul>
+<li>system-api</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>cp fecb-supplements/fecb-system-api/fecb-system-api.service /etc/systemd/system
+</code></pre></div>
+
+<h3 id="test-pod">test-pod</h3>
+<ul>
+<li>system</li>
+<li>vault</li>
+<li>fecb</li>
+<li>agent</li>
+</ul>
+<h1 id="919">9/19</h1>
+<h2 id="915">9/15</h2>
+<ul>
+<li>統一變數mtls<ul>
+<li>Fix mtls environment variables to follow naming convention</li>
+</ul>
+</li>
+</ul>
+<h1 id="912">9/12</h1>
+<h2 id="911">9/11</h2>
+<h1 id="95">9/5</h1>
+<h2 id="95_1">9/5</h2>
+<ul>
+<li>device-api path append<ul>
+<li></li>
+</ul>
+</li>
+</ul>
+<h2 id="830">8/30</h2>
+<ul>
+<li>capability bug</li>
+</ul>
+<h1 id="829">8/29</h1>
+<h1 id="822">8/22</h1>
+<h2 id="822_1">8/22</h2>
+<ul>
+<li>create capability, create device<ul>
+<li>capability不見</li>
+</ul>
+</li>
+</ul>
+<h2 id="819">8/19</h2>
+<ul>
+<li>ota-api</li>
+<li>pod db</li>
+</ul>
+<h2 id="815">8/15</h2>
+<ul>
+<li>configure mender<ul>
+<li>cli call</li>
+<li>mender configure</li>
+</ul>
+</li>
+</ul>
+<h1 id="88">8/8</h1>
+<p>https://hackmd.io/@lorex8711/fhir-server</p>
+<h2 id="811">8/11</h2>
+<ul>
+<li>Debian image configure</li>
+</ul>
+<h2 id="87">8/7</h2>
+<ul>
+<li>mender<ul>
+<li>2</li>
+<li>3</li>
+<li>6</li>
+</ul>
+</li>
+<li>Artifact<ul>
+<li>Update Modules被end user影響<ul>
+<li>authorized_keys file to the /home/${USER}/.ssh</li>
+</ul>
+</li>
+<li>下載script(single file Update Module)<ul>
+<li>https://github.com/mendersoftware/mender/blob/3.5.1/support/modules/single-file</li>
+</ul>
+</li>
+<li>產生mender artifact -&gt;module-image (.mender)</li>
+<li>寫update module<ul>
+<li>https://github.com/mendersoftware/mender/blob/3.5.1/Documentation/update-modules-v3-file-api.md</li>
+</ul>
+</li>
+<li></li>
+<li>UI Create a deployment</li>
+<li>mender-cli 檢查</li>
+</ul>
+</li>
+<li>Create-a-custom-update-module<ul>
+<li>update module<ul>
+<li>https://hub.mender.io/c/update-modules/13****</li>
+</ul>
+</li>
+<li>file-api<ul>
+<li>https://github.com/mendersoftware/mender/blob/master/Documentation/update-modules-v3-file-api.md#file-api</li>
+</ul>
+</li>
+<li>stream<ul>
+<li>https://github.com/mendersoftware/mender/blob/master/Documentation/update-modules-v3-file-api.md#streams-tree</li>
+</ul>
+</li>
+<li>flow<ul>
+<li>device update module<ul>
+<li>/usr/share/mender/modules/v3 放script</li>
+</ul>
+</li>
+<li>server<ul>
+<li>mender-artifac 創造 Mender Artifact(module-image)</li>
+</ul>
+</li>
+<li>device<ul>
+<li>Standalone Mode mender install xxx.mender</li>
+</ul>
+</li>
+<li>Rollback/power loss</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="728">7/28</h2>
+<ul>
+<li>tiip meeting<ul>
+<li>3<ul>
+<li>review上一次</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>encryption<ul>
+<li>gpg smine mender</li>
+</ul>
+</li>
+</ul>
+<h1 id="725">7/25</h1>
+<ul>
+<li>書 rust 權威指南,數位憑證技術與應用
+fiducia@192.168.20.67</li>
+<li>overview whole picture</li>
+</ul>
+<h2 id="724">7/24</h2>
+<ul>
+<li>mtls<ul>
+<li>notfound errorcode 做好<ul>
+<li>box指針</li>
+</ul>
+</li>
+<li>等system timeout 做好</li>
+<li>disable option 做好</li>
+<li>health check 做好<ul>
+<li>tonic_health</li>
+<li>tonic_health::pb::health_client::HealthClient;</li>
+</ul>
+</li>
+<li>trait util (TLS struct)</li>
+<li>test.rs</li>
+<li>修改metadata</li>
+<li>health check not serving機制</li>
+</ul>
+</li>
+</ul>
+<p>https://github.com/hyperium/tonic/blob/master/examples/src/health/server.rs
+https://github.com/grpc/grpc/blob/master/doc/health-checking.md</p>
+<h2 id="720">7/20</h2>
+<ul>
+<li></li>
+</ul>
+<h2 id="718">7/18</h2>
+<ul>
+<li>mTLS</li>
+<li>mariadb pod</li>
+</ul>
+<h2 id="719">7/19</h2>
+<ul>
+<li>整理rust</li>
+<li>trait 了解james問題</li>
+<li>openpgp</li>
+</ul>
+<h2 id="720_1">7/20</h2>
+<ul>
+<li>重寫fileapi<ul>
+<li>mariadb</li>
+<li>mtls</li>
+<li>helm chart</li>
+</ul>
+</li>
+</ul>
+<h1 id="718_1">7/18</h1>
+<h2 id="713">7/13</h2>
+<p>v
+* 投影片動畫
+    * tuf
+    * notary
+    * 攻防
+    * trivy
+* 完成攻防影片 文件
+* 修改測試報告
+* 補充使用手冊</p>
+<h2 id="712">7/12</h2>
+<ul>
+<li>投影片動畫<ul>
+<li>tuf</li>
+<li>notary</li>
+<li>攻防</li>
+</ul>
+</li>
+<li>錄製攻防影片</li>
+<li>寫攻防文件</li>
+<li>修改測試報告</li>
+<li>補充使用手冊</li>
+</ul>
+<h2 id="711">7/11</h2>
+<ul>
+<li>錄製攻防影片</li>
+<li>寫攻防文件</li>
+<li>修改測試報告</li>
+<li>補充使用手冊</li>
+</ul>
+<h1 id="711_1">7/11</h1>
+<ul>
+<li>TUF架構</li>
+<li>Apache, nginx</li>
+</ul>
+<h2 id="710">7/10</h2>
+<ul>
+<li>攻防情境文件, 影片</li>
+<li>測試報告調整</li>
+<li>使用手冊補充</li>
+<li>TUF架構</li>
+<li>Apache, nginx架構了解</li>
+</ul>
+<h2 id="79">7/9</h2>
+<ul>
+<li>攻防情境文件, 影片</li>
+</ul>
+<h2 id="77">7/7</h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">echo</span><span class="w"> </span><span class="s2">&quot;check database token EXIST: &quot;</span>
+<span class="nt">sqlite3</span><span class="w"> </span><span class="o">/</span><span class="nt">opt</span><span class="o">/</span><span class="nt">fiducia</span><span class="o">/</span><span class="nt">db</span><span class="o">/</span><span class="nt">edge</span><span class="p">.</span><span class="nc">db</span><span class="w"> </span><span class="s2">&quot;SELECT CapabilityToken  FROM capability where servicename=\&quot;init-selector\&quot;;&quot;</span>
+
+<span class="nt">echo</span><span class="w"> </span><span class="s2">&quot;check capability api LOG: &quot;</span>
+<span class="nt">capability-POD</span><span class="o">=</span><span class="s2">&quot;$(sudo kubectl -n fecb-system get pod --field-selector spec.nodeName=$HOSTNAME --no-headers | awk &#39;{print $1}&#39; | grep capability)&quot;</span>
+<span class="nt">sudo</span><span class="w"> </span><span class="nt">kubectl</span><span class="w"> </span><span class="nt">logs</span><span class="w"> </span><span class="nt">-n</span><span class="w"> </span><span class="nt">fecb-system</span><span class="w"> </span><span class="o">$</span><span class="nt">capability-POD</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nt">tail</span><span class="w"> </span><span class="nt">-n</span><span class="w"> </span><span class="nt">20</span>
+<span class="nt">echo</span><span class="w"> </span><span class="s2">&quot;END capability api LOG: &quot;</span>
+</code></pre></div>
+
+<h1 id="74">7/4</h1>
+<ul>
+<li>static build system api</li>
+<li>了解 "ingress", "clusterIP", "nodePort" or "loadBalancer"</li>
+</ul>
+<h1 id="627">6/27</h1>
+<h2 id="612">6/12</h2>
+<h3 id="capability">capability</h3>
+<ul>
+<li>單獨create, delete capability(dvc) 50次<ul>
+<li>debug6.sh<ul>
+<li>第28,10次錯</li>
+<li>create等很久<ul>
+<li>找到pod_name</li>
+<li>看不到pod phase/ip</li>
+<li>發現從pod name就錯了</li>
+<li>卡住無窮迴圈</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>單獨create, delete capability(dvc) 50次 去掉等待測試</p>
+<ul>
+<li>43次錯誤</li>
+<li>幾乎都沒插入podip</li>
+<li>pod name等到同一個</li>
+<li>解法<ul>
+<li>創造不同的selector</li>
+<li>取得最新的pod name<ul>
+<li>依照timestamp</li>
+<li>陣列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>一個teminating,一個init</p>
+<ul>
+<li>debug7.sh</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="x">sudo kubectl get deployment -l app=app-selector -o jsonpath=&#39;{.items[0].metadata.name}&#39;</span>
+
+<span class="x">sudo kubectl get pod -l app=app-selector -n default --no-headers | wc -l</span>
+
+
+<span class="x">sudo kubectl get pod -l app=app-selector -n default -o jsonpath=&#39;{.items}&#39;</span>
+
+
+
+
+
+
+<span class="x">sudo kubectl get pod -l app=app-selector -n default</span>
+
+<span class="x">sudo kubectl get pod -l app=app-selector -n default -o jsonpath=&#39;{.items[0].metadata.name}&#39;</span>
+
+
+<span class="x">sudo kubectl get pod -l app=app-selector -n default -o go-template=&#39;</span><span class="cp">{{</span><span class="nv">printf</span> <span class="s2">&quot;%d\n&quot;</span> <span class="o">(</span><span class="nv">len</span>  <span class="nv">.items</span><span class="o">)</span><span class="cp">}}</span><span class="x">&#39;</span>
+</code></pre></div>
+
+<ul>
+<li>annotation 實作cleanup<ul>
+<li>debug9.sh</li>
+</ul>
+</li>
+<li>測試拿最新pod <ul>
+<li>dubug19.sh</li>
+</ul>
+</li>
+<li>問題 terminating的db要不要刪掉</li>
+</ul>
+<h2 id="610">6/10</h2>
+<ul>
+<li>rust程式設計<ul>
+<li>trait</li>
+<li>async<ul>
+<li>concurrency</li>
+<li>parallelism</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="69">6/9</h2>
+<h3 id="check-function">check function</h3>
+<p>https://blog.pan93.com/what-is-rust-async/</p>
+<h4 id="probe">probe</h4>
+<ul>
+<li>檢查pod被刪除 </li>
+<li>device run<ul>
+<li>測試grpc</li>
+<li>執行刪除</li>
+</ul>
+</li>
+</ul>
+<h1 id="66">6/6</h1>
+<ul>
+<li>argoCD</li>
+<li>openshift</li>
+<li>PostgreSQL </li>
+<li>go</li>
+<li>tls/ssl 網路架構</li>
+<li>traefik</li>
+</ul>
+<h2 id="66_1">6/6</h2>
+<ul>
+<li>get pod name</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>sudo kubectl get pods -l app=app-py -n default -o jsonpath=&#39;{.items[0].metadata.name}&#39;
+
+sudo kubectl get pods app-svc
+
+
+sudo kubectl describe svc app-svc -o json
+sudo kubectl get svc app-svc -o json
+sudo kubectl get svc app-svc -o jsonpath=&#39;{.metadata.labels}&#39;
+</code></pre></div>
+
+<h2 id="63">6/3</h2>
+<ul>
+<li>git lab push</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">fatal</span><span class="o">:</span><span class="w"> </span><span class="n">unable</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">access</span><span class="w"> </span><span class="s1">&#39;https://gitlab.fiduciaedge.work/sys-dev/fecb-capability-api.git/&#39;</span><span class="o">:</span><span class="w"> </span><span class="n">Failed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">connect</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">gitlab</span><span class="o">.</span><span class="na">fiduciaedge</span><span class="o">.</span><span class="na">work</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="mi">443</span><span class="o">:</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">route</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">host</span>
+</code></pre></div>
+
+<ul>
+<li>json parser</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>{\&quot;HC\&quot;:[],\&quot;DEVICE\&quot;:[{\&quot;service_ip\&quot;:\&quot;172.47.145.186\&quot;,\&quot;name_ports\&quot;:\&quot;p1:9000,p2:9001\&quot;}]}
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>{&quot;HC&quot;:[],&quot;DEVICE&quot;:[{&quot;service_ip&quot;:&quot;172.47.145.186&quot;,&quot;name_ports&quot;:&quot;p1:9000,p2:9001&quot;}]}
+</code></pre></div>
+
+<h3 id="_1">收尾</h3>
+<ul>
+<li>init<ul>
+<li>get secret</li>
+<li>api -&gt; sdk</li>
+</ul>
+</li>
+<li>gitlab/capability/util/get_pods_name<ul>
+<li>改成使用svc name</li>
+<li>去掉-l arg_servicename</li>
+</ul>
+</li>
+<li>file <ul>
+<li>get ver</li>
+</ul>
+</li>
+</ul>
+<h3 id="todo">todo</h3>
+<ul>
+<li>
+<p>gitlab/fecb-client-aou-sample-code/python/src/init</p>
+<ul>
+<li>
+<p>完成init.sh</p>
+<ul>
+<li>移除跳脫字元</li>
+<li>格式svc_name,svc_ip,name_ports (get svc)</li>
+</ul>
+</li>
+<li>
+<p>parse json</p>
+<ul>
+<li>device<ul>
+<li>name, ip, nameports</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>get secret</li>
+<li>error code</li>
+<li>api -&gt; sdk</li>
+</ul>
+</li>
+</ul>
+<h2 id="62">6/2</h2>
+<ul>
+<li>gitlab/fecb-client-sdk-sample-code/python/src/init<ul>
+<li>完成init.sh</li>
+<li>parse json</li>
+</ul>
+</li>
+<li>gitlab/capability/util/get_pods_name<ul>
+<li>改成使用svc name</li>
+<li>去掉-l arg_servicename</li>
+</ul>
+</li>
+<li>gitlab/file<ul>
+<li>getver</li>
+</ul>
+</li>
+<li>gitlab/fecb-client-sdk-sample-code/python/src/init<ul>
+<li>secret 部屬secret方式</li>
+</ul>
+</li>
+<li>gitlab/system<ul>
+<li>getver</li>
+</ul>
+</li>
+<li>改用manefist滿足不同平台</li>
+</ul>
+<h2 id="61">6/1</h2>
+<ul>
+<li>getservice</li>
+<li>init script</li>
+</ul>
+<h2 id="530">5/30</h2>
+<ul>
+<li>argoCD</li>
+<li>openshift</li>
+<li>PostgreSQL </li>
+<li>go
+https://kubeoperator.io/docs/user_manual/argocd/</li>
+</ul>
+<h1 id="530_1">5/30</h1>
+<h1 id="523">5/23</h1>
+<h3 id="todo_1">todo</h3>
+<ul>
+<li>了解htop看系統資源</li>
+<li></li>
+</ul>
+<h2 id="521">5/21</h2>
+<ul>
+<li>
+<p>secrete/ selector</p>
+</li>
+<li>
+<p>攻防情境</p>
+</li>
+<li>init</li>
+<li>manifest</li>
+</ul>
+<h3 id="todo_2">todo</h3>
+<ul>
+<li>寫自己的helm chart</li>
+<li>secret selector</li>
+<li>notary server設定完成</li>
+</ul>
+<h2 id="519">5/19</h2>
+<ul>
+<li>了解notary-secret.yaml</li>
+<li>放置uca.crt</li>
+</ul>
+<h1 id="516">5/16</h1>
+<h3 id="_2"></h3>
+<h2 id="512">5/12</h2>
+<ul>
+<li>v1.4.2<ul>
+<li>file</li>
+<li>capability</li>
+<li>dvc</li>
+<li>hc</li>
+<li>demo (todo)</li>
+</ul>
+</li>
+<li>v1.4.3<ul>
+<li>file<ul>
+<li>upload file encrypt(todo)</li>
+</ul>
+</li>
+<li>capability<ul>
+<li>get svc</li>
+</ul>
+</li>
+<li>dvc<ul>
+<li>new dvc</li>
+<li>error code</li>
+</ul>
+</li>
+<li>hc<ul>
+<li>new hc</li>
+<li>error code</li>
+</ul>
+</li>
+<li>demo</li>
+</ul>
+</li>
+</ul>
+<h1 id="59">5/9</h1>
+<h2 id="59_1">5/9</h2>
+<ul>
+<li>
+<p>code</p>
+<ul>
+<li>new dvc</li>
+<li>new hc</li>
+<li>get svc</li>
+<li>init.sh</li>
+</ul>
+</li>
+<li>
+<p>getsvc all</p>
+</li>
+<li>
+<p>PlantUML</p>
+</li>
+<li>
+<p>sequence diagram</p>
+</li>
+</ul>
+<h2 id="57">5/7</h2>
+<h1 id="52">5/2</h1>
+<h1 id="425">4/25</h1>
+<h1 id="418">4/18</h1>
+<h1 id="411">4/11</h1>
+<h2 id="49">4/9</h2>
+<p>~1 寫3,4
+~2 佈署 3 4
+~3 寫5,1
+https://blog.51cto.com/lidabai/5195706
+https://helm.sh/zh/docs/intro/using_helm/
+https://ithelp.ithome.com.tw/articles/10301191</p>
+<h1 id="221">2/21</h1>
+<h1 id="214">2/14</h1>
+<h1 id="27">2/7</h1>
+<h1 id="131">1/31</h1>
+<h1 id="119">1/19</h1>
+<ul>
+<li>video POS</li>
+<li>測試</li>
+</ul>
+<h1 id="131_1">1/31</h1>
+<h2 id="note">note</h2>
+<ul>
+<li>kubernete</li>
+<li>leetcode</li>
+<li>隱私計算</li>
+</ul>
+<h1 id="117">1/17</h1>
+<ul>
+<li>arm fecb<ul>
+<li>file</li>
+<li>hc</li>
+<li>capability</li>
+<li>device</li>
+<li>system </li>
+<li>agent</li>
+</ul>
+</li>
+<li>minio trafix 443, 30189</li>
+</ul>
+<h1 id="110">1/10</h1>
+<h1 id="1226">12/26</h1>
+<h1 id="1220">12/20</h1>
+<h1 id="1212">12/12</h1>
+<h2 id="126">12/6</h2>
+<h3 id="notary">notary</h3>
+<h1 id="125">12/5</h1>
+<h2 id="125_1">12/5</h2>
+<ul>
+<li>~1200 grpc api</li>
+<li>~1300 fusing server</li>
+</ul>
+<h2 id="123">12/3</h2>
+<h3 id="key-host">key host</h3>
+<h2 id="1128_1">11/28</h2>
+<ul>
+<li>8221</li>
+<li>restful</li>
+<li>gitlab</li>
+</ul>
+<h2 id="1130">11/30</h2>
+<ul>
+<li>TAA</li>
+<li>17:00開會</li>
+</ul>
+<h1 id="118">11/8</h1>
+<h1 id="1024">10/24</h1>
+<ul>
+<li>rust 書 </li>
+</ul>
+<h1 id="1017">10/17</h1>
+<h1 id="1010">10/10</h1>
+<h1 id="103">10/3</h1>
+<h3 id="meeting">Meeting</h3>
+<ul>
+<li>secure storage (device) key 沒有切割使用者帳戶</li>
+<li>email encryption (user) key使用者帳戶</li>
+<li>secure file transfer</li>
+</ul>
+<h1 id="926">9/26</h1>
+<h2 id="921">9/21</h2>
+<h1 id="919_1">9/19</h1>
+<h2 id="914">9/14</h2>
+<ul>
+<li>API test ~16<ul>
+<li>local測試完</li>
+<li>pod設計</li>
+</ul>
+</li>
+<li>6450 ~18</li>
+<li>rust service ~20</li>
+<li>交通費</li>
+</ul>
+<h2 id="913">9/13</h2>
+<ul>
+<li>API test ~9<ul>
+<li>local測試完</li>
+<li>pod設計</li>
+</ul>
+</li>
+<li>6450 ~10</li>
+<li>rust service</li>
+</ul>
+<h2 id="912_1">9/12</h2>
+<ul>
+<li>API test</li>
+<li>python code</li>
+</ul>
+<h1 id="912_2">9/12</h1>
+<h3 id="progress">progress</h3>
+<ul>
+<li>test pod<ul>
+<li>python</li>
+</ul>
+</li>
+</ul>
+<h3 id="note_1">Note</h3>
+<ul>
+<li>godaddy<ul>
+<li>域名註冊 fiduciaedge.work 買網站</li>
+</ul>
+</li>
+</ul>
+<h2 id="99">9/9</h2>
+<ul>
+<li>解決gitlab</li>
+</ul>
+<h3 id="_3">讀書筆記 數位憑證技術與應用</h3>
+<h2 id="portainer-note">portainer note</h2>
+<p>1 選取device node進行設置
+2 file server透過machine key部屬檔案</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">fiduciaedge</span><span class="o">/</span><span class="nt">fecb-java-sdk</span><span class="p">:</span><span class="nd">v1</span><span class="p">.</span><span class="nc">4</span><span class="p">.</span><span class="nc">0-x86</span>
+
+
+<span class="nt">command</span><span class="o">:</span><span class="w"> </span><span class="cp">[</span><span class="w"> </span><span class="s2">&quot;/bin/sh&quot;</span><span class="cp">]</span><span class="w"> </span><span class="err">#</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;setup.sh&quot;</span><span class="w"> </span><span class="o">]</span>
+<span class="nt">args</span><span class="o">:</span><span class="w"> </span><span class="cp">[</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;while true; do echo hello; sleep 10;done&quot;</span><span class="cp">]</span>
+<span class="nt">env</span><span class="o">:</span>
+<span class="nt">-</span><span class="w"> </span><span class="nt">name</span><span class="o">:</span><span class="w"> </span><span class="nt">NETWORK_INTERFACE</span>
+<span class="w">  </span><span class="nt">value</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;172.3.0.1:&quot;</span>
+</code></pre></div>
+
+<ul>
+<li>查詢capability</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+
+<h1 id="822_2">8/22</h1>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

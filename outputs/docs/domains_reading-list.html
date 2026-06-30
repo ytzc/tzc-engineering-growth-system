@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>書單 | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="_1">書單</h1>
+<blockquote>
+<p>優先序排列。進行中的書放最上面。</p>
+</blockquote>
+<h2 id="_2">進行中</h2>
+<table>
+<thead>
+<tr>
+<th>書名</th>
+<th>分類</th>
+<th>開始日期</th>
+<th>筆記位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>內行人才知道的系統設計面試指南</td>
+<td>系統設計</td>
+<td>2026-04</td>
+<td><code>02-system-design-large-scale/system-design-insider-guide.md</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_3">研究材料（技術文件 / 論文）</h2>
+<table>
+<thead>
+<tr>
+<th>主題</th>
+<th>分類</th>
+<th>狀態</th>
+<th>筆記位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>多模態生成式 Agent 實現</td>
+<td>AI / Agent</td>
+<td>進行中</td>
+<td><code>08-ai-llm-systems/multimodal-generative-agent.md</code></td>
+</tr>
+<tr>
+<td>TCG TPM 2.0 Architecture Spec</td>
+<td>嵌入式資安</td>
+<td>進行中</td>
+<td><code>05-security-trusted-systems/tpm-tcg-device-identity.md</code></td>
+</tr>
+<tr>
+<td>EU Cyber Resilience Act 條文</td>
+<td>法規 / 資安</td>
+<td>進行中</td>
+<td><code>05-security-trusted-systems/cra-mx93-device-identity.md</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_4">待讀佇列</h2>
+<table>
+<thead>
+<tr>
+<th>書名</th>
+<th>分類</th>
+<th>優先序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Designing Data-Intensive Applications</td>
+<td>分散式系統</td>
+<td>高</td>
+</tr>
+<tr>
+<td>The Linux Programming Interface</td>
+<td>作業系統</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Computer Networks: A Top-Down Approach</td>
+<td>網路</td>
+<td>中</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_5">已完成</h2>
+<table>
+<thead>
+<tr>
+<th>書名</th>
+<th>完成日期</th>
+<th>書摘位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>(尚無)</em></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

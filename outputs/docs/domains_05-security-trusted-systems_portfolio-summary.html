@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 年技術成就總結與能力展望 (Portfolio Summary) | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="3-portfolio-summary">3 年技術成就總結與能力展望 (Portfolio Summary)</h1>
+<blockquote>
+<p><strong>楊子擎 (Jerry Yang) · 邊信聯科技 (FiduciaEdge Technologies) 軟體工程師</strong>
+<em>深耕於硬體安全信任根、機密邊緣運算、可信物聯網設備安全與自動化代碼簽章沙盒系統。</em></p>
+</blockquote>
+<hr />
+<h2 id="core-capabilities">一、核心技術實力與知識版圖 (Core Capabilities)</h2>
+<p>在邊信聯科技 (FiduciaEdge) 的三年研發工作中，我專注於「硬體安全防護」與「雲端/邊緣運算平台」的交會處。我的核心能力跨越了從硬體晶片層、作業系統核心層，到雲端容器化部署的完整信任鏈 (Chain of Trust) 構建。</p>
+<h3 id="1-tpm-20-hardware-security-root-of-trust">1. TPM 2.0 硬體安全與設備憑證佈署 (Hardware Security Root of Trust)</h3>
+<ul>
+<li><strong>設備唯一識別 (IDevID / LDevID)</strong>：精通基於 IEEE 802.1AR 標準的設備身分識別。設計多種在生產端與設備端安全佈署 IDevID 的機制。</li>
+<li><strong>金鑰複製與遷移策略</strong>：深度掌握 <code>TPM2_Duplicate</code>、<code>TPM2_Import</code>、<code>TPM2_Load</code> 命令與相關複製策略（Policy）。實現將伺服器端（或 CA 端）生成的 IDevID 以 EK 公鑰加密保護（Parent Key 為 EK），安全傳輸並導入至目標客戶端設備的 TPM 晶片中，確保私鑰在傳輸與落地過程中不落地且不可被竊取。</li>
+<li><strong>金鑰層級結構 (Key Hierarchy)</strong>：精通 TPM 2.0 內置的 SRK (Storage Root Key)、EK (Endorsement Key)、AIK/AK (Attestation Key) 的責任與資料流，實現高安全性與高擴展性的金鑰架構。</li>
+</ul>
+<h3 id="2-system-platform-security">2. 作業系統硬體安全架構與安全啟動 (System &amp; Platform Security)</h3>
+<ul>
+<li><strong>Nvidia Jetson Tegra 安全防護</strong>：掌握 Jetson Nano / TX2 / Xavier 的安全啟動流程。研讀 Tegra Linux Driver Package (L4T) 開發指南，專注於硬體保險絲（Fuses）燒錄、安全金鑰寫入與 Bootloader 簽章流程。</li>
+<li><strong>UEFI Secure Boot &amp; Measured Boot</strong>：實現基於 MOK (Machine Owner Key) 的 Linux 核心模組與驅動程式簽章。建置 UEFI Measured Boot 機制，將啟動各階段（Firmware、Bootloader、Kernel）的 Hash 值度量（Measure）寫入 TPM 的 PCR (Platform Configuration Register) 中，做為遠程驗證的身分憑證。</li>
+</ul>
+<h3 id="3-tee-confidential-edge-computing">3. 可信容器運算平台與 TEE 沙盒 (Confidential Edge Computing)</h3>
+<ul>
+<li><strong>fECP 可信容器化平台</strong>：參與研發基於 Kubernetes/AWS 的可信容器部署架構 (fECP v1.5)，實現雙向 MTLS 安全通訊與安全的邊緣 OTA 更新。</li>
+<li><strong>cosnar 容器驗證與 TEE 隔離</strong>：開發 <code>cosnar</code> 機制，在設備運行時即時驗證容器來源及完整性。在設備端建構隔離應用程式與硬體的 TEE-REE 執行環境（CCSars），確保敏感計算資料無法被外部硬體或權限妥協的 Host 作業系統存取。</li>
+</ul>
+<h3 id="4-enterprise-code-signing-sandbox">4. 企業級自動代碼簽章沙盒系統 (Enterprise Code Signing Sandbox)</h3>
+<ul>
+<li><strong>TWCA 憑證認證與整合</strong>：精通與台灣網路認證公司 (TWCA) API 整合。設計自動化申請與下載 X.509 公鑰證書、建置 PKCS12 (PFX) 金鑰管理機制。</li>
+<li><strong>代碼簽章服務主機 (Sign Daemon)</strong>：主導設計高安全性的 Code Signing 沙盒流程，分為 <strong>Hash Sandbox (哈希沙盒)</strong>、<strong>Sign Sandbox (簽章守護進程)</strong> 與 <strong>Verify Sandbox (驗證沙盒)</strong>。</li>
+<li>設計高性能的 <code>hashtool.jar</code> 進行代碼/韌體度量雜湊（SHA256）。</li>
+<li>開發 <code>signtool.jar</code> 做為背景 Daemon，串接 TWCA 加密模組，支持 RSA 簽章（P1 格式與 P1_WITH_HASHED 格式）。</li>
+<li>封裝為標準的 P7 (PKCS7/CMS) 憑證附加與代碼雜湊綁定結構，確保韌體從發布到執行（E2E File Transfer）的完整性、真實性與不可否認性（Non-repudiation）。</li>
+</ul>
+<hr />
+<h2 id="key-projects-impact">二、主導之關鍵專案與實質貢獻 (Key Projects &amp; Impact)</h2>
+<h3 id="1-trusted-things">1. Trusted Things 可信物聯網設備解決方案 (矽到雲安全)</h3>
+<ul>
+<li><strong>角色</strong>：核心軟體研發工程師</li>
+<li><strong>貢獻</strong>：設計並編寫信任鏈概念驗證與序列圖 (Sequence Diagram)。引入 TPM 2.0 硬體晶片作為物理信任根，實現設備啟動時即時度量 UEFI/驅動程式/CCSars 韌體，並在邊緣端透過 mTLS 構建加密加密通道。成功解決傳統 IoT 設備身分易被仿冒、邊緣運算資料易在傳輸時遭攔截的痛點。</li>
+</ul>
+<h3 id="2-a3">2. 邊端代碼/韌體簽章自動化測試與發布系統 (A3 交易模組)</h3>
+<ul>
+<li><strong>角色</strong>：架構設計與整合開發者</li>
+<li><strong>貢獻</strong>：將 TWCA 憑證認證、私鑰防護與 PE/ELF 代碼簽章深度融合。設計拆分了 <strong>A3.1 安裝操作說明書、容器化部署說明書、可信運算說明書</strong>等關鍵技術文件。編寫測試驗證程序，全方位確保邊端交易在極端受攻擊環境下的「機密性、完整性、真實性與不可否認性」，並成功通過外部安全合規性驗證。</li>
+</ul>
+<h3 id="3-fecpccsars">3. fECP/CCSars 邊緣安全沙盒</h3>
+<ul>
+<li><strong>角色</strong>：核心維護與優化工程師</li>
+<li><strong>貢獻</strong>：維護 fECP v1.5 (K8s) 環境下的安全沙盒，編寫系統升級更新腳本 (Update Script)，透過 Sandbox 對網路上的虛擬主機 (vHub) 及邊端設備進行極低摩擦、高度安全驗證的熱更新與 OTA。</li>
+</ul>
+<hr />
+<h2 id="professional-capacity-outlook">三、個人核心優勢與能力展望 (Professional Capacity Outlook)</h2>
+<p>作為一名在硬體安全與軟體工程交會點工作了三年的研發人員，我已建立起高度稀缺的<strong>「軟硬一體化安全架構」</strong>實戰優勢。</p>
+<h3 id="1-my-differentiators">1. 我的稀缺競爭優勢 (My Differentiators)</h3>
+<ul>
+<li><strong>懂雲原生、也懂硬體底層</strong>：絕大多數 Security 工程師僅熟悉應用層安全、Web 滲透或 IAM 規則；而傳統硬體/韌體工程師往往忽略雲端分布式架構與容器安全。我能無縫串聯 <strong>TPM 晶片/Trustzone → 核心核心模組簽章 → 容器完整性驗證 (cosnar) → 雲原生 Attestation 驗證</strong> 的完整通路。</li>
+<li><strong>企業級 PKI 與硬體信任結合實戰</strong>：擁有與台灣最權威證書機構 (TWCA) 整合的大型生產系統開發經驗，這在需要金融級安全、高階車聯網或軍民雙用安全系統開發中極具競爭力。</li>
+</ul>
+<h3 id="2-future-roadmap">2. 未來技術演進與能力展望 (Future Roadmap)</h3>
+<ul>
+<li><strong>從「硬體金鑰整合」演進到「大規模遠程驗證 (Remote Attestation at Scale)」</strong>：</li>
+<li>目前我已精通 TPM 2.0 單機金鑰複製與本地度量驗證。下一步我將專注於深入標準化遠程驗證架構（如 <strong>IETF RATS RFC 9334</strong> 規範）。</li>
+<li>計畫建置基於 <strong>SPIFFE/SPIRE</strong> 的工作負載硬體驗證 (Workload Attestation) 系統，將物理設備 TPM 的證明信息無縫轉化為雲端微服務的動態身分證（SVID），將邊端安全真正對齊雲原生架構。</li>
+<li><strong>向主流大廠「機密運算 (Confidential Computing)」架構對齊</strong>：</li>
+<li>將技術廣度由 ARM TrustZone / 專屬 TEE，拓寬至當前雲端主流硬體安全防護：如 <strong>Intel TDX</strong>、<strong>AMD SEV-SNP</strong> 與 <strong>ARM CCA</strong>。</li>
+<li>深入研究可信密鑰管理服務 (KBS / KMS) 與 Remote Attestation (如 Keylime 專案) 的整合，使我在高階安全工程師或資深資安架構師的角色中具備全球領先的競爭力。</li>
+</ul>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

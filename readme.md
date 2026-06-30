@@ -47,25 +47,40 @@
 ```
 tzc-engineering-growth-system/
 │
-├── PLAN/                        # 主計畫、里程碑、長期目標
-│   ├── master-plan.md
-│   ├── milestones.md
-│   └── vision.md
+├── dashboard/                   # 系統狀態、計畫與習慣追蹤 (NOW/ + PROGRESS/)
+│   ├── focus.md                 # 當前專注的主線與支線 track
+│   ├── queue.md                 # 排隊中的 skill 和 output 優先序
+│   ├── dashboard.md             # 進度儀表板與數據
+│   └── habits.md                # 習慣追蹤
 │
-├── today.md                     # ← 每天操作面板。永遠與當天 logs/ 同步。
-├── this_week.md                 # ← 週一設定，週日回顧。
+├── journals/                    # 每日、每週、每月執行日誌與回顧 (JOURNALS/)
+│   ├── daily/                   # 每日日誌：2026-04-02.md (dashboard) & 2026-04-02-inbox.md (notes)
+│   │   ├── today.md             # ← 每天的操作面板 (永遠指向最新的一天)
+│   │   └── template-inbox.md    # 白天原始材料 template
+│   ├── weekly/                  # 每週計畫與回顧
+│   │   ├── this_week.md         # ← 週一設定，週日回顧
+│   │   └── template.md          # 週回顧 template
+│   └── monthly/                 # 每月回顧
+│       └── template.md          # 月回顧 template
 │
-├── inbox/                       # 白天原始材料入口（每天一個檔案，不整理）
-│   └── YYYY-MM-DD.md            # 解題、技術思考、知識點、卡點，隨時寫
+├── domains/                     # 10 個技術學習軌道與領域知識 (SKILLS/ + NOTES/ + LEETCODE/ + READING/)
+│   ├── track-template.md        # 每個 track 的標準可執行格式
+│   ├── reading-list.md          # 閱讀書單與筆記索引
+│   ├── 01-dsa-coding-interview/ # 刷題日誌、題型整理、策略 (合併 leetcode/ 內容)
+│   │   └── strategy.md
+│   ├── 02-system-design-large-scale/
+│   ├── 03-os-systems-programming/
+│   ├── 04-database-internals-storage/
+│   ├── 05-security-trusted-systems/ (合併 notes/security/ 的深度筆記與 TPM 資料)
+│   │   ├── 2026-04-02-tpm-luks-sealed-storage-analysis.md
+│   │   └── tpm整理筆記.md
+│   ├── 06-network-protocol-engineering/
+│   ├── 07-distributed-systems-consensus/
+│   ├── 08-ai-llm-systems/
+│   ├── 09-cloud-native-platform/
+│   └── 10-engineering-impact-leadership/
 │
-├── logs/                        # 每日執行歷史記錄（結構化，Claude 維護）
-│   └── YYYY-MM-DD.md            # 每天一個檔案，today.md 鏡像
-│
-├── NOW/                         # 當前狀態 — 現在哪些 track 是 active
-│   ├── focus.md                 # Active tracks 與當前 milestone
-│   └── queue.md                 # 排隊中的 skill 和 output，按優先序
-│
-├── OUTPUTS/                     # 所有產出 — 你的 portfolio
+├── outputs/                     # 所有產出 — 你的 portfolio
 │   ├── README.md                # 索引 + 十個月產出目標
 │   ├── writeups/                # 技術文章、深度分析、部落格草稿
 │   ├── designs/                 # System design 文件
@@ -73,49 +88,7 @@ tzc-engineering-growth-system/
 │   ├── papers/                  # 論文閱讀筆記（含自己的分析）
 │   └── talks/                   # 演講摘要、投影片、研討會投稿
 │
-├── SKILLS/                      # 10 個 skill track（面向 FAANG / 高階工程師）
-│   ├── track-template.md        # 每個 track 的標準可執行格式
-│   ├── 01-dsa-coding-interview/
-│   ├── 02-system-design-large-scale/
-│   ├── 03-os-systems-programming/
-│   ├── 04-database-internals-storage/
-│   ├── 05-security-trusted-systems/
-│   ├── 06-network-protocol-engineering/
-│   ├── 07-distributed-systems-consensus/
-│   ├── 08-ai-llm-systems/
-│   ├── 09-cloud-native-platform/
-│   └── 10-engineering-impact-leadership/
-│
-├── LEETCODE/                    # 刷題日誌、題型整理、策略
-│   ├── log/
-│   ├── patterns/
-│   └── strategy.md
-│
-├── READING/                     # 書單、閱讀筆記、書摘
-│   ├── booklist.md
-│   ├── notes/
-│   └── summaries/
-│
-├── NOTES/                       # 技術深度筆記（依領域分類）
-│   ├── systems/
-│   ├── security/
-│   ├── backend/
-│   └── misc/
-│
-├── MEMORIZATION/                # 默寫卡、間隔重複內容
-│   ├── daily/
-│   └── index.md
-│
-├── REVIEWS/                     # 每週、每月回顧
-│   ├── weekly/
-│   └── monthly/
-│
-├── PROGRESS/                    # 進度儀表板、習慣追蹤
-│   ├── dashboard.md
-│   ├── habits.md
-│   └── metrics/
-│
-└── RESUME/                      # 履歷（中英文版本、版本管理）
+└── resume/                      # 履歷（中英文版本、版本管理）
 ```
 
 ---

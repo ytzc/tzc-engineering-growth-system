@@ -2,14 +2,14 @@
 
 > Everything produced through deliberate practice. This is your portfolio — interview evidence, technical credibility, and compound proof of growth.
 >
-> Rule: every session on a Normal or Deep Day should produce something that lands here or in `NOTES/`.
+> Rule: every session on a Normal or Deep Day should produce something that lands here or in `domains/`.
 
 ---
 
 ## Structure
 
 ```
-OUTPUTS/
+outputs/
 ├── writeups/     Technical write-ups, deep dives, blog drafts
 ├── designs/      System design documents, architecture diagrams
 ├── projects/     Code projects, implementations, POCs, GitHub links
