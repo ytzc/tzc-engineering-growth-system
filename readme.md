@@ -651,11 +651,11 @@ Claude 執行：
 
 ### 原則
 
-- 白天先寫 inbox，不急著分類
+- 白天先寫 inbox，不急著分類（`journals/daily/YYYY-MM-DD-inbox.md`）
 - 晚上再由 Claude 整理，不要手動移動 inbox 內容
-- `inbox/` 保留原始材料，永不刪除
-- `logs/` 是正式執行紀錄，不刪不改只追加
-- `today.md` 是當天面板，永遠與當天 log 同步
+- 原始材料保留在各日 inbox 中，永不刪除
+- `journals/daily/YYYY-MM-DD.md` 是正式執行紀錄，不刪不改只追加
+- `journals/daily/today.md` 是當天面板，永遠與當天 log 同步
 - 每天至少兩次 commit：開始一次（plan），收尾一次（progress）
 - 當日 log 的 commit 不混入其他系統變更
 
@@ -664,19 +664,19 @@ Claude 執行：
 ## 使用規則
 
 **每日（必做）：**
-- 填寫 `TODAY.md`，三個 checkbox 全打勾才算完成
-- 更新 `PROGRESS/habits.md` 今日打卡
-- 把任何產出歸檔到 `NOTES/` 或 `OUTPUTS/`
+- 填寫 `journals/daily/today.md`，三個 checkbox 全打勾才算完成
+- 更新 `dashboard/habits.md` 今日打卡
+- 把任何知識產出歸檔到 `domains/` 底下對應軌道或 `outputs/`
 
 **每週（必做，週日）：**
-- 完成每週回顧 → `REVIEWS/weekly/YYYY-WXX.md`（複製 template）
-- 更新 `PROGRESS/dashboard.md`
-- 填寫下週的 `THIS_WEEK.md`
+- 完成每週回顧 → `journals/weekly/YYYY-WXX.md`（複製 template）
+- 更新 `dashboard/dashboard.md`
+- 填寫下週的 `journals/weekly/this_week.md`
 
 **每月（必做）：**
-- 完成每月回顧 → `REVIEWS/monthly/YYYY-MM.md`（複製 template）
-- 更新 `NOW/focus.md` — 調整 active track，從 `NOW/queue.md` 輪入新支線
-- 更新 `PROGRESS/dashboard.md` 月度欄位
+- 完成每月回顧 → `journals/monthly/YYYY-MM.md`（複製 template）
+- 更新 `dashboard/focus.md` — 調整 active track，從 `dashboard/queue.md` 輪入新支線
+- 更新 `dashboard/dashboard.md` 月度欄位
 
 **一般原則：**
 - 系統感覺太重 → 簡化它，不要硬撐。可持續運作才是目標
@@ -686,4 +686,25 @@ Claude 執行：
 
 ---
 
-*最後更新：2026-04-05*
+## 個人技術文檔門戶 (Playbook Docs Portal)
+
+本系統內置了一個專業的 **靜態文檔編譯器**（Playbook Docs Engine），可以將 `domains/` 與 `outputs/` 中所有的 Markdown 筆記編譯為具有 **側邊欄導覽、代碼高亮、與即時全站搜尋** 功能的現代化 HTML 文檔庫。
+
+### 1. 本地生成與預覽
+在本地開發或完成筆記撰寫後，只需於根目錄執行：
+```bash
+python3 scripts/build_docs.py
+```
+此腳本會自動檢查並安裝依賴（`markdown`），編譯並將靜態網頁輸出到 `outputs/docs/` 目錄中。
+- **本地預覽入口**：雙擊打開 `outputs/docs/index.html` 即可直接在瀏覽器中進行流暢、極速的離線閱讀。
+
+### 2. CI/CD 自動化雲端部署 (GitHub Pages)
+項目已配置成熟的 GitHub Actions 自動部署流程（`.github/workflows/deploy-docs.yml`）。
+- **自動觸發**：當您將筆記或工作流變更推送（`git push`）到 `main` 分支時，GitHub 會自動運行編譯。
+- **網頁發布網址**：CI 會將編譯後的 HTML 網頁自動推送到背景 `gh-pages` 分支。您可以在以下網址瀏覽您的精美文檔網頁：
+  - **`https://<您的 GitHub 帳號>.github.io/<您的倉庫名稱>/`**
+  - *(首次推送後，請至倉庫的 **Settings -> Pages** 將 Source 分支設置為 **`gh-pages`** 即刻啟用)*
+
+---
+
+*最後更新：2026-06-30*
