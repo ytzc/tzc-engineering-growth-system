@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Sandbox Fecp | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="container-sandbox-fecp">Container Sandbox Fecp</h1>
+<h2 id="1122">11/22</h2>
+<ul>
+<li>軍民meeting<ul>
+<li>狄瑞<ul>
+<li>VPN tunnel(device ID cert from TWCA)<ul>
+<li>AK deviceID cert</li>
+<li>或是應用和軟體生產商cert<ul>
+<li>另外做一個單純CSR apply cert</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>codesign做e2e file tranfer(option)<ul>
+<li>ccsars整合fecb-file</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>軍民A3<ul>
+<li>CCSaaS<ul>
+<li>codesign blob</li>
+<li>燒錄韌體 整合service</li>
+<li>韌體demo</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>劇本<ul>
+<li>camera<ul>
+<li>device container</li>
+<li></li>
+</ul>
+</li>
+<li>hc<ul>
+<li>gpu container</li>
+<li>wifi driver 簽名</li>
+</ul>
+</li>
+<li>app<ul>
+<li>app container</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>金要登錄平台</p>
+<ul>
+<li>ek cert chain</li>
+<li>private.pfx ap憑證申請<ul>
+<li>以</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>gary sumarize</p>
+</li>
+<li>11/21狄瑞 邊信連RD meeting<ul>
+<li>fECP v1.5(k8s aws)</li>
+<li>Run update script from sandbox on vHub 筆電更新</li>
+<li>Deploy update using network IP</li>
+<li>VPN tunnel(device ID cert from TWCA)</li>
+<li>codesign做e2e file tranfer(option)</li>
+</ul>
+</li>
+</ul>
+<h1 id="1121">11/21</h1>
+<ul>
+<li>srs spec</li>
+<li>harbor架構 ota</li>
+<li>trusted thing架構<ul>
+<li>sequence diagram</li>
+<li>use case</li>
+</ul>
+</li>
+</ul>
+<pre class="codehilite"><code># Note
+Trusted Things 可信物聯網設備解決方案 – 信任鏈概念
+簡要描述軟體系統，包括目的、範圍、定義、引用文檔和總體描述。
+
+* mtls通訊
+    * 資料交換驗證雙方身分
+    * 建立加密通道確保資料傳輸機密
+* 容器化應用程式 (cosnar) 
+    * 驗證容器來源及完整性
+* 設備上運行容器化應用程式的sandbox  TEE-REE 執行環境(CCSars) 韌體codesign
+    *  TEE-REE 執行環境
+    *  隔離應用與設備，運算資料無法經硬體存取 
+    *  隱私計算
+* 啟動時驗證預載程式簽章(韌體 驅動 CCSars)
+    * UEFI
+    * TPM AK證明身分憑證
+* 信任供應商 信任設備清單
+* TPM產生信任跟
+
+
+* A1註冊AK 金鑰登陸平台
+    * 在每一個設備發起applycert, activatecredential
+* A2申請AK憑證 物聯網
+* A3系統軟體認證服務
+    * CCSars
+    * 軟體供應商對軟體簽章，簽名完提供給設備供應商
+    * 設備供應商拿到簽名軟體，透過信任跟驗證簽名燒錄
+    * 安全開機
+* B1應用軟體認證服務
+    * Cosnar
+* B2安全容器沙箱
+    * fECP
+    * harbor OTA, notary signer
+</code></pre>
+
+<h2 id="117">11/7</h2>
+<ul>
+<li>fECP v1.5 spec summary</li>
+<li>畫一張圖給owen <ul>
+<li>container OTA update(用harbor)</li>
+</ul>
+</li>
+<li>tss-esapi走完activate credential</li>
+</ul>
+<h1 id="1024">10/24</h1>
+<pre class="codehilite"><code>while true; do grpc_health_probe -tls -tls-client-cert /tls/client/tls.crt -tls-client-key /tls/client/tls.key -tls-ca-cert /tls/server/ca.crt -addr 172.3.0.1:30891; sleep 1; done
+</code></pre>
+
+<pre class="codehilite"><code>while true; do ./grpc_health_probe -tls -tls-client-cert /opt/fiducia/tls/client-node.crt -tls-client-key /opt/fiducia/tls/client-node.key -tls-ca-cert /opt/fiducia/tls/server-ca.crt -addr 172.3.0.1:30891 -connect-timeout 1s; sleep 1; done
+
+ ./grpcurl --key /opt/fiducia/tls/client-node.key --cert /opt/fiducia/tls/client-node.crt -cacert /opt/fiducia/tls/server-ca.crt -d &quot;{\&quot;service_name\&quot;:\&quot;\&quot;,\&quot;permission\&quot;:\&quot;\&quot;,\&quot;namespaces\&quot;:\&quot;resource-sandbox\&quot;}&quot; -import-path ./proto -proto capability-api.proto 172.3.0.1:30891 capability.CapabilityService/CreateCapability
+</code></pre>
+
+<pre class="codehilite"><code>while true; do ./grpc_health_probe -tls -tls-client-cert /opt/fiducia/tls/client-node.crt -tls-client-key /opt/fiducia/tls/client-node.key -tls-ca-cert /opt/fiducia/tls/server-ca.crt -addr 172.3.0.1:30891 -connect-timeout 1s; sleep 1; done
+
+ ./grpcurl --key /opt/fiducia/tls/client-node.key --cert /opt/fiducia/tls/client-node.crt -cacert /opt/fiducia/tls/server-ca.crt -d &quot;{\&quot;service_name\&quot;:\&quot;\&quot;,\&quot;permission\&quot;:\&quot;\&quot;,\&quot;namespaces\&quot;:\&quot;resource-sandbox\&quot;}&quot; -import-path ./proto -proto capability-api.proto 172.3.0.1:30891 capability.CapabilityService/CreateCapability
+</code></pre>
+
+<ul>
+<li>uninstall hook<ul>
+<li>remove IPPOOL</li>
+</ul>
+</li>
+<li>init-container</li>
+<li>test-script</li>
+<li>file-api</li>
+<li>ota-api
+sudo kubectl get pods -l app=device-pod -n resource-sandbox --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}'</li>
+</ul>
+<p>libvirt lxc init path sbin init w</p>
+<pre class="codehilite"><code>curl -o /usr/local/bin/kubectl -L &quot;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&quot;
+chmod +x /usr/local/bin/kubectl
+sudo kubectl get pods -l app=device-pod -n resource-sandbox --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}'
+</code></pre>
+
+<pre class="codehilite"><code>while true; do grpc_health_probe -tls -tls-client-cert /tls/client/tls.crt -tls-client-key /tls/client/tls.key -tls-ca-cert /tls/server/ca.crt -addr 172.3.0.1:30891; sleep 1; done
+
+while true; do grpc_health_probe -tls -tls-client-cert /tls/client/tls.crt -tls-client-key /tls/client/tls.key -tls-ca-cert /tls/server/ca.crt -addr 172.3.0.1:30891 -connect-timeout 250ms; sleep 1; done
+
+
+while true; do grpc_health_probe -tls -tls-client-cert /tls/client/tls.crt -tls-client-key /tls/client/tls.key -tls-ca-cert /tls/server/ca.crt -addr 172.3.0.1:30891 -connect-timeout 5s; sleep 1; done
+
+while true; do grpc_health_probe -tls -tls-client-cert /tls/client/tls.crt -tls-client-key /tls/client/tls.key -tls-ca-cert /tls/server/ca.crt -addr :65256 -connect-timeout 1s; sleep 1; done
+            Server::builder()
+                .tls_config(identity.server_mtls().await)?
+                .add_service(health_service)
+                .add_service(CapabilityServiceServer::new(capability_service))
+                .serve(addr)
+                .await?;
+
+
+
+  timeout: failed to connect service &quot;172.3.0.1:30891&quot; within 1s              
+</code></pre>
+
+<h2 id="1019">10/19</h2>
+<p>https://wiki.fiduciaedge.work/engineering/docs/docker-multiarch-image-build/setup/start?s[]=buildx
+lvresize -l +100%FREE ubuntu-vg/ubuntu-lv --resizefs</p>
+<p>Warning  FailedScheduling  26s   default-scheduler  0/2 nodes are available: 2 node(s) had taint {node.kubernetes.io/disk-pressure: }, that the pod didn't tolerate.</p>
+<p>Warning  Failed     18s (x2 over 36s)  kubelet            Failed to pull image "fiduciaedge/calico-job:0.1": rpc error: code = Unknown desc = failed to pull and unpack image "docker.io/fiduciaedge/calico-job:0.1": failed to resolve reference "docker.io/fiduciaedge/calico-job:0.1": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+RUN apk --update add python3</p>
+<p>pip3 install requests</p>
+<pre class="codehilite"><code>Unable to connect to the server: tls: failed to verify certificate: x509: certificate signed by unknown authority
+
+https://blog.csdn.net/a5534789/article/details/112848404
+
+
+/etc/cni/net.d
+  Warning  FailedScheduling  &lt;invalid&gt;  default-scheduler  0/2 nodes are available: 1 node(s) had taint {node.kubernetes.io/disk-pressure: }, that the pod didn't tolerate, 1 node(s) had taint {node.kubernetes.io/not-ready: }, that the pod didn't tolerate.
+
+
+
+ bootstrap
+
+   Normal   Scheduled  85s                default-scheduler  Successfully assigned fecb-system/fecb-cert-bootstrap-gkq2h to jerry-worker
+  Normal   Pulled     78s                kubelet            Successfully pulled image &quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot; in 2.630814969s
+  Normal   Pulled     76s                kubelet            Successfully pulled image &quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot; in 2.169203747s
+  Normal   Pulled     60s                kubelet            Successfully pulled image &quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot; in 2.257289114s
+  Normal   Pulling    30s (x4 over 81s)  kubelet            Pulling image &quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot;
+  Normal   Created    28s (x4 over 78s)  kubelet            Created container fecb-tls-bootstrap
+  Normal   Started    28s (x4 over 78s)  kubelet            Started container fecb-tls-bootstrap
+  Normal   Pulled     28s                kubelet            Successfully pulled image &quot;fiduciaedge/fecb-tls-bootstrap:v0.1.0&quot; in 2.123075718s
+  Warning  BackOff    4s (x7 over 75s)   kubelet            Back-off restarting failed container
+</code></pre>
+
+<h1 id="1013">10/13</h1>
+<ul>
+<li>default-ns不能刪除 雞生蛋</li>
+</ul>
+<pre class="codehilite"><code>sudo su
+calicoctl apply -f calico-ip-pool.yaml 
+calicoctl get ippools
+calicoctl delete -f calico-ip-pool.yaml 
+
+
+calicoctl apply -f agent-ns-ippool.yaml 
+calicoctl delete -f agent-ns-ippool.yaml 
+</code></pre>
+
+<ul>
+<li>agent-ns.ippool</li>
+<li>default-namespace.ippool</li>
+<li>fecb-system.ippool</li>
+<li>mgmt-ns.ippool</li>
+<li>resource-sandbox.ippool</li>
+</ul>
+<h2 id="919">9/19</h2>
+<ul>
+<li>fECB API<ul>
+<li>Fix mtls environment variables to follow naming convention &amp; set system-api mtls</li>
+</ul>
+</li>
+<li>自建cluster<ul>
+<li>watch</li>
+</ul>
+</li>
+<li>proto 放api pod</li>
+<li>ota api</li>
+<li>修改file-api</li>
+<li>grafana/loki<ul>
+<li>動態hostname</li>
+</ul>
+</li>
+<li>
+<p>k8s</p>
+<ul>
+<li>https://wiki.fiduciaedge.work/engineering/products/fecp/fecp_installation/start</li>
+<li>eddie<ul>
+<li>https://hackmd.io/L1iAITrpRpSJUKuSBxvpjQ</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>度假攜帶</p>
+<ul>
+<li>手機 耳機 手錶 手電筒 露營燈 喇叭 耳罩</li>
+<li>QuietComfort Ultra</li>
+</ul>
+</li>
+</ul>
+<h2 id="94">9/4</h2>
+<ul>
+<li>helm 書</li>
+<li>harbor helm佈署</li>
+<li>data helm</li>
+</ul>
+<h3 id="select2pod2ip2db">select2pod2ip2db</h3>
+<ul>
+<li>selector</li>
+<li>deploy_name</li>
+<li>找到最新pod</li>
+<li>
+<p>找到ip</p>
+</li>
+<li>
+<p>selector -&gt; pod/status/time -&gt; latest pod name</p>
+</li>
+</ul>
+<pre class="codehilite"><code>sudo kubectl get pod -l app=device-selector -n resource-sandbox --no-headers -o jsonpath='{.items}'
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}'
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox -o jsonpath='{.items[0].metadata.creationTimestamp}'
+</code></pre>
+
+<pre class="codehilite"><code>sudo kubectl get deployment -l app=device-selector -n resource-sandbox -o jsonpath='{.items[0].metadata.name}'
+
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox --no-headers
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox -o jsonpath='{.items[0].metadata.creationTimestamp}'
+
+sudo kubectl get pod -l app=device-selector -n resource-sandbox -o jsonpath='{.items[0].metadata.name}'
+</code></pre>
+
+<h2 id="828">8/28</h2>
+<ul>
+<li>database pod</li>
+</ul>
+<p>https://github.com/docker-library/docs/blob/master/mariadb/README.md
+* cleanup
+* init-container
+* fecb bug
+    * create capability不見
+    * init container</p>
+<h2 id="821">8/21</h2>
+<p>mender 只會被mender.conf影響
+* api
+    * config mender client
+    * config mender from conf
+* ota-api
+    * config client json
+        * cp file done
+    * health
+        * 等待實作system api 搭配
+    * status 
+        * 先不做 坐在health
+    * config inventory 
+    * container pod
+        * https://stackoverflow.com/questions/32163955/how-to-run-shell-script-on-host-from-docker-container
+* todo
+    * system get ver
+    * ota health check
+    * </p>
+<h2 id="727">7/27</h2>
+<ul>
+<li>Amazon Simple Storage Service (Amazon S3)</li>
+<li>Key Encryption Service (KES) </li>
+<li>
+<p>Key Management Service (KMS)</p>
+</li>
+<li>
+<p>pitis-cloud minio畫圖(2000-install)</p>
+<ul>
+<li>kms</li>
+<li>kes</li>
+<li>minio</li>
+<li>vault</li>
+</ul>
+</li>
+<li>
+<p>修改/etc/hosts通過</p>
+<ul>
+<li>確認kubernetes的host resolve</li>
+</ul>
+</li>
+</ul>
+<h3 id="meeting">meeting</h3>
+<ul>
+<li>實作harbor對接scanner</li>
+<li>討論registry要架設到那些政府雲是可用的(TWCC)</li>
+</ul>
+<h3 id="issue">issue</h3>
+<ul>
+<li>docker login https://harbor.tiip.internal:30003<ul>
+<li>才會有綠勾勾</li>
+<li>push harbor.tiip.internal:30003</li>
+</ul>
+</li>
+<li>docker login https://harbor.twca.com.tw<ul>
+<li>host resolve才會成功</li>
+</ul>
+</li>
+</ul>
+<h2 id="73">7/3</h2>
+<ul>
+<li>測試報告<ul>
+<li>https://harbor.twca.com.tw/</li>
+<li>https://notary.twca.com.tw/</li>
+</ul>
+</li>
+<li>使用手冊</li>
+<li>錄影CosNAR</li>
+</ul>
+<h1 id="621">6/21</h1>
+<ul>
+<li>harbor, vm, rust</li>
+</ul>
+<h2 id="620">6/20</h2>
+<ul>
+<li>docker doc</li>
+<li>notary 成功</li>
+</ul>
+<h2 id="614">6/14</h2>
+<ul>
+<li>自架pistis cloud-harbor-server</li>
+<li>自架notary signer</li>
+<li>client呼叫</li>
+</ul>
+<p>parse error: Invalid numeric literal at line 1, column 6
+* dekra
+    * 先確定gary runall
+    * 跑jerry debug8 密集測試 capability
+    * 確認check function
+* 先後順序
+    * 先確定pod stable
+    * 包裝roll up
+    * annotation
+    * 解checking function(plus)
+    * sqlite3 改成postgres</p>
+<ul>
+<li>meeting<ul>
+<li>rollout 確保unit (podip)</li>
+<li>annotation (clean up podip)
+rollout
+timestamp</li>
+</ul>
+</li>
+<li>svc account</li>
+</ul>
+<pre class="codehilite"><code>curl -H &quot;Authorization: Bearer $K3S_TOKEN&quot; https://kubernetes.default.svc.cluster.local/api/v1/namespaces/fecb-system/secrets/root-ca -k 
+
+curl -H &quot;Authorization: Bearer $K3S_TOKEN&quot; https://kubernetes.default.svc.cluster.local/api/v1/namespaces/resource-sandbox/pods -k
+</code></pre>
+
+<ul>
+<li>create issue1 dvc (debug6)<ul>
+<li>E0611 20:55:30.517865    4575 memcache.go:121] couldn't get resource list for external.metrics.k8s.io/v1beta1: the server is currently unable to handle the request</li>
+</ul>
+</li>
+</ul>
+<pre class="codehilite"><code>in capability
+
+sudo kubectl get pods device-python-f9f899cff-jd2kl -n resource-sandbox -o jsonpath='{.status.phase}'
+
+![](https://hackmd.io/_uploads/H1MENnmDh.png)
+
+
+sudo kubectl get pods device-python-f9f899cff-8ppfm -n resource-sandbox -o jsonpath='{.status.phase}'  &gt; out 2&gt;error
+
+
+kubectl get apiservice
+v1beta1.external.metrics.k8s.io        monitoring/prometheus-adapter   False (FailedDiscoveryCheck) 
+
+取得其他pod ip
+
+改用
+curl http://localhost:8080/api/v1/namespaces/default/pods
+
+export K3S_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+
+curl -H &quot;Authorization: Bearer $K3S_TOKEN&quot; https://kubernetes.default.svc.cluster.local/api/v1/namespaces/fecb-system/secrets/root-ca -k | jq -r '.data[&quot;portainer-rootca.crt&quot;]' | base64 -d
+</code></pre>
+
+<p>https://aptakube.com/blog/troubleshooting-api-resource-list</p>
+<ul>
+<li>測試capability pod (debug8)</li>
+<li>create issue1 app(debug3)</li>
+</ul>
+<pre class="codehilite"><code>sudo kubectl get pod -l app=app-selector -n default -o jsonpath='{.items[0].metadata.name}'
+sudo kubectl get pod -l app=app-selector -n default -o json
+</code></pre>
+
+<h1 id="612">6/12</h1>
+<ul>
+<li>書<ul>
+<li>rust 程式設計</li>
+<li>harbor</li>
+</ul>
+</li>
+</ul>
+<h2 id="611">6/11</h2>
+<ul>
+<li>兩個pod用相同selector輩分狀態(terminating, init)</li>
+</ul>
+<pre class="codehilite"><code>[{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;kind&quot;:&quot;Pod&quot;,&quot;metadata&quot;:{&quot;annotations&quot;:{&quot;cni.projectcalico.org/containerID&quot;:&quot;8968f26013722d779ceeb3bd25cf41f376f5ad79bbb521a274cba801da88cfe1&quot;,&quot;cni.projectcalico.org/podIP&quot;:&quot;172.5.19.174/32&quot;,&quot;cni.projectcalico.org/podIPs&quot;:&quot;172.5.19.174/32&quot;},&quot;creationTimestamp&quot;:&quot;2023-06-11T09:28:44Z&quot;,&quot;deletionGracePeriodSeconds&quot;:30,&quot;deletionTimestamp&quot;:&quot;2023-06-11T10:39:16Z&quot;,&quot;generateName&quot;:&quot;app-python-55f76665f8-&quot;,&quot;labels&quot;:{&quot;app&quot;:&quot;app-selector&quot;,&quot;pod-template-hash&quot;:&quot;55f76665f8&quot;},&quot;managedFields&quot;:[{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;fieldsType&quot;:&quot;FieldsV1&quot;,&quot;fieldsV1&quot;:{&quot;f:metadata&quot;:{&quot;f:annotations&quot;:{&quot;.&quot;:{},&quot;f:cni.projectcalico.org/containerID&quot;:{},&quot;f:cni.projectcalico.org/podIP&quot;:{},&quot;f:cni.projectcalico.org/podIPs&quot;:{}}}},&quot;manager&quot;:&quot;calico&quot;,&quot;operation&quot;:&quot;Update&quot;,&quot;time&quot;:&quot;2023-06-11T09:28:45Z&quot;},{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;fieldsType&quot;:&quot;FieldsV1&quot;,&quot;fieldsV1&quot;:{&quot;f:metadata&quot;:{&quot;f:generateName&quot;:{},&quot;f:labels&quot;:{&quot;.&quot;:{},&quot;f:app&quot;:{},&quot;f:pod-template-hash&quot;:{}},&quot;f:ownerReferences&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;uid\&quot;:\&quot;b3eb2a0f-ca93-46a6-ac09-5b3b951da68d\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:apiVersion&quot;:{},&quot;f:blockOwnerDeletion&quot;:{},&quot;f:controller&quot;:{},&quot;f:kind&quot;:{},&quot;f:name&quot;:{},&quot;f:uid&quot;:{}}}},&quot;f:spec&quot;:{&quot;f:containers&quot;:{&quot;k:{\&quot;name\&quot;:\&quot;my-pod\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:args&quot;:{},&quot;f:command&quot;:{},&quot;f:env&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;NETWORK_INTERFACE\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}}},&quot;f:image&quot;:{},&quot;f:imagePullPolicy&quot;:{},&quot;f:name&quot;:{},&quot;f:ports&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;containerPort\&quot;:30502,\&quot;protocol\&quot;:\&quot;TCP\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:containerPort&quot;:{},&quot;f:protocol&quot;:{}}},&quot;f:resources&quot;:{},&quot;f:terminationMessagePath&quot;:{},&quot;f:terminationMessagePolicy&quot;:{},&quot;f:volumeMounts&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;mountPath\&quot;:\&quot;/.cache\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:mountPath&quot;:{},&quot;f:name&quot;:{}}}}},&quot;f:dnsPolicy&quot;:{},&quot;f:enableServiceLinks&quot;:{},&quot;f:initContainers&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;clear\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:args&quot;:{},&quot;f:command&quot;:{},&quot;f:env&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;SERVICE_SELECTOR_NAME\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}}},&quot;f:image&quot;:{},&quot;f:imagePullPolicy&quot;:{},&quot;f:name&quot;:{},&quot;f:resources&quot;:{},&quot;f:terminationMessagePath&quot;:{},&quot;f:terminationMessagePolicy&quot;:{},&quot;f:volumeMounts&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;mountPath\&quot;:\&quot;/.cache\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:mountPath&quot;:{},&quot;f:name&quot;:{}}}},&quot;k:{\&quot;name\&quot;:\&quot;init-myservice\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:args&quot;:{},&quot;f:command&quot;:{},&quot;f:env&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;DECRYPTED_FOLDER_PATH\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}},&quot;k:{\&quot;name\&quot;:\&quot;FECB_CAPABILITY_API_SERVER_URL\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}},&quot;k:{\&quot;name\&quot;:\&quot;FECB_FILE_API_SERVER_URL\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}}},&quot;f:image&quot;:{},&quot;f:imagePullPolicy&quot;:{},&quot;f:name&quot;:{},&quot;f:resources&quot;:{},&quot;f:terminationMessagePath&quot;:{},&quot;f:terminationMessagePolicy&quot;:{},&quot;f:volumeMounts&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;mountPath\&quot;:\&quot;/.cache\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:mountPath&quot;:{},&quot;f:name&quot;:{}}}}},&quot;f:restartPolicy&quot;:{},&quot;f:runtimeClassName&quot;:{},&quot;f:schedulerName&quot;:{},&quot;f:securityContext&quot;:{},&quot;f:serviceAccount&quot;:{},&quot;f:serviceAccountName&quot;:{},&quot;f:terminationGracePeriodSeconds&quot;:{},&quot;f:volumes&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;cache-volume\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:emptyDir&quot;:{},&quot;f:name&quot;:{}}}},&quot;f:status&quot;:{&quot;f:conditions&quot;:{&quot;k:{\&quot;type\&quot;:\&quot;ContainersReady\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:lastProbeTime&quot;:{},&quot;f:lastTransitionTime&quot;:{},&quot;f:message&quot;:{},&quot;f:reason&quot;:{},&quot;f:status&quot;:{},&quot;f:type&quot;:{}},&quot;k:{\&quot;type\&quot;:\&quot;Initialized\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:lastProbeTime&quot;:{},&quot;f:lastTransitionTime&quot;:{},&quot;f:message&quot;:{},&quot;f:reason&quot;:{},&quot;f:status&quot;:{},&quot;f:type&quot;:{}},&quot;k:{\&quot;type\&quot;:\&quot;Ready\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:lastProbeTime&quot;:{},&quot;f:lastTransitionTime&quot;:{},&quot;f:message&quot;:{},&quot;f:reason&quot;:{},&quot;f:status&quot;:{},&quot;f:type&quot;:{}}},&quot;f:containerStatuses&quot;:{},&quot;f:hostIP&quot;:{},&quot;f:initContainerStatuses&quot;:{},&quot;f:podIP&quot;:{},&quot;f:podIPs&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;ip\&quot;:\&quot;172.5.19.174\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:ip&quot;:{}}},&quot;f:startTime&quot;:{}}},&quot;manager&quot;:&quot;k3s&quot;,&quot;operation&quot;:&quot;Update&quot;,&quot;time&quot;:&quot;2023-06-11T09:28:48Z&quot;}],&quot;name&quot;:&quot;app-python-55f76665f8-xxzfc&quot;,&quot;namespace&quot;:&quot;default&quot;,&quot;ownerReferences&quot;:[{&quot;apiVersion&quot;:&quot;apps/v1&quot;,&quot;blockOwnerDeletion&quot;:true,&quot;controller&quot;:true,&quot;kind&quot;:&quot;ReplicaSet&quot;,&quot;name&quot;:&quot;app-python-55f76665f8&quot;,&quot;uid&quot;:&quot;b3eb2a0f-ca93-46a6-ac09-5b3b951da68d&quot;}],&quot;resourceVersion&quot;:&quot;20309950&quot;,&quot;uid&quot;:&quot;21914a1e-73c2-4396-ae55-d635f56cd0ab&quot;},&quot;spec&quot;:{&quot;containers&quot;:[{&quot;args&quot;:[&quot;-c&quot;,&quot;while true; do echo hello; sleep 10;done&quot;],&quot;command&quot;:[&quot;/bin/sh&quot;],&quot;env&quot;:[{&quot;name&quot;:&quot;NETWORK_INTERFACE&quot;,&quot;value&quot;:&quot;172.3.0.1:&quot;}],&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-python-example-app-sandbox:v1.4.1-x86_64&quot;,&quot;imagePullPolicy&quot;:&quot;Always&quot;,&quot;name&quot;:&quot;my-pod&quot;,&quot;ports&quot;:[{&quot;containerPort&quot;:30502,&quot;protocol&quot;:&quot;TCP&quot;}],&quot;resources&quot;:{},&quot;terminationMessagePath&quot;:&quot;/dev/termination-log&quot;,&quot;terminationMessagePolicy&quot;:&quot;File&quot;,&quot;volumeMounts&quot;:[{&quot;mountPath&quot;:&quot;/.cache&quot;,&quot;name&quot;:&quot;cache-volume&quot;},{&quot;mountPath&quot;:&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;,&quot;name&quot;:&quot;kube-api-access-8t4vw&quot;,&quot;readOnly&quot;:true}]}],&quot;dnsPolicy&quot;:&quot;ClusterFirst&quot;,&quot;enableServiceLinks&quot;:true,&quot;initContainers&quot;:[{&quot;args&quot;:[&quot;ls&quot;],&quot;command&quot;:[&quot;/bin/bash&quot;,&quot;-c&quot;],&quot;env&quot;:[{&quot;name&quot;:&quot;SERVICE_SELECTOR_NAME&quot;,&quot;value&quot;:&quot;app-selector&quot;}],&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-clear-sandbox:v1.4.3-x86_64&quot;,&quot;imagePullPolicy&quot;:&quot;Always&quot;,&quot;name&quot;:&quot;clear&quot;,&quot;resources&quot;:{},&quot;terminationMessagePath&quot;:&quot;/dev/termination-log&quot;,&quot;terminationMessagePolicy&quot;:&quot;File&quot;,&quot;volumeMounts&quot;:[{&quot;mountPath&quot;:&quot;/.cache&quot;,&quot;name&quot;:&quot;cache-volume&quot;},{&quot;mountPath&quot;:&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;,&quot;name&quot;:&quot;kube-api-access-8t4vw&quot;,&quot;readOnly&quot;:true}]},{&quot;args&quot;:[&quot;./init.sh \u003e /.cache/log&quot;],&quot;command&quot;:[&quot;/bin/bash&quot;,&quot;-c&quot;],&quot;env&quot;:[{&quot;name&quot;:&quot;FECB_CAPABILITY_API_SERVER_URL&quot;,&quot;value&quot;:&quot;172.3.0.1:30891&quot;},{&quot;name&quot;:&quot;DECRYPTED_FOLDER_PATH&quot;,&quot;value&quot;:&quot;/.cache/files&quot;},{&quot;name&quot;:&quot;FECB_FILE_API_SERVER_URL&quot;,&quot;value&quot;:&quot;http://172.3.0.1:30893&quot;}],&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-init-sandbox:v1.4.3-x86_64&quot;,&quot;imagePullPolicy&quot;:&quot;Always&quot;,&quot;name&quot;:&quot;init-myservice&quot;,&quot;resources&quot;:{},&quot;terminationMessagePath&quot;:&quot;/dev/termination-log&quot;,&quot;terminationMessagePolicy&quot;:&quot;File&quot;,&quot;volumeMounts&quot;:[{&quot;mountPath&quot;:&quot;/.cache&quot;,&quot;name&quot;:&quot;cache-volume&quot;},{&quot;mountPath&quot;:&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;,&quot;name&quot;:&quot;kube-api-access-8t4vw&quot;,&quot;readOnly&quot;:true}]}],&quot;nodeName&quot;:&quot;staging-worker&quot;,&quot;nodeSelector&quot;:{&quot;katacontainers.io/kata-runtime&quot;:&quot;true&quot;},&quot;overhead&quot;:{&quot;cpu&quot;:&quot;250m&quot;,&quot;memory&quot;:&quot;160Mi&quot;},&quot;preemptionPolicy&quot;:&quot;PreemptLowerPriority&quot;,&quot;priority&quot;:0,&quot;restartPolicy&quot;:&quot;Always&quot;,&quot;runtimeClassName&quot;:&quot;kata-qemu&quot;,&quot;schedulerName&quot;:&quot;default-scheduler&quot;,&quot;securityContext&quot;:{},&quot;serviceAccount&quot;:&quot;fecb-init-container-app&quot;,&quot;serviceAccountName&quot;:&quot;fecb-init-container-app&quot;,&quot;terminationGracePeriodSeconds&quot;:30,&quot;tolerations&quot;:[{&quot;effect&quot;:&quot;NoExecute&quot;,&quot;key&quot;:&quot;node.kubernetes.io/not-ready&quot;,&quot;operator&quot;:&quot;Exists&quot;,&quot;tolerationSeconds&quot;:5},{&quot;effect&quot;:&quot;NoExecute&quot;,&quot;key&quot;:&quot;node.kubernetes.io/unreachable&quot;,&quot;operator&quot;:&quot;Exists&quot;,&quot;tolerationSeconds&quot;:5}],&quot;volumes&quot;:[{&quot;emptyDir&quot;:{},&quot;name&quot;:&quot;cache-volume&quot;},{&quot;name&quot;:&quot;kube-api-access-8t4vw&quot;,&quot;projected&quot;:{&quot;defaultMode&quot;:420,&quot;sources&quot;:[{&quot;serviceAccountToken&quot;:{&quot;expirationSeconds&quot;:3607,&quot;path&quot;:&quot;token&quot;}},{&quot;configMap&quot;:{&quot;items&quot;:[{&quot;key&quot;:&quot;ca.crt&quot;,&quot;path&quot;:&quot;ca.crt&quot;}],&quot;name&quot;:&quot;kube-root-ca.crt&quot;}},{&quot;downwardAPI&quot;:{&quot;items&quot;:[{&quot;fieldRef&quot;:{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;fieldPath&quot;:&quot;metadata.namespace&quot;},&quot;path&quot;:&quot;namespace&quot;}]}}]}}]},&quot;status&quot;:{&quot;conditions&quot;:[{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-06-11T09:28:44Z&quot;,&quot;message&quot;:&quot;containers with incomplete status: [init-myservice]&quot;,&quot;reason&quot;:&quot;ContainersNotInitialized&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;Initialized&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-06-11T09:28:44Z&quot;,&quot;message&quot;:&quot;containers with unready status: [my-pod]&quot;,&quot;reason&quot;:&quot;ContainersNotReady&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;Ready&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-06-11T09:28:44Z&quot;,&quot;message&quot;:&quot;containers with unready status: [my-pod]&quot;,&quot;reason&quot;:&quot;ContainersNotReady&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;ContainersReady&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-06-11T09:28:44Z&quot;,&quot;status&quot;:&quot;True&quot;,&quot;type&quot;:&quot;PodScheduled&quot;}],&quot;containerStatuses&quot;:[{&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-python-example-app-sandbox:v1.4.1-x86_64&quot;,&quot;imageID&quot;:&quot;&quot;,&quot;lastState&quot;:{},&quot;name&quot;:&quot;my-pod&quot;,&quot;ready&quot;:false,&quot;restartCount&quot;:0,&quot;started&quot;:false,&quot;state&quot;:{&quot;waiting&quot;:{&quot;reason&quot;:&quot;PodInitializing&quot;}}}],&quot;hostIP&quot;:&quot;192.168.50.66&quot;,&quot;initContainerStatuses&quot;:[{&quot;containerID&quot;:&quot;containerd://8a62d5a33400f32fccfa4836f7a6abcda0832452fb339661041f3187a649cb30&quot;,&quot;image&quot;:&quot;docker.io/fiduciaedge/fecb-sdk-clear-sandbox:v1.4.3-x86_64&quot;,&quot;imageID&quot;:&quot;docker.io/fiduciaedge/fecb-sdk-clear-sandbox@sha256:93d7e663ee23841a25d67f4263910e677549ea155e350a14ef977b87083a20e9&quot;,&quot;lastState&quot;:{},&quot;name&quot;:&quot;clear&quot;,&quot;ready&quot;:true,&quot;restartCount&quot;:0,&quot;state&quot;:{&quot;terminated&quot;:{&quot;containerID&quot;:&quot;containerd://8a62d5a33400f32fccfa4836f7a6abcda0832452fb339661041f3187a649cb30&quot;,&quot;exitCode&quot;:0,&quot;finishedAt&quot;:&quot;2023-06-11T09:28:48Z&quot;,&quot;reason&quot;:&quot;Completed&quot;,&quot;startedAt&quot;:&quot;2023-06-11T09:28:48Z&quot;}}},{&quot;containerID&quot;:&quot;containerd://f78fbd60f5ce8c640d83863c38857835680a58bcb6222fa07ccd4b7208f9da4b&quot;,&quot;image&quot;:&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox:v1.4.3-x86_64&quot;,&quot;imageID&quot;:&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox@sha256:645cf7a519a302b82825423946775a8ef90d7c29126bef1a58e04bd0c3b7000c&quot;,&quot;lastState&quot;:{&quot;terminated&quot;:{&quot;containerID&quot;:&quot;containerd://f78fbd60f5ce8c640d83863c38857835680a58bcb6222fa07ccd4b7208f9da4b&quot;,&quot;exitCode&quot;:1,&quot;finishedAt&quot;:&quot;2023-06-11T10:33:44Z&quot;,&quot;reason&quot;:&quot;Error&quot;,&quot;startedAt&quot;:&quot;2023-06-11T10:33:38Z&quot;}},&quot;name&quot;:&quot;init-myservice&quot;,&quot;ready&quot;:false,&quot;restartCount&quot;:17,&quot;state&quot;:{&quot;waiting&quot;:{&quot;message&quot;:&quot;back-off 5m0s restarting failed container=init-myservice pod=app-python-55f76665f8-xxzfc_default(21914a1e-73c2-4396-ae55-d635f56cd0ab)&quot;,&quot;reason&quot;:&quot;CrashLoopBackOff&quot;}}}],&quot;phase&quot;:&quot;Pending&quot;,&quot;podIP&quot;:&quot;172.5.19.174&quot;,&quot;podIPs&quot;:[{&quot;ip&quot;:&quot;172.5.19.174&quot;}],&quot;qosClass&quot;:&quot;BestEffort&quot;,&quot;startTime&quot;:&quot;2023-06-11T09:28:44Z&quot;}},{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;kind&quot;:&quot;Pod&quot;,&quot;metadata&quot;:{&quot;annotations&quot;:{&quot;cni.projectcalico.org/containerID&quot;:&quot;cf89f283739f9383c9a09282f9ac33b039a9dc7cf7eb1b6209f275175ca5489d&quot;,&quot;cni.projectcalico.org/podIP&quot;:&quot;172.5.19.186/32&quot;,&quot;cni.projectcalico.org/podIPs&quot;:&quot;172.5.19.186/32&quot;},&quot;creationTimestamp&quot;:&quot;2023-06-12T00:13:42Z&quot;,&quot;generateName&quot;:&quot;app-python-78674bc8d9-&quot;,&quot;labels&quot;:{&quot;app&quot;:&quot;app-selector&quot;,&quot;pod-template-hash&quot;:&quot;78674bc8d9&quot;},&quot;managedFields&quot;:[{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;fieldsType&quot;:&quot;FieldsV1&quot;,&quot;fieldsV1&quot;:{&quot;f:metadata&quot;:{&quot;f:annotations&quot;:{&quot;.&quot;:{},&quot;f:cni.projectcalico.org/containerID&quot;:{},&quot;f:cni.projectcalico.org/podIP&quot;:{},&quot;f:cni.projectcalico.org/podIPs&quot;:{}}}},&quot;manager&quot;:&quot;calico&quot;,&quot;operation&quot;:&quot;Update&quot;,&quot;time&quot;:&quot;2023-06-12T00:13:43Z&quot;},{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;fieldsType&quot;:&quot;FieldsV1&quot;,&quot;fieldsV1&quot;:{&quot;f:metadata&quot;:{&quot;f:generateName&quot;:{},&quot;f:labels&quot;:{&quot;.&quot;:{},&quot;f:app&quot;:{},&quot;f:pod-template-hash&quot;:{}},&quot;f:ownerReferences&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;uid\&quot;:\&quot;e8485c53-af96-4445-8edc-ffbf03614dc1\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:apiVersion&quot;:{},&quot;f:blockOwnerDeletion&quot;:{},&quot;f:controller&quot;:{},&quot;f:kind&quot;:{},&quot;f:name&quot;:{},&quot;f:uid&quot;:{}}}},&quot;f:spec&quot;:{&quot;f:containers&quot;:{&quot;k:{\&quot;name\&quot;:\&quot;my-pod\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:args&quot;:{},&quot;f:command&quot;:{},&quot;f:env&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;NETWORK_INTERFACE\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}}},&quot;f:image&quot;:{},&quot;f:imagePullPolicy&quot;:{},&quot;f:name&quot;:{},&quot;f:ports&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;containerPort\&quot;:30502,\&quot;protocol\&quot;:\&quot;TCP\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:containerPort&quot;:{},&quot;f:protocol&quot;:{}}},&quot;f:resources&quot;:{},&quot;f:terminationMessagePath&quot;:{},&quot;f:terminationMessagePolicy&quot;:{},&quot;f:volumeMounts&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;mountPath\&quot;:\&quot;/.cache\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:mountPath&quot;:{},&quot;f:name&quot;:{}}}}},&quot;f:dnsPolicy&quot;:{},&quot;f:enableServiceLinks&quot;:{},&quot;f:initContainers&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;init-myservice\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:args&quot;:{},&quot;f:command&quot;:{},&quot;f:env&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;DECRYPTED_FOLDER_PATH\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}},&quot;k:{\&quot;name\&quot;:\&quot;FECB_CAPABILITY_API_SERVER_URL\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}},&quot;k:{\&quot;name\&quot;:\&quot;FECB_FILE_API_SERVER_URL\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:name&quot;:{},&quot;f:value&quot;:{}}},&quot;f:image&quot;:{},&quot;f:imagePullPolicy&quot;:{},&quot;f:name&quot;:{},&quot;f:resources&quot;:{},&quot;f:terminationMessagePath&quot;:{},&quot;f:terminationMessagePolicy&quot;:{},&quot;f:volumeMounts&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;mountPath\&quot;:\&quot;/.cache\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:mountPath&quot;:{},&quot;f:name&quot;:{}}}}},&quot;f:restartPolicy&quot;:{},&quot;f:runtimeClassName&quot;:{},&quot;f:schedulerName&quot;:{},&quot;f:securityContext&quot;:{},&quot;f:serviceAccount&quot;:{},&quot;f:serviceAccountName&quot;:{},&quot;f:terminationGracePeriodSeconds&quot;:{},&quot;f:volumes&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;name\&quot;:\&quot;cache-volume\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:emptyDir&quot;:{},&quot;f:name&quot;:{}}}},&quot;f:status&quot;:{&quot;f:conditions&quot;:{&quot;k:{\&quot;type\&quot;:\&quot;ContainersReady\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:lastProbeTime&quot;:{},&quot;f:lastTransitionTime&quot;:{},&quot;f:message&quot;:{},&quot;f:reason&quot;:{},&quot;f:status&quot;:{},&quot;f:type&quot;:{}},&quot;k:{\&quot;type\&quot;:\&quot;Initialized\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:lastProbeTime&quot;:{},&quot;f:lastTransitionTime&quot;:{},&quot;f:message&quot;:{},&quot;f:reason&quot;:{},&quot;f:status&quot;:{},&quot;f:type&quot;:{}},&quot;k:{\&quot;type\&quot;:\&quot;Ready\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:lastProbeTime&quot;:{},&quot;f:lastTransitionTime&quot;:{},&quot;f:message&quot;:{},&quot;f:reason&quot;:{},&quot;f:status&quot;:{},&quot;f:type&quot;:{}}},&quot;f:containerStatuses&quot;:{},&quot;f:hostIP&quot;:{},&quot;f:initContainerStatuses&quot;:{},&quot;f:podIP&quot;:{},&quot;f:podIPs&quot;:{&quot;.&quot;:{},&quot;k:{\&quot;ip\&quot;:\&quot;172.5.19.186\&quot;}&quot;:{&quot;.&quot;:{},&quot;f:ip&quot;:{}}},&quot;f:startTime&quot;:{}}},&quot;manager&quot;:&quot;k3s&quot;,&quot;operation&quot;:&quot;Update&quot;,&quot;time&quot;:&quot;2023-06-12T00:13:45Z&quot;}],&quot;name&quot;:&quot;app-python-78674bc8d9-kc9fh&quot;,&quot;namespace&quot;:&quot;default&quot;,&quot;ownerReferences&quot;:[{&quot;apiVersion&quot;:&quot;apps/v1&quot;,&quot;blockOwnerDeletion&quot;:true,&quot;controller&quot;:true,&quot;kind&quot;:&quot;ReplicaSet&quot;,&quot;name&quot;:&quot;app-python-78674bc8d9&quot;,&quot;uid&quot;:&quot;e8485c53-af96-4445-8edc-ffbf03614dc1&quot;}],&quot;resourceVersion&quot;:&quot;20524951&quot;,&quot;uid&quot;:&quot;45034ce9-13fe-4af9-ad19-295971fb1e97&quot;},&quot;spec&quot;:{&quot;containers&quot;:[{&quot;args&quot;:[&quot;-c&quot;,&quot;while true; do echo hello; sleep 10;done&quot;],&quot;command&quot;:[&quot;/bin/sh&quot;],&quot;env&quot;:[{&quot;name&quot;:&quot;NETWORK_INTERFACE&quot;,&quot;value&quot;:&quot;172.3.0.1:&quot;}],&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-python-example-app-sandbox:v1.4.1-x86_64&quot;,&quot;imagePullPolicy&quot;:&quot;Always&quot;,&quot;name&quot;:&quot;my-pod&quot;,&quot;ports&quot;:[{&quot;containerPort&quot;:30502,&quot;protocol&quot;:&quot;TCP&quot;}],&quot;resources&quot;:{},&quot;terminationMessagePath&quot;:&quot;/dev/termination-log&quot;,&quot;terminationMessagePolicy&quot;:&quot;File&quot;,&quot;volumeMounts&quot;:[{&quot;mountPath&quot;:&quot;/.cache&quot;,&quot;name&quot;:&quot;cache-volume&quot;},{&quot;mountPath&quot;:&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;,&quot;name&quot;:&quot;kube-api-access-wz64g&quot;,&quot;readOnly&quot;:true}]}],&quot;dnsPolicy&quot;:&quot;ClusterFirst&quot;,&quot;enableServiceLinks&quot;:true,&quot;initContainers&quot;:[{&quot;args&quot;:[&quot;./init.sh \u003e /.cache/log&quot;],&quot;command&quot;:[&quot;/bin/bash&quot;,&quot;-c&quot;],&quot;env&quot;:[{&quot;name&quot;:&quot;FECB_CAPABILITY_API_SERVER_URL&quot;,&quot;value&quot;:&quot;172.3.0.1:30891&quot;},{&quot;name&quot;:&quot;DECRYPTED_FOLDER_PATH&quot;,&quot;value&quot;:&quot;/.cache/files&quot;},{&quot;name&quot;:&quot;FECB_FILE_API_SERVER_URL&quot;,&quot;value&quot;:&quot;http://172.3.0.1:30893&quot;}],&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-init-sandbox:v1.4.3-x86_64&quot;,&quot;imagePullPolicy&quot;:&quot;Always&quot;,&quot;name&quot;:&quot;init-myservice&quot;,&quot;resources&quot;:{},&quot;terminationMessagePath&quot;:&quot;/dev/termination-log&quot;,&quot;terminationMessagePolicy&quot;:&quot;File&quot;,&quot;volumeMounts&quot;:[{&quot;mountPath&quot;:&quot;/.cache&quot;,&quot;name&quot;:&quot;cache-volume&quot;},{&quot;mountPath&quot;:&quot;/var/run/secrets/kubernetes.io/serviceaccount&quot;,&quot;name&quot;:&quot;kube-api-access-wz64g&quot;,&quot;readOnly&quot;:true}]}],&quot;nodeName&quot;:&quot;staging-worker&quot;,&quot;nodeSelector&quot;:{&quot;katacontainers.io/kata-runtime&quot;:&quot;true&quot;},&quot;overhead&quot;:{&quot;cpu&quot;:&quot;250m&quot;,&quot;memory&quot;:&quot;160Mi&quot;},&quot;preemptionPolicy&quot;:&quot;PreemptLowerPriority&quot;,&quot;priority&quot;:0,&quot;restartPolicy&quot;:&quot;Always&quot;,&quot;runtimeClassName&quot;:&quot;kata-qemu&quot;,&quot;schedulerName&quot;:&quot;default-scheduler&quot;,&quot;securityContext&quot;:{},&quot;serviceAccount&quot;:&quot;fecb-init-container-app&quot;,&quot;serviceAccountName&quot;:&quot;fecb-init-container-app&quot;,&quot;terminationGracePeriodSeconds&quot;:30,&quot;tolerations&quot;:[{&quot;effect&quot;:&quot;NoExecute&quot;,&quot;key&quot;:&quot;node.kubernetes.io/not-ready&quot;,&quot;operator&quot;:&quot;Exists&quot;,&quot;tolerationSeconds&quot;:5},{&quot;effect&quot;:&quot;NoExecute&quot;,&quot;key&quot;:&quot;node.kubernetes.io/unreachable&quot;,&quot;operator&quot;:&quot;Exists&quot;,&quot;tolerationSeconds&quot;:5}],&quot;volumes&quot;:[{&quot;emptyDir&quot;:{},&quot;name&quot;:&quot;cache-volume&quot;},{&quot;name&quot;:&quot;kube-api-access-wz64g&quot;,&quot;projected&quot;:{&quot;defaultMode&quot;:420,&quot;sources&quot;:[{&quot;serviceAccountToken&quot;:{&quot;expirationSeconds&quot;:3607,&quot;path&quot;:&quot;token&quot;}},{&quot;configMap&quot;:{&quot;items&quot;:[{&quot;key&quot;:&quot;ca.crt&quot;,&quot;path&quot;:&quot;ca.crt&quot;}],&quot;name&quot;:&quot;kube-root-ca.crt&quot;}},{&quot;downwardAPI&quot;:{&quot;items&quot;:[{&quot;fieldRef&quot;:{&quot;apiVersion&quot;:&quot;v1&quot;,&quot;fieldPath&quot;:&quot;metadata.namespace&quot;},&quot;path&quot;:&quot;namespace&quot;}]}}]}}]},&quot;status&quot;:{&quot;conditions&quot;:[{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-06-12T00:13:42Z&quot;,&quot;message&quot;:&quot;containers with incomplete status: [init-myservice]&quot;,&quot;reason&quot;:&quot;ContainersNotInitialized&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;Initialized&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-06-12T00:13:42Z&quot;,&quot;message&quot;:&quot;containers with unready status: [my-pod]&quot;,&quot;reason&quot;:&quot;ContainersNotReady&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;Ready&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-06-12T00:13:42Z&quot;,&quot;message&quot;:&quot;containers with unready status: [my-pod]&quot;,&quot;reason&quot;:&quot;ContainersNotReady&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;ContainersReady&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-06-12T00:13:42Z&quot;,&quot;status&quot;:&quot;True&quot;,&quot;type&quot;:&quot;PodScheduled&quot;}],&quot;containerStatuses&quot;:[{&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-python-example-app-sandbox:v1.4.1-x86_64&quot;,&quot;imageID&quot;:&quot;&quot;,&quot;lastState&quot;:{},&quot;name&quot;:&quot;my-pod&quot;,&quot;ready&quot;:false,&quot;restartCount&quot;:0,&quot;started&quot;:false,&quot;state&quot;:{&quot;waiting&quot;:{&quot;reason&quot;:&quot;PodInitializing&quot;}}}],&quot;hostIP&quot;:&quot;192.168.50.66&quot;,&quot;initContainerStatuses&quot;:[{&quot;containerID&quot;:&quot;containerd://de3078d297a5e2e00ef11302a411d145cb04c535b77f6b01e621afa23251193b&quot;,&quot;image&quot;:&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox:v1.4.3-x86_64&quot;,&quot;imageID&quot;:&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox@sha256:645cf7a519a302b82825423946775a8ef90d7c29126bef1a58e04bd0c3b7000c&quot;,&quot;lastState&quot;:{&quot;terminated&quot;:{&quot;containerID&quot;:&quot;containerd://2ce022af5888ec72b8277aa11d1c1ecd48133ce2b220819776920986427dda70&quot;,&quot;exitCode&quot;:1,&quot;finishedAt&quot;:&quot;2023-06-12T00:15:36Z&quot;,&quot;reason&quot;:&quot;Error&quot;,&quot;startedAt&quot;:&quot;2023-06-12T00:15:05Z&quot;}},&quot;name&quot;:&quot;init-myservice&quot;,&quot;ready&quot;:false,&quot;restartCount&quot;:3,&quot;state&quot;:{&quot;running&quot;:{&quot;startedAt&quot;:&quot;2023-06-12T00:16:01Z&quot;}}}],&quot;phase&quot;:&quot;Pending&quot;,&quot;podIP&quot;:&quot;172.5.19.186&quot;,&quot;podIPs&quot;:[{&quot;ip&quot;:&quot;172.5.19.186&quot;}],&quot;qosClass&quot;:&quot;BestEffort&quot;,&quot;startTime&quot;:&quot;2023-06-12T00:13:42Z&quot;}}]
+</code></pre>
+
+<ul>
+<li>redploy</li>
+</ul>
+<pre class="codehilite"><code>sudo cp fecb-supplements/fecb-system-api/fecb-system-api /opt/fiducia/bin
+
+sudo systemctl daemon-reload
+sudo systemctl start fecb-system-api.service
+sudo systemctl enable fecb-system-api.service
+</code></pre>
+
+<ul>
+<li>發現<ul>
+<li>worker 跑去cloud(device)</li>
+<li>rusqlite -&gt;sqlx</li>
+</ul>
+</li>
+</ul>
+<pre class="codehilite"><code>DELETE FROM CAPABILITY WHERE ServiceName=&quot;app-selector&quot;;
+</code></pre>
+
+<h3 id="flow">flow</h3>
+<ul>
+<li>apply<ul>
+<li>gettoken(wait capability)</li>
+<li>getservice(wait svc running/db)</li>
+<li>getfile(wait prefetch)</li>
+</ul>
+</li>
+<li>todo<ul>
+<li>init<ul>
+<li>Dockerfile-x86_64</li>
+<li>init.sh</li>
+</ul>
+</li>
+<li>demo<ul>
+<li>demo.sh</li>
+</ul>
+</li>
+<li>capability<ul>
+<li>select改成svc</li>
+<li>permission 改成用svc name(getservice) todo<ul>
+<li>createservice<ul>
+<li>check_podip_exist_and_write_to_database只放db查詢不用改</li>
+<li>get_pods_name要改</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="524">5/24</h2>
+<p>https://juejin.cn/post/7073390068483751972
+* 攻防情境
+https://github.com/zj1244/Blog/blob/master/2019/harbor%E7%9A%84Notary%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95.md
+* ingress了解</p>
+<pre class="codehilite"><code>{{- define &quot;harbor.ingress&quot; -}}
+  {{- printf &quot;%s-ingress&quot; (include &quot;harbor.fullname&quot; .) -}}
+{{- end -}}
+</code></pre>
+
+<ul>
+<li>traefik了解</li>
+<li>drawio</li>
+</ul>
+<h2 id="523">5/23</h2>
+<ul>
+<li>dns mapping path<ul>
+<li>內部不要tls</li>
+</ul>
+</li>
+</ul>
+<pre class="codehilite"><code>get secret -o yaml
+</code></pre>
+
+<ul>
+<li>notaery-servier.json</li>
+</ul>
+<pre class="codehilite"><code>    &quot;server&quot;: {
+      &quot;http_addr&quot;: &quot;:4443&quot;,
+      &quot;tls_key_file&quot;: &quot;/etc/ssl/notary-server/tls.key&quot;,
+      &quot;tls_cert_file&quot;: &quot;/etc/ssl/notary-server/tls.crt&quot;   
+    },
+</code></pre>
+
+<ul>
+<li>notary-server.yaml</li>
+</ul>
+<pre class="codehilite"><code>        - name: notary-server
+          mountPath: &quot;/etc/ssl/notary-server&quot;
+          readOnly: true
+
+      volumes:
+      - name: notary-server
+        secret:
+          secretName: &quot;harbor-ingress&quot;
+
+secret name 要去修 改對照
+</code></pre>
+
+<ul>
+<li>get ca.crt</li>
+</ul>
+<pre class="codehilite"><code>kubectl get secret -n container-registry harbor-ingress -o json | jq -r '.data[&quot;ca.crt&quot;]' | base64 -d -
+</code></pre>
+
+<h2 id="522">5/22</h2>
+<ul>
+<li>寫自己的helm chart(ok)</li>
+<li>secret selector(ok)</li>
+<li>notary server設定完成(ok)</li>
+<li>hc</li>
+<li>capability</li>
+<li>device</li>
+<li>fECB init.sh 1.4.3</li>
+<li>
+<p>meeting</p>
+<ul>
+<li>planet uml (design)<ul>
+<li>https://www.containerlabs.kubedaily.com/Kubernetes/beginner/Deployment-process.html</li>
+</ul>
+</li>
+<li>security</li>
+</ul>
+</li>
+<li>
+<p>docker manifest</p>
+</li>
+<li>fECB helm</li>
+<li>todo<ul>
+<li>Pod 的 Health Check
+https://ithelp.ithome.com.tw/articles/10193956</li>
+</ul>
+</li>
+</ul>
+<h2 id="515">5/15</h2>
+<ul>
+<li>
+<p>v1.4.3    </p>
+<ul>
+<li>
+<ul>
+<li>demo</li>
+</ul>
+</li>
+<li>dvc</li>
+<li>hc</li>
+<li>capability<ul>
+<li>重複create error code</li>
+<li>確認selector需要性</li>
+</ul>
+</li>
+<li>
+<p>file</p>
+</li>
+<li>
+<p>docker manifest</p>
+</li>
+<li>get ver</li>
+<li>harbor</li>
+</ul>
+</li>
+</ul>
+<h2 id="58">5/8</h2>
+<ul>
+<li>getsvc all</li>
+<li>pooling</li>
+<li>harbor</li>
+</ul>
+<h3 id="pooling">pooling</h3>
+<ul>
+<li>muti svc</li>
+</ul>
+<pre class="codehilite"><code>kubectl get svc device-service-py -n resource-sandbox -o jsonpath='{.spec.clusterIP}'
+
+kubectl get svc device-service-py -n resource-sandbox -o jsonpath='{.spec.ports[0].port}'
+
+kubectl get svc device-service-py -n resource-sandbox -o jsonpath='{.spec.ports}'
+
+
+kubectl get svc device-service-py -n resource-sandbox -o jsonpath='{.spec.ports}'
+</code></pre>
+
+<ul>
+<li>K8S_API_SERVER_QUERY_RETRY_COUNTER</li>
+<li>K8S_API_SERVER_QUERY_TIMEOUT_DURATION_SEC</li>
+<li>svc-&gt;</li>
+<li>v1.4.2<ul>
+<li>capability: CapabilityName 移除</li>
+<li>ProxyUUID</li>
+</ul>
+</li>
+</ul>
+<h2 id="426">4/26</h2>
+<ul>
+<li>muti svc</li>
+<li>harbor</li>
+</ul>
+<h2 id="425">4/25</h2>
+<ul>
+<li>check_podip_exist_and_write_to_database</li>
+</ul>
+<p>kubectl get pods -n resource-sandbox device-service-py-56f5487d54-78jrg -o jsonpath='{.status}'</p>
+<p>kubectl get pods -n resource-sandbox device-service-py-56f5487d54-78jrg -o jsonpath='{.status.initContainerStatuses.state}'</p>
+<ul>
+<li>正確status</li>
+</ul>
+<pre class="codehilite"><code>{&quot;conditions&quot;:[{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-04-24T17:32:35Z&quot;,&quot;message&quot;:&quot;containers with incomplete status: [init-myservice]&quot;,&quot;reason&quot;:&quot;ContainersNotInitialized&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;Initialized&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-04-24T17:32:35Z&quot;,&quot;message&quot;:&quot;containers with unready status: [my-pod]&quot;,&quot;reason&quot;:&quot;ContainersNotReady&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;Ready&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-04-24T17:32:35Z&quot;,&quot;message&quot;:&quot;containers with unready status: [my-pod]&quot;,&quot;reason&quot;:&quot;ContainersNotReady&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;ContainersReady&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-04-24T17:32:35Z&quot;,&quot;status&quot;:&quot;True&quot;,&quot;type&quot;:&quot;PodScheduled&quot;}],&quot;containerStatuses&quot;:[{&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-python-example-device-sandbox:v1.4.1-x86_64&quot;,&quot;imageID&quot;:&quot;&quot;,&quot;lastState&quot;:{},&quot;name&quot;:&quot;my-pod&quot;,&quot;ready&quot;:false,&quot;restartCount&quot;:0,&quot;started&quot;:false,&quot;state&quot;:{&quot;waiting&quot;:{&quot;reason&quot;:&quot;PodInitializing&quot;}}}],&quot;hostIP&quot;:&quot;192.168.50.66&quot;,&quot;initContainerStatuses&quot;:[{&quot;containerID&quot;:&quot;containerd://ba2b80e538b16c3165fc6314f22964be342defd76728a988c1be1e78e7b47230&quot;,&quot;image&quot;:&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox:v1.4.1-x86_64&quot;,&quot;imageID&quot;:&quot;docker.io/fiduciaedge/fecb-sdk-init-sandbox@sha256:9ec5ff33a3e9ce6eabfda0e0c3e103140e6358f60d5e32a30ab99ea70a4e4742&quot;,&quot;lastState&quot;:{},&quot;name&quot;:&quot;init-myservice&quot;,&quot;ready&quot;:false,&quot;restartCount&quot;:0,&quot;state&quot;:{&quot;terminated&quot;:{&quot;exitCode&quot;:137,&quot;finishedAt&quot;:null,&quot;message&quot;:&quot;The container could not be located when the pod was terminated&quot;,&quot;reason&quot;:&quot;ContainerStatusUnknown&quot;,&quot;startedAt&quot;:null}}}],&quot;phase&quot;:&quot;Pending&quot;,&quot;podIP&quot;:&quot;172.5.147.134&quot;,&quot;podIPs&quot;:[{&quot;ip&quot;:&quot;172.5.147.134&quot;}],&quot;qosClass&quot;:&quot;BestEffort&quot;,&quot;startTime&quot;:&quot;2023-04-24T17:32:35Z&quot;}
+</code></pre>
+
+<ul>
+<li>錯誤status</li>
+</ul>
+<pre class="codehilite"><code>{&quot;conditions&quot;:[{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-04-24T17:32:35Z&quot;,&quot;message&quot;:&quot;containers with incomplete status: [init-myservice]&quot;,&quot;reason&quot;:&quot;ContainersNotInitialized&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;Initialized&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-04-24T17:32:35Z&quot;,&quot;message&quot;:&quot;containers with unready status: [my-pod]&quot;,&quot;reason&quot;:&quot;ContainersNotReady&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;Ready&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-04-24T17:32:35Z&quot;,&quot;message&quot;:&quot;containers with unready status: [my-pod]&quot;,&quot;reason&quot;:&quot;ContainersNotReady&quot;,&quot;status&quot;:&quot;False&quot;,&quot;type&quot;:&quot;ContainersReady&quot;},{&quot;lastProbeTime&quot;:null,&quot;lastTransitionTime&quot;:&quot;2023-04-24T17:32:35Z&quot;,&quot;status&quot;:&quot;True&quot;,&quot;type&quot;:&quot;PodScheduled&quot;}],&quot;containerStatuses&quot;:[{&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-python-example-device-sandbox:v1.4.1-x86_64&quot;,&quot;imageID&quot;:&quot;&quot;,&quot;lastState&quot;:{},&quot;name&quot;:&quot;my-pod&quot;,&quot;ready&quot;:false,&quot;restartCount&quot;:0,&quot;started&quot;:false,&quot;state&quot;:{&quot;waiting&quot;:{&quot;reason&quot;:&quot;PodInitializing&quot;}}}],&quot;hostIP&quot;:&quot;192.168.50.66&quot;,&quot;initContainerStatuses&quot;:[{&quot;image&quot;:&quot;fiduciaedge/fecb-sdk-init-sandbox:v1.4.1-x86_64&quot;,&quot;imageID&quot;:&quot;&quot;,&quot;lastState&quot;:{},&quot;name&quot;:&quot;init-myservice&quot;,&quot;ready&quot;:false,&quot;restartCount&quot;:0,&quot;state&quot;:{&quot;waiting&quot;:{&quot;reason&quot;:&quot;PodInitializing&quot;}}}],&quot;phase&quot;:&quot;Pending&quot;,&quot;qosClass&quot;:&quot;BestEffort&quot;,&quot;startTime&quot;:&quot;2023-04-24T17:32:35Z&quot;}
+</code></pre>
+
+<ul>
+<li>創建馬上拿pod ip</li>
+</ul>
+<pre class="codehilite"><code>    kubectl apply -f $DVC_YAML -n resource-sandbox
+| 
+
+
+kubectl get pod -l app=device-service-py -n resource-sandbox -o jsonpath='{.items[0].metadata.name}' 
+
+
+kubectl get pods  -n resource-sandbox -o jsonpath='{.status.podIP}'
+</code></pre>
+
+<ul>
+<li>create capability fail</li>
+</ul>
+<pre class="codehilite"><code>service/device-service-py created
+deployment.apps/device-service-py created
+ERROR:
+  Code: Aborted
+  Message:  [operation::create_user] create_user failed, DB: &quot;transport error&quot; 
+13|usr-shaggy-grip|hc-service-py|hc-service-py-7b5c96994-h6555||resource-sandbox|HC_hc-service-py,Device_webcam-py|oFxHAVOBzAwjdx0fCrW4i_xnY2T3FubyhgQjBCZ7fDY=|2023-04-21 06:52:55
+
+
+
+ INFO  fecb_capability_api::operation &gt; enter create_capability
+ INFO  fecb_capability_api::operation &gt; permission: &quot;&quot;
+ INFO  fecb_capability_api::utils     &gt; ======== Try to get pod's name for service_name : device-service-py 
+ INFO  fecb_capability_api::utils     &gt; ======== Try to get pod's name for namespace : resource-sandbox 
+ INFO  fecb_capability_api::operation &gt; [operation::create_user::get_pods_name] get_pods_name success
+ INFO  fecb_capability_api::utils     &gt; [operation::utils::check_pod_exist_and_write_to_database] get pods
+ INFO  fecb_capability_api::utils     &gt; [operation::utils::check_pod_exist_and_write_to_database] pods status:&quot;Pending&quot;
+ INFO  fecb_capability_api::utils     &gt; [operation::utils::check_pod_exist_and_write_to_database] pods IP:&quot;&quot;
+ INFO  fecb_capability_api::utils     &gt; [operation::utils::check_pod_exist_and_write_to_database] db params &quot;usr-longing-property, device-service-py, device-service-py-56f5487d54-lghtm, , resource-sandbox, , GerTAFvpq4q8NFLiobe240xPlzt863O9yQo8K4_75lQ=&quot;
+ ERROR fecb_capability_api::utils     &gt; [operation::create_user] create_user failed, Msg= Write to DB error, transport error
+</code></pre>
+
+<pre class="codehilite"><code>watch -n 1 sudo kubectl get pods -n resource-sandbox device-service-py-7d8c8b9d9-kc8jr  -o jsonpath='{.status.phase}'
+
+
+
+./grpcurl  -cacert /opt/client/tls/ca-cert.pem -d &quot;{\&quot;token\&quot;:\&quot;K-az10T5r-wYsL-vCg2NVbROVvt9m7msQ7HIKjA6tP4=\&quot;}&quot; -import-path ./proto -proto capability-api.proto $FECB_CAPABILITY_API_SERVER_URL capability.CapabilityService/GetService | jq .svcAddress &gt;&gt; /.cache/svc.json
+</code></pre>
+
+<h2 id="424">4/24</h2>
+<ul>
+<li>
+<p>capability api
+    string service_name = 1;
+    string permission = 2;
+    string namespaces = 3;</p>
+</li>
+<li>
+<p>new device</p>
+</li>
+<li>
+<p>new hc</p>
+</li>
+<li>
+<p>sql server kubernete
+SQL Server on Kubernetes: Designing and Building a Modern Data Platform</p>
+</li>
+</ul>
+<pre class="codehilite"><code>Ask for afternoon off on 4/28, one day leave on 5/2
+Dear john,
+
+I am writing this letter to apply 
+my compensatory leave for taking afternoon off on 4/28(Friday 2 PM - 6 PM), 
+my 初心假 for taking one day leave on 5/2
+I will be back to work on the 5/3 (Thursday), 
+kindly please approve.
+
+Best Regards,
+Jerry
+</code></pre>
+
+<p>lens ide</p>
+<p>TFhHos45lR1912uSIEzxe_XzcWp5Mpj2d2B4wsCNZDA=
+TFhHos45lR1912uSIEzxe_XzcWp5Mpj2d2B4wsCNZDA=</p>
+<pre class="codehilite"><code> INFO  fecb_file_api::reception &gt; Get file request
+ INFO  fecb_file_api::utils     &gt; user_token : jerV8xvJGnqg7g3hhP5ksFpbxljdFq6aDebnqsa8Xgg=
+ INFO  fecb_file_api::utils     &gt; permission File_Y2EucGVt,HC_hc-service-py,Device_webcam-py
+ INFO  fecb_file_api::reception &gt; Get file Y2EucGVt
+ INFO  fecb_file_api::reception &gt; path : /media/hdd/data/sealed/Y2EucGVt
+ INFO  fecb_file_api::utils     &gt; machine_decrypt_data
+ INFO  fecb_file_api::utils     &gt; Machine key: &quot;a964604696b13e86d0e296c786c8a2baa3f9612a9aa8c64634086bf4fedefe50&quot;
+ INFO  fecb_file_api::utils     &gt; read rst 1048576
+ INFO  fecb_file_api::utils     &gt; read rst 1048576
+</code></pre>
+
+<pre class="codehilite"><code>export FECB_FILE_API_SERVER_URL=&quot;http://172.3.0.1:30893&quot;
+
+mkdir /opt/client/tls
+docker cp /opt/client/tls/* fb4a5055959e:/opt/client/tls
+
+mkdir /.cahce
+
+ ./getfile PzNfjT_AkwLkHYYesp-L6LzyU3ABEYMxNqGddlrXm80= .
+
+
+export DECRYPTED_FOLDER_PATH=/.cache/files
+
+
+./getfile PzNfjT_AkwLkHYYesp-L6LzyU3ABEYMxNqGddlrXm80= /.cache/files
+
+fiduciaedge/fecb-sdk-init-sandbox:v1.4.1-aarch64
+</code></pre>
+
+<pre class="codehilite"><code>kubectl get pods device-service-py-6d868fd774-z8qkm -o jsonpath='{.spec.containers[0].ports[0].containerPort}' -n resource-sandbox 
+
+kubectl get pods device-service-py-65c687d97d-ln646 -o jsonpath='{.spec.containers[0].ports[0].containerPort}' -n resource-sandbox 
+
+
+
+device-service-py-6d868fd774-z8qkm
+</code></pre>
+
+<ul>
+<li>harbor helm chart HA筆記完成</li>
+<li>1筆記完成(4/8)</li>
+<li>harbor HA部屬驗證</li>
+<li>3,4筆記完成</li>
+</ul>
+<h2 id="414">4/14</h2>
+<ul>
+<li>harbor</li>
+<li>notary</li>
+</ul>
+<h1 id="228">2/28</h1>
+<ul>
+<li>ckpt meeting<ul>
+<li>ccsars cosnar有兩個模型需要準備(yolo)</li>
+<li>攻擊情境 攻擊驗證服務 準備攻擊</li>
+<li>查核點逐項備著說明</li>
+<li>終極警探4<ul>
+<li>現場展示iot攻擊成功 demo編劇</li>
+</ul>
+</li>
+<li>三階段<ul>
+<li>1.腦力激盪(現場展示攻擊劇本)用餐</li>
+<li>2.收斂變成事項清單</li>
+<li>3.執行過程</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="213">2/13</h2>
+<ul>
+<li>harbor登入</li>
+<li>上傳映像檔成功</li>
+<li>trivy報告</li>
+<li>SBOM報告</li>
+<li>IO狀態</li>
+</ul>
+<h2 id="27">2/7</h2>
+<ul>
+<li>device cert影片</li>
+<li>notary sign 影片<ul>
+<li>架設harbor server</li>
+<li>架設notary server</li>
+</ul>
+</li>
+<li>
+<p>notary sign架構</p>
+</li>
+<li>
+<p>notary</p>
+<ul>
+<li>沒有notary sign的push(DOCKER_CONTENT_TRUST=0) 實作push差異</li>
+</ul>
+</li>
+</ul>
+<h2 id="22">2/2</h2>
+<ul>
+<li>ccsars影片 2分鐘</li>
+<li>
+<p>cosnar影片 3分鐘</p>
+</li>
+<li>
+<p>ccsars</p>
+<ul>
+<li>demo整理 ~2000</li>
+<li>6450測試 ~2030</li>
+<li>架構圖 ~2100</li>
+<li>錄影片 ~0000</li>
+</ul>
+</li>
+</ul>
+<h2 id="130">1/30</h2>
+<ul>
+<li>massfuse</li>
+<li>tiip demo</li>
+</ul>
+<pre class="codehilite"><code>sudo mkdir -p /data/certs
+sudo cp certs/harbor-registry.crt /data/certs
+sudo cp certs/harbor-registry.key /data/certs    
+
+./prepare  --with-trivy
+sudo docker-compose up -d
+docker-compose ps
+
+開瀏覽器
+
+
+docker login https://192.168.10.215:343 -u admin -p Harbor12345
+export DOCKER_CONTENT_TRUST=0
+
+docker pull fiduciaedge/fecb-agent:v1.4.1-x86-test
+docker tag fiduciaedge/fecb-agent:v1.4.1-x86-test 192.168.10.215:343/test/fecb-agent:test
+docker push 192.168.10.215:343/test/fecb-agent:test
+
+瀏覽器 漏洞游標 export CVE
+
+
+
+docker run --rm fiduciaedge/tern:v1 report -i fiduciaedge/fecb-agent:v1.4.1-x86-test
+
+docker run -v /var/run/docker.sock:/var/run/docker.sock --rm fiduciaedge/dfimage:v1 a5a7f6285c2b &gt; Dockerfile
+
+trivy fs --security-checks config ./Dockerfile
+
+
+docker run -p 9000:9000 --rm -v /var/run/docker.sock:/var/run/docker.sock fiduciaedge/container-webui:v1
+</code></pre>
+
+<h3 id="docker-compose">docker compose 理解</h3>
+<h2 id="1214">12/14</h2>
+<ul>
+<li>pistis</li>
+<li>錄製api sdk</li>
+</ul>
+<h2 id="1213">12/13</h2>
+<ul>
+<li>wifi dongle</li>
+<li>openvpn</li>
+<li>pistis</li>
+<li>錄製api sdk</li>
+</ul>
+<h2 id="915">9/15</h2>
+<ul>
+<li>harbor notary server溝通</li>
+<li>container cncf notary</li>
+<li>signer 簽名</li>
+</ul>
+<h1 id="95">9/5</h1>
+<p>KUBERNETES_MASTER
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+172.10.89.54</p>
+<pre class="codehilite"><code>IP 172.10.89.54 is in use
+Attributes:
+  namespace: default
+  node: staging-worker
+  pod: example-java-f64c8dd98-kbrzg
+  timestamp: 2022-09-05 07:43:43.555475347 +0000 UTC
+
+  IP 172.7.69.69 is in use
+Attributes:
+  pod: fecb-capability-api-5fcdbcbbcf-9q77z
+  timestamp: 2022-09-05 08:12:33.957289787 +0000 UTC
+  namespace: fecb-system
+  node: staging-worker
+</code></pre>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

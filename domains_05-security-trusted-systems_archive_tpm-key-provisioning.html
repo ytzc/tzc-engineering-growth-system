@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tpm Key Provisioning | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="tpm-key-provisioning">Tpm Key Provisioning</h1>
+<h1 id="weekly-progress-2">Weekly progress 2</h1>
+<h2 id="1129">11/29</h2>
+<ul>
+<li>activate credential<ul>
+<li>device ID</li>
+<li>credential resp<ul>
+<li>encCert</li>
+<li>secret</li>
+<li>encIdentity</li>
+<li>identityHmac</li>
+<li>cn</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>使用IDevID對PC 進行遠程配置<ul>
+<li>目標<ul>
+<li>產生簽名key IDevID發起VPM連接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>步驟<ul>
+<li>EK產生受限制的簽名key 只有對應EK可以導入</li>
+<li></li>
+</ul>
+</li>
+<li>Tray meeting</li>
+</ul>
+<pre class="codehilite"><code>技术1详细步骤：
+创建TPM中可复制的、有策略的限制签名密钥。
+使用企业CA为该密钥生成证书，验证EK证书的有效性。
+使用TPM2_Duplicate命令将密钥复制为三个文件：TPM2B_PUBLIC、TPM2B_PRIVATE、加密值（允许具有正确EK的TPM重新生成种子）。
+将这三个文件发送到目标PC。
+在目标PC上，如果EK不存在，使用TPM2_CreatePrimary重新生成EK。
+使用TPM2_Import命令，将三个文件导入目标PC的TPM。
+当EK在TPM中时，使用TPM2_Load命令加载IDevID密钥。
+技术2详细步骤：
+在TPM外部创建IDevID，无需与TPM关联策略。
+创建三个文件，包含IDevID的公共数据、私有数据（使用AES加密），以及允许具有EK的TPM计算出种子的加密值。
+将这三个文件发送到目标PC。
+在目标PC上，使用TPM2_Import命令将这三个文件导入TPM。
+技术3详细步骤：
+在TPM外部生成IDevID的公共数据，并创建允许复制的策略。
+使用TPM2_LoadExternal命令将IDevID导入TPM。
+在目标PC上，加载EK的公共部分，满足复制策略，复制IDevID密钥生成三个文件。
+将这三个文件发送到目标PC。
+在目标PC上，使用TPM2_Import命令将这三个文件导入TPM。
+</code></pre>
+
+<h3 id="provision-key-deviceid">provision key deviceID</h3>
+<ul>
+<li>原本是產生pfx pkcs12 給客戶 用密碼解開 存放在某個地方</li>
+<li>tpm2.0 IDevID<ul>
+<li>EK產生受限制的簽名key 只有對應EK可以導入</li>
+</ul>
+</li>
+<li>創建IDevID技術</li>
+</ul>
+<h4 id="1-duplicating-the-key-parent-is-the-ek">技術1： duplicating the key, parent is the EK.</h4>
+<ul>
+<li>在伺服器端的TPM或TPM模擬器中建立IDevID，並使用標準CA為其建立憑證。</li>
+<li>複製金鑰，以便能夠將其匯入具有客戶端EK的系統中。</li>
+</ul>
+<h5 id="_1">詳細步驟</h5>
+<ul>
+<li>創建可複製的, 有策略的, 限制簽名key <ul>
+<li>TPM2_Create AIK (deviceID)</li>
+<li>策略<ul>
+<li>TPM2_polictCommandCode, TPM2_Duplicate 要限制只有對應EK</li>
+<li>TPM2_PolicyDuplicateSelect 只要把父密鑰設為EK公鑰</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>頒發證書，對IDevID生成證書，證書的過展中添加EK信息 EK pub key</li>
+<li>密鑰複製<ul>
+<li>TPM2_Duplicate<ul>
+<li>TPM2B_Public pubkey</li>
+<li>TPM2B_Private 被對稱加密prikey, pubkey binding HMAC</li>
+<li>encrypted value</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2">技術2：</h4>
+<ul>
+<li>建立IDevID並對其進行簽名。</li>
+<li>封裝它，使其看起來像是可複製的TPM金鑰，可以匯入到客戶端的EK中。</li>
+</ul>
+<h4 id="3">技術3：</h4>
+<ul>
+<li>建立IDevID並對其進行簽名。</li>
+<li>在本地TPM或TPM模擬器中將其導入，然後複製以使其新的父級是客戶端TPM的EK。</li>
+</ul>
+<h1 id="117">11/7</h1>
+<ul>
+<li>helm-chart</li>
+<li>init<ul>
+<li>init (need getfile from fECP Tools)</li>
+<li>tls-bootstrap</li>
+</ul>
+</li>
+<li>workerNode<ul>
+<li>ca-bundle-injector</li>
+<li>copysystem(need system-api from XXX Tools)</li>
+</ul>
+</li>
+<li>hooks-job<ul>
+<li>calico-job</li>
+</ul>
+</li>
+<li>hooks-test<ul>
+<li>testpod</li>
+</ul>
+</li>
+<li>
+<p>monitor</p>
+<ul>
+<li>checker</li>
+</ul>
+</li>
+<li>
+<p>helm-chart</p>
+<ul>
+<li>init<ul>
+<li>init (need getfile from fECP Tools)</li>
+<li>tla-bootstrap</li>
+</ul>
+</li>
+<li>workerNode<ul>
+<li>ca-bundle-injector</li>
+<li>copysystem(need system-api from XXX Tools)</li>
+</ul>
+</li>
+<li>hooks-job<ul>
+<li>calico-job</li>
+<li>tls-bootstrap</li>
+</ul>
+</li>
+<li>hooks-test<ul>
+<li>testpod</li>
+<li>checker</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>core</p>
+<p>HC
+Device
+OTA
+System
+File
+Capability</p>
+<p>ui</p>
+<p>fECB Agent
+Portainer fECB</p>
+<p>e2ee</p>
+<p>Cert Agent
+Cert Wardan (need uplader from fECP Tools)</p>
+<h1 id="1031">10/31</h1>
+<pre class="codehilite"><code>init-657658c779-zxgfq
+init-657658c779-zxgfq
+
+export POD=init-657658c779-zxgfq
+export FECB_CAPABILITY_API_SERVER_URL=&quot;172.3.0.1:30891&quot;
+kubectl exec -it $POD -- ./grpcurl --key /tls/client/tls.key --cert /tls/client/tls.crt -cacert /tls/server/ca.crt  -import-path ./proto -proto capability-api.proto $FECB_CAPABILITY_API_SERVER_URL capability.CapabilityService/GetToken 
+</code></pre>
+
+<ul>
+<li>testpod v1.4.5-test<ul>
+<li>ok</li>
+</ul>
+</li>
+<li>init v1.5.0<ul>
+<li>ok</li>
+</ul>
+</li>
+<li>ca-bundle-injector:v1.0.0<ul>
+<li>ok</li>
+</ul>
+</li>
+<li>checker v0.1.0-test<ul>
+<li>ok</li>
+</ul>
+</li>
+<li>fecb api v1.5.0<ul>
+<li>ok</li>
+</ul>
+</li>
+<li>fecb-tls-bootstrap v1.0.0<ul>
+<li>ok</li>
+</ul>
+</li>
+<li>calico-job v1.0.0<ul>
+<li>ok</li>
+</ul>
+</li>
+<li>
+<p>fecb-system-api-bootstrap v1.0.0</p>
+<ul>
+<li>ok</li>
+</ul>
+</li>
+<li>
+<p>init</p>
+</li>
+<li>ca</li>
+<li>calico</li>
+<li>checker</li>
+<li>copy file</li>
+<li>api</li>
+</ul>
+<pre class="codehilite"><code> ERROR fecb_file_api::utils     &gt; &quot;gpgsm: failed to create temporary file '/opt/fiducia/.gnupg/.#lk0x00005599df4ecc80.fecb-file-api-mjqt7.155107': No such file or directory\ngpgsm: keyblock resource '/opt/fiducia/.gnupg/pubring.kbx': General error\n&quot;
+</code></pre>
+
+<p>restart 解決</p>
+<pre class="codehilite"><code>curl -X POST &quot;$MENDER_SERVER_URI/api/management/v1/deployments/deployments&quot; \
+      -H &quot;Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1NmVjZmVhNC0zYmNjLTQ0NTktODM4ZS1hNWNmMWZjMTQ0YzYiLCJzdWIiOiIyNWRmM2UyMy0zYWU5LTRjYTItYTNmNi01MjAzODU1Njg2ZjEiLCJleHAiOjE2OTkyNzMwMTQsImlhdCI6MTY5ODY2ODIxNCwibWVuZGVyLnVzZXIiOnRydWUsImlzcyI6Ik1lbmRlciBVc2VycyIsInNjcCI6Im1lbmRlci4qIiwibmJmIjoxNjk4NjY4MjE0fQ.ixXepA_YPKALJNVdx1SUM-FGZ5fDrHQHSTZ0wXVyBLRgVSrSS3Fumx0E0ZeAZEacaLDf3S7IQP4HVbcqW-gKN_d6tfyyoteMOzwlzB3DK6xyzUFIzLC8UG5Trsmz04vTEeOXo8IhQE3JUt-Hhn5tvwrxjSiN1-HDuwCZYkSZlJvZWyio3S34ZXPoS_I8d_EH15sUHW_UqmtxARs5Lp6-8lm4TJ2g52oDeqz8oUxp-lZreWlq5i2IM6ydI_yLmiAlhkGG8B1YL16WmznpLOQd6hCvY47P3ZgW8OEp6i4rT7RKW68ia51GqFCSNDtGowIWiJAM0tHxOGtKRitstKHbEg&quot; \
+      -H &quot;Content-Type: application/json&quot; \
+      -d &quot;{
+          \&quot;name\&quot;: \&quot;testfile2.cms\&quot;,
+          \&quot;artifact_name\&quot;: \&quot;testfile2.cms\&quot;,
+          \&quot;all_devices\&quot;: true
+      }&quot;
+</code></pre>
+
+<ul>
+<li>10.133 uploader
+./fe-upload upload test -r $FE_UPLOAD_RECIPIENT_ID
+gpgsm --list-key |grep aka
+./fe-upload list-pkcs</li>
+</ul>
+<pre class="codehilite"><code>./grpcurl --key /tls/client/tls.key --cert /tls/client/tls.crt -cacert /tls/server/ca.crt -import-path ./proto -proto capability-api.proto $FECB_CAPABILITY_API_SERVER_URL capability.CapabilityService/GetToken
+</code></pre>
+
+<p>./grpcurl --key $CLIENT_KEY --cert $CLIENT_CERT -cacert $SERVER_CERT_CA -import-path ./proto -proto capability-api.proto $FECB_CAPABILITY_API_SERVER_URL capability.CapabilityService/GetVer</p>
+<ul>
+<li>apply hc<ul>
+<li>svc不給 new hc要卡住
+kubectl get pod -l app=init-pod -n default --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}'</li>
+</ul>
+</li>
+</ul>
+<p>10.133
+tmux 0 uploader</p>
+<h1 id="1017">10/17</h1>
+<ul>
+<li>cert 27001</li>
+<li>Horizontal Pod Autoscaler(節點異常)<ul>
+<li>增加pod資源</li>
+<li>提高穩定性與成本節約</li>
+<li>避免節點異常</li>
+</ul>
+</li>
+<li>水平擴展<ul>
+<li>GPU training</li>
+<li>平行增加pod數量</li>
+</ul>
+</li>
+<li>Priority and Preemption(服務異常)<ul>
+<li>關閉低優先權的服務，確保核心服務持續運作</li>
+</ul>
+</li>
+<li>Disruption Budget<ul>
+<li>保護應用避免因中斷而損壞</li>
+</ul>
+</li>
+<li>Threat matrix for Kubernetes</li>
+</ul>
+<h2 id="1012">10/12</h2>
+<ul>
+<li>mtls system-api</li>
+<li>reload整理</li>
+<li>file-api</li>
+<li>ota-api</li>
+<li>db重新架設</li>
+<li>system-api轉成pod</li>
+<li>twca meeting<ul>
+<li>a1金要登陸平台<ul>
+<li>11月中</li>
+<li>tpm tool取出EK 公鑰 憑證</li>
+</ul>
+</li>
+<li>a2 <ul>
+<li>IdevID</li>
+<li>remote attestation </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="105">10/5</h2>
+<ul>
+<li>todo<ul>
+<li>fecb自己<ul>
+<li>readness看system-api</li>
+<li>liveness看自己</li>
+</ul>
+</li>
+<li>testpod: fecb-health<ul>
+<li>liveness 看fecb restart</li>
+<li>readness 看system api</li>
+</ul>
+</li>
+<li>fileapi整理</li>
+<li>整理gary</li>
+<li>reload</li>
+</ul>
+</li>
+<li>system-api啟動才通過fecb probe<ul>
+<li>system-api沒啟動, health顯示失敗, pod等待重新啟動</li>
+<li>system-api重啟, pod重新啟動成功</li>
+<li>system-api stop, fecb重啟動</li>
+</ul>
+</li>
+<li>
+<p>file-api</p>
+</li>
+<li>
+<p>test-pod</p>
+<ul>
+<li>確認每一個fecb</li>
+</ul>
+</li>
+<li>
+<p>init-container</p>
+<ul>
+<li>test-vault</li>
+</ul>
+</li>
+<li>cert變動 reload</li>
+<li>
+<ul>
+<li>readinessProbe</li>
+<li>system有才ready</li>
+</ul>
+</li>
+<li>
+<p>liveness</p>
+<ul>
+<li>cert reload</li>
+</ul>
+</li>
+<li>
+<p>todo</p>
+<ul>
+<li>test-fecb-pod</li>
+</ul>
+</li>
+<li>liveness reload</li>
+</ul>
+<h1 id="103">10/3</h1>
+<p>fecb-system-api-fecp-worker-client-cert-tls
+fecb-system-api-fecp-worker-server-cert-tls
+* system-api</p>
+<ul>
+<li>
+<p>meeting</p>
+<ul>
+<li>test-pod</li>
+<li>job -&gt; daemonset -&gt; mount</li>
+<li>
+<p>ota-api</p>
+</li>
+<li>
+<p>file-api</p>
+<ul>
+<li>沒用的刪掉</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="102">10/2</h2>
+<ul>
+<li>fecb cert mount<ul>
+<li>討論改成自動取消</li>
+</ul>
+</li>
+<li>init-container<ul>
+<li>加上csi mtls</li>
+</ul>
+</li>
+<li>test-api<ul>
+<li>pod 寫進helm chart確保api 都跑起來</li>
+</ul>
+</li>
+<li>proto 放進pod</li>
+<li>
+<p>gary meeting</p>
+<ul>
+<li>
+<p>fileapi </p>
+<ul>
+<li>刪除minio alias</li>
+</ul>
+</li>
+<li>
+<p>fecb cert mount</p>
+<ul>
+<li>改成daemonset</li>
+<li>hostname issue?<ul>
+<li>每一個node都用同一個tls cert, 不走hostname</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>init-container</p>
+<ul>
+<li>加上csi mtls</li>
+</ul>
+</li>
+<li>test-api<ul>
+<li>pod 寫進helm chart確保api 都跑起來</li>
+</ul>
+</li>
+<li>ota-api<ul>
+<li>先跑230</li>
+<li>configure測試</li>
+</ul>
+</li>
+<li>有時間再做<ul>
+<li>reload secret<ul>
+<li>怕來不及 有時間再做</li>
+</ul>
+</li>
+<li>system pod lifecycle<ul>
+<li>先不做 很多要設計</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="927">9/27</h2>
+<ul>
+<li>202 204 207 208 209 <ul>
+<li>202 </li>
+<li>204<ul>
+<li>完成</li>
+</ul>
+</li>
+<li>207<ul>
+<li>沒驗證</li>
+</ul>
+</li>
+<li>208<ul>
+<li>做完</li>
+</ul>
+</li>
+<li>209<ul>
+<li>做完</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>cert發布</li>
+<li>ns創建</li>
+<li>cert reloader</li>
+<li>ota-api</li>
+<li>
+<p>gary meeting</p>
+<ul>
+<li>
+<p>fileapi </p>
+<ul>
+<li>刪除minio alias</li>
+</ul>
+</li>
+<li>
+<p>fecb cert mount</p>
+<ul>
+<li>改成daemonset</li>
+<li>hostname issue?<ul>
+<li>每一個node都用同一個tls cert, 不走hostname</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>init-container</p>
+<ul>
+<li>加上csi mtls</li>
+</ul>
+</li>
+<li>test-api<ul>
+<li>pod 寫進helm chart確保api 都跑起來</li>
+</ul>
+</li>
+<li>ota-api<ul>
+<li>先跑230</li>
+<li>configure測試</li>
+</ul>
+</li>
+<li>有時間再做<ul>
+<li>reload secret<ul>
+<li>怕來不及 有時間再做</li>
+</ul>
+</li>
+<li>system pod lifecycle<ul>
+<li>先不做 很多要設計</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="j204">j204</h3>
+<ul>
+<li>cert<ul>
+<li>fecb-system-api-fecp-worker</li>
+</ul>
+</li>
+</ul>
+<h2 id="926">9/26</h2>
+<ul>
+<li>todo<ul>
+<li>202 204 207 208 209 </li>
+<li>agent改寫</li>
+<li>health-check<ul>
+<li>連通 </li>
+</ul>
+</li>
+<li>cert發布</li>
+<li>cert reloader</li>
+<li>ota-api</li>
+</ul>
+</li>
+</ul>
+<h1 id="926_1">9/26</h1>
+<ul>
+<li>cert誰發</li>
+<li>
+<p>ns誰創</p>
+<ul>
+<li>我來做</li>
+</ul>
+</li>
+<li>
+<p>9/22</p>
+<ul>
+<li>/manifests/fecb/fecb-api-system-deployment.yaml"</li>
+<li>./manifests/fecb/fecb-agent-deployment.yaml</li>
+</ul>
+</li>
+</ul>
+<p>Ask for one day leave on 9/22</p>
+<pre class="codehilite"><code>Dear John,
+
+I am writing this letter to apply my 生日假 for taking one day leave on 9/22(Friday), 
+kindly please approve.
+
+Best Regards,
+Jerry
+</code></pre>
+
+<h2 id="918">9/18</h2>
+<ul>
+<li>constant.rs<ul>
+<li>設定變數名稱</li>
+<li>預設字串</li>
+</ul>
+</li>
+<li>util<ul>
+<li>watch_service_status</li>
+<li>check_system</li>
+<li>db_operation<ul>
+<li>identity</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="codehilite"><code>use crate::SERVER_CERT_PATH;
+use crate::SERVER_KEY_PATH;
+use crate::CLIENT_CA_CERT_PATH;
+use crate::SYSTEM_CLIENT_CERT_PATH;
+use crate::SYSTEM_CLIENT_KEY_PATH;
+use crate::SYSTEM_SERVER_CA_CERT_PATH;
+
+
+    let identity = Identities{
+        server_cert_path:(*SERVER_CERT_PATH).lock().unwrap().clone(),
+        server_key_path:(*SERVER_KEY_PATH).lock().unwrap().clone(),
+        client_ca_cert_path:(*CLIENT_CA_CERT_PATH).lock().unwrap().clone(),
+        system_client_cert_path:(*SYSTEM_CLIENT_CERT_PATH).lock().unwrap().clone(),
+        system_client_key_path:(*SYSTEM_CLIENT_KEY_PATH).lock().unwrap().clone(),
+        system_server_ca_cert_path:(*SYSTEM_SERVER_CA_CERT_PATH).lock().unwrap().clone(),
+    };
+    let channel = Channel::from_static(FECB_SYSTEM_API_SERVER_URL.as_str())
+        .tls_config(identity.client_system_mtls().await)
+        .unwrap()
+        .connect()
+        .await
+        .unwrap();
+</code></pre>
+
+<ul>
+<li>修正順序<ul>
+<li>capability</li>
+<li>file</li>
+<li>device</li>
+<li>hc</li>
+</ul>
+</li>
+<li>watch</li>
+</ul>
+<h2 id="910">9/10</h2>
+<ul>
+<li>watch看到cert被改動要重新啟動</li>
+<li>mariadb pod lifecycle</li>
+<li>system api去access database api</li>
+<li>helm chart</li>
+</ul>
+<h2 id="816">8/16</h2>
+<ul>
+<li>meeting<ul>
+<li>ota update</li>
+<li>kubernetes</li>
+<li>身分認證代理程式<ul>
+<li>不在sandbox 在remote attestation(TPM)</li>
+<li>軍方定義ID中心</li>
+</ul>
+</li>
+<li>feature<ul>
+<li>設備身分<ul>
+<li>DEVICE cert sandbox(fECB)</li>
+</ul>
+</li>
+<li>可信軟體模組<ul>
+<li>fECB</li>
+</ul>
+</li>
+<li>可信資料交換<ul>
+<li>file api</li>
+</ul>
+</li>
+<li>可信晶片供應商<ul>
+<li>TPM　API</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>todo<ul>
+<li>tiip錄影</li>
+<li>demo script</li>
+<li>tpm remote attestation ppt</li>
+<li>file api<ul>
+<li>去除.csm</li>
+</ul>
+</li>
+<li>ota api</li>
+</ul>
+</li>
+</ul>
+<h1 id="81">8/1</h1>
+<ul>
+<li>書:Rust權威指南, linux shell, kubernetes</li>
+<li>書rust程式設計</li>
+<li>書~20章</li>
+<li>vault, minio, cert manager, pfsence routing</li>
+<li>todo<ul>
+<li>Kubernetes </li>
+<li>minio</li>
+<li>mTLS</li>
+<li>mender</li>
+</ul>
+</li>
+</ul>
+<h2 id="726">7/26</h2>
+<ul>
+<li>bug fix<ul>
+<li>fiducia@192.168.20.67</li>
+</ul>
+</li>
+<li>file api<ul>
+<li>configure minio errorcode</li>
+</ul>
+</li>
+</ul>
+<pre class="codehilite"><code>kubectl -n vault exec vault-0 -- vault kv get kv/admin-credentials/fecb-file-server/minio/access-key | awk 'END {print $2}'
+
+* Vault is sealed
+command terminated with exit code 2
+</code></pre>
+
+<ul>
+<li>minio access</li>
+</ul>
+<pre class="codehilite"><code>
+</code></pre>
+
+<ul>
+<li>mTLS整合完畢<ul>
+<li>書~16章</li>
+<li>tune code</li>
+<li>test.rs</li>
+</ul>
+</li>
+<li>gitlab <ul>
+<li>mearge</li>
+<li>squash</li>
+</ul>
+</li>
+<li>overview whole picture<ul>
+<li>error code(health check)</li>
+</ul>
+</li>
+</ul>
+<h2 id="725">7/25</h2>
+<ul>
+<li>system api<ul>
+<li>utils::set_kube_path();</li>
+<li>renew certificate</li>
+</ul>
+</li>
+<li>capability<ul>
+<li>utils::set_kube_path(); </li>
+</ul>
+</li>
+<li>bug fix<ul>
+<li>fiducia@192.168.20.67</li>
+</ul>
+</li>
+</ul>
+<h2 id="725_1">7/25</h2>
+<ul>
+<li>
+<p>mtls</p>
+</li>
+<li>
+<p>health check</p>
+<ul>
+<li>check identity ok</li>
+<li>check system ok</li>
+</ul>
+</li>
+<li>實作每個API<ul>
+<li>secret cert</li>
+<li>readness probe</li>
+</ul>
+</li>
+<li>clean up</li>
+<li>init container</li>
+<li>fix bug</li>
+</ul>
+<h2 id="76">7/6</h2>
+<ul>
+<li>docker login hostname issue</li>
+<li>k3s deploy cert issue</li>
+</ul>
+<h3 id="todo">todo</h3>
+<ul>
+<li>system <ul>
+<li>getver</li>
+<li>pooling<ul>
+<li>刪除pod<ul>
+<li>刪除capability</li>
+<li>刪除resource</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>info改成debug</li>
+<li>capability<ul>
+<li>list(app,hc,dvc)要修改前贅詞</li>
+<li>create capability pod ip會找不到<ul>
+<li>確認podip存在才寫入</li>
+<li>確認不是terminating 等待</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>file</p>
+<ul>
+<li>checksum</li>
+<li>upload</li>
+<li>checksum</li>
+<li>prefetch</li>
+</ul>
+</li>
+<li>
+<p>fecb api pod cert 改變就要重新抓cert</p>
+</li>
+<li>
+<p>info改成debug</p>
+</li>
+<li>file api<ul>
+<li>host alias 192.168.10.231</li>
+<li>hostname</li>
+</ul>
+</li>
+</ul>
+<h2 id="68">6/8</h2>
+<ul>
+<li>capability<ul>
+<li>list(app,hc,dvc)要修改前贅詞</li>
+<li>create capability pod ip會找不到<ul>
+<li>確認podip存在才寫入</li>
+<li>確認不是terminating 等待</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>file</p>
+<ul>
+<li>checksum</li>
+<li>upload</li>
+<li>checksum</li>
+<li>prefetch</li>
+</ul>
+</li>
+<li>
+<p>fecb api pod cert 改變就要重新抓cert</p>
+</li>
+<li>
+<p>system </p>
+<ul>
+<li>getver</li>
+<li>pooling<ul>
+<li>刪除pod -&gt; 刪除capability</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>info改成debug</li>
+<li>file api<ul>
+<li>host alias 192.168.10.231</li>
+<li>hostname</li>
+</ul>
+</li>
+</ul>
+<h2 id="67">6/7</h2>
+<ul>
+<li>system<ul>
+<li>ListVirtualDevice</li>
+</ul>
+</li>
+<li>file<ul>
+<li>checksum</li>
+<li>upload</li>
+<li>checksum</li>
+<li>prefetch</li>
+</ul>
+</li>
+<li>list hc bug<ul>
+<li>db:image_name -&gt;要修改所有protobuff</li>
+</ul>
+</li>
+<li>重複動作error code</li>
+<li>capability<ul>
+<li>list(app,hc,dvc)要修改前贅詞</li>
+<li>create capability pod ip會找不到</li>
+</ul>
+</li>
+<li>
+<p>fecb api pod cert 改變就要重新抓cert</p>
+</li>
+<li>
+<p>system </p>
+<ul>
+<li>getver</li>
+<li>pooling<ul>
+<li>刪除pod -&gt; 刪除capability</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="66">6/6</h2>
+<ul>
+<li>
+<p>system </p>
+<ul>
+<li>getver</li>
+<li>pooling<ul>
+<li>刪除pod -&gt; 刪除capability</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>tiip</p>
+</li>
+</ul>
+<pre class="codehilite"><code>https://192.168.31.5
+</code></pre>
+
+<pre class="codehilite"><code>./grpcurl  -cacert /opt/client/tls/ca-cert.pem  -import-path ./proto -proto capability-api.proto $FECB_CAPABILITY_API_SERVER_URL capability.CapabilityService/GetToken | jq .userToken)
+</code></pre>
+
+<h2 id="65">6/5</h2>
+<ul>
+<li>init <ul>
+<li>cert secret</li>
+<li>selector 改成svc</li>
+<li>整理git lab</li>
+</ul>
+</li>
+<li>system <ul>
+<li>getver</li>
+<li>pooling<ul>
+<li>刪除pod -&gt; 刪除capability</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="muti-svc">muti svc</h3>
+<ul>
+<li>new devie<ul>
+<li>get_service_ip_from_svcname</li>
+<li>get_service_port_from_profile</li>
+<li>profilename 要對到port的name</li>
+<li>new device data<ul>
+<li>ProfileName</li>
+<li>AssociateResourceSandboxName</li>
+<li>DeviceLocation</li>
+<li>DataType</li>
+<li>InteractionMode</li>
+<li>DeviceType</li>
+<li>ProxyUUID</li>
+<li>ServiceLocation</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="codehilite"><code>kubectl get svc device-service-py -o jsonpath='{.spec.ports}' -n resource-sandbox
+
+kubectl get svc device-service-py -o jsonpath='{.spec.ports[0].port}' -n resource-sandbox
+</code></pre>
+
+<pre class="codehilite"><code>export FECB_CAPABILITY_API_SERVER_URL=172.3.0.1:30891
+
+export token=\&quot;UZKPYO0lescBh1DsVWJBhfV4sDoSF2rge0b1bdZ918Q=\&quot;
+
+
+./grpcurl  -cacert /opt/client/tls/ca-cert.pem -d &quot;{\&quot;token\&quot;:$token}&quot; -import-path ./proto -proto capability-api.proto $FECB_CAPABILITY_API_SERVER_URL capability.CapabilityService/GetService
+</code></pre>
+
+<ul>
+<li>format<ul>
+<li>hc<ul>
+<li>name/ip/port (svc)</li>
+</ul>
+</li>
+<li>dvc<ul>
+<li>name/ip/port (svc)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>get svc flow<ul>
+<li>get_service_json<ul>
+<li>permission(capability)<ul>
+<li>hc/dvc去找 (ServiceName/profilename)svc ip port</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>issue<ul>
+<li>一定要先new device才能get service(capability)</li>
+</ul>
+</li>
+</ul>
+<h2 id="118">1/18</h2>
+<ul>
+<li>查核點對照表</li>
+<li>作業手冊</li>
+<li>video tiip</li>
+</ul>
+<pre class="codehilite"><code>    rm -rf /data/*
+    #./setup.sh cert
+    #put cert for harbor
+    sudo mkdir -p /data/certs
+    sudo cp certs/harbor-registry.crt /data/certs
+    sudo cp certs/harbor-registry.key /data/certs    
+
+    cp harbor.yml harbor
+    cd harbor 
+    docker-compose down -v
+    ./prepare  --with-notary  --with-trivy
+    docker-compose up -d
+
+開瀏覽器
+</code></pre>
+
+<pre class="codehilite"><code>502 Bad Gateway, Msg : error sending request for url (https://minio.fecb-file-server.demo-nvidia.internal/fecb-file-server/?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=ZDJhMmUxYzYzYTg4ZjA4YWIzZjExNTAy%2F20230117%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20230117T131712Z&amp;X-Amz-Expires=3600&amp;X-Amz-SignedHeaders=host&amp;encoding-type=url&amp;list-type=2&amp;X-Amz-Signature=c18f1a9acd7986967c99c26c619324e5ff84bef1972b938e3ae1ba930c7b55bf): error trying to connect: error:1416F086:SSL routines:tls_process_server_certificate:certificate verify failed:../ssl/statem/statem_clnt.c:1914: (unable to get local issuer certificate)
+</code></pre>
+
+<pre class="codehilite"><code>502 Bad Gateway, Msg : error sending request for url (https://minio.fecb-file-server.demo-nvidia.internal/fecb-file-server/?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=ZDJhMmUxYzYzYTg4ZjA4YWIzZjExNTAy%2F20230117%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20230117T131706Z&amp;X-Amz-Expires=3600&amp;X-Amz-SignedHeaders=host&amp;encoding-type=url&amp;list-type=2&amp;X-Amz-Signature=dbf2ccccb8b6c91020dcab0522dd02499c9e0ac5dbaaacb643bc1927cecc8ba1): error trying to connect: tcp connect error: Connection timed out (os error 110)
+</code></pre>
+
+<h2 id="1212">12/12</h2>
+<ul>
+<li>device cert<ul>
+<li>pem apply</li>
+<li>query</li>
+<li>廢除</li>
+</ul>
+</li>
+<li>notary<ul>
+<li>架設harbor</li>
+<li>了解規格 畫圖</li>
+</ul>
+</li>
+<li>gitlab</li>
+</ul>
+<h3 id="code-sign">code sign</h3>
+<ul>
+<li>getver接通</li>
+<li>getCertificate</li>
+<li>codeSign</li>
+</ul>
+<h3 id="device-cert">device cert</h3>
+<h3 id="notekm-i">Notekm i</h3>
+<ul>
+<li>block diagram ~ 1300<ul>
+<li>UML<ul>
+<li>use case diagram</li>
+<li>activity diagram</li>
+<li>sequence diagram</li>
+<li>file server(是否需要)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>service ~1400</li>
+<li>harbor ~1500</li>
+</ul>
+<p>房內附有冷/暖空調設備、睡墊、獨立衛浴、冰箱，車外部分附有遮雨棚、桌椅和照明燈光，請露友自備棉被、枕頭；
+每房可住4人，超過4人，每人加收200元/晚，上限人數為5人；每間同行車數為1車，若超過1車，每車加收200/晚
+夜衝請私訊營主</p>
+<p>自備棉被枕頭</p>
+<h2 id="912">9/12</h2>
+<ul>
+<li>dns certificate renew</li>
+<li>test pods 
+https://www.youtube.com/watch?v=nL0x0LIpLlk
+https://pfschina.org/wp/?p=1158
+https://www.lategege.com/?p=818
+https://ithelp.ithome.com.tw/articles/10266173</li>
+<li>godaddy
+https://developer.godaddy.com/</li>
+</ul>
+<h2 id="911">9/11</h2>
+<p>https://n.yam.com/Article/20220908128603</p>
+<ul>
+<li>dns certificate renew</li>
+<li>test pods </li>
+</ul>
+<h2 id="95">9/5</h2>
+<p>fiduciaedge/fecb-java-sdk:v1.4.1-x86
+./grpcurl  -cacert /opt/client/tls/ca-cert.pem -import-path ./proto -proto capability-api.proto 172.3.0.1:30891 capability.CapabilityService/GetToken
+./grpcurl  -cacert /opt/client/tls/ca-cert.pem -import-path ./proto -proto capability-api.proto fecb-capability-api.fecb-system.svc.cluster.local:65256 capability.CapabilityService/GetToken</p>
+<ul>
+<li>50.66 capability api</li>
+<li>6450 kernel</li>
+</ul>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

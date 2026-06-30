@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Boot Infosec | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="secure-boot-infosec">Secure Boot Infosec</h1>
+<h2 id="814">8/14</h2>
+<ul>
+<li>第4章</li>
+<li>mender-convert<ul>
+<li>2 rootfs</li>
+<li>bootloader <ul>
+<li>2選1</li>
+<li>Mender client </li>
+<li>configure</li>
+</ul>
+</li>
+<li>輸出<ul>
+<li>converted image</li>
+<li>遠端的Mender Artifact</li>
+<li>ext4 image 檔案格式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="516">5/16</h2>
+<ul>
+<li>了解harbor, notary 關係畫圖</li>
+<li>
+<p>走預設notary 完成駭客測試</p>
+<ul>
+<li>https://github.com/zj1244/Blog/blob/master/2019/harbor%E7%9A%84Notary%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95.md</li>
+</ul>
+</li>
+<li>
+<p>驗證signer(Ok)</p>
+</li>
+<li>harbor config singer</li>
+<li>secure boot情境</li>
+<li>init script</li>
+<li>demo</li>
+<li>manifest</li>
+</ul>
+<h2 id="_1">以下筆記</h2>
+<p>sudo BOARDID=3448 BOARDSKU=0002 FAB=400 FUSELEVEL=fuselevel_production  ./nvmassfusegen.sh -j -i 0x21 --auth NS -p -k <key.pem>  jetson-nano-devkit-emmc
+wsl 安裝
+https://developer.aliyun.com/article/1076324</p>
+<p>https://forums.developer.nvidia.com/t/sdk-manager-ubuntu-20-04-lts/125711/39</p>
+<pre class="codehilite"><code>docker run -it --rm sdkmanager --cli install --logintype devzone --product jetson --host --targetos Linux --version 4.6.2 --target JETSON_NANO_TARGETS --select 'Jetson OS' --select 'Jetson SDK Components' --flash skip
+
+#setup nvidia sdk manager
+sudo apt update
+sudo apt install ./sdkmanager_1.9.0-10816_amd64.deb -y
+sdkmanager --ver
+
+sdkmanager --cli install --logintype devzone --product jetson --host --targetos Linux --version 4.6.2 --target JETSON_NANO_TARGETS --select 'Jetson OS' --select 'Jetson SDK Components' --flash skip
+</code></pre>
+
+<h3 id="8221">8221</h3>
+<ul>
+<li>massfuse</li>
+</ul>
+<h2 id="1130">11/30</h2>
+<ul>
+<li>fuse ~1600</li>
+<li>restful ~1700</li>
+<li>code sign service ~2000</li>
+</ul>
+<h1 id="1123">11/23</h1>
+<ul>
+<li>安裝 Secure Boot package</li>
+<li><DK_file><ul>
+<li>A 32-bit number / big-endian HEX format.</li>
+<li>應用加密</li>
+</ul>
+</li>
+<li><SBK_file> <ul>
+<li>不會加密bootloader</li>
+<li>pkc_disable = 0</li>
+<li>應用加密</li>
+</ul>
+</li>
+<li>PKC<ul>
+<li>私鑰</li>
+</ul>
+</li>
+<li>PKC HASH </li>
+<li>burn</li>
+<li>sign</li>
+<li>flash</li>
+</ul>
+<h2 id="118">11/8</h2>
+<ul>
+<li>nano secure boot</li>
+<li>codesign</li>
+<li></li>
+</ul>
+<h2 id="117">11/7</h2>
+<ul>
+<li>nano secure boot</li>
+<li>codesign</li>
+<li>python script</li>
+</ul>
+<h2 id="112">11/2</h2>
+<ul>
+<li>fecp需求性</li>
+<li>
+<p>secure boot要怎麼走</p>
+</li>
+<li>
+<p>架構圖</p>
+<ul>
+<li>步驟 簡單淺顯易懂 (security) 達到的效果 素材</li>
+<li>給嘉宏跟cris</li>
+<li>明天下午 嘉宏 ricky cris</li>
+<li>架構圖 步驟 效果</li>
+</ul>
+</li>
+<li>device certificate</li>
+<li>
+<p>細一點素材</p>
+</li>
+<li>
+<p>portainer</p>
+</li>
+</ul>
+<pre class="codehilite"><code>teamviewer
+4t1mt87e
+</code></pre>
+
+<ul>
+<li>x11</li>
+</ul>
+<pre class="codehilite"><code>Xming X Server for Windows
+我个人喜欢的是VcXsrv这个X11 Server，可以在这里下载它的安装包。
+
+安装好以后，打开桌面上的XLaunch，然后选择Multiple windows-&gt;Start no client-&gt;勾选Disable access control-&gt;Save Configuration保存一下设置，方便以后使用-&gt;Finish。
+
+export DISPLAY=&quot;grep nameserver /etc/resolv.conf | sed 's/nameserver //':0.0&quot;
+&quot;grep nameserver /etc/resolv.conf | sed 's/nameserver //':0&quot;
+grep nameserver /etc/resolv.conf | sed 's/nameserver //'
+</code></pre>
+
+<h2 id="96">9/6</h2>
+<ul>
+<li>6450 <ul>
+<li>driver </li>
+<li>update bios</li>
+<li>kernel</li>
+<li>secure boot<ul>
+<li>sign kernel</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ubuntu 20.04.4LTS<ul>
+<li>linux kernel: 5.10.0-1057-oem</li>
+</ul>
+</li>
+<li>let's encrypt</li>
+<li>test pod</li>
+<li>diagram</li>
+</ul>
+<h2 id="94">9/4</h2>
+<ul>
+<li>capability~00<ul>
+<li>grpcurl 呼叫成功</li>
+</ul>
+</li>
+<li>
+<p>6450 kernel ~0030</p>
+<ul>
+<li>https://packages.ubuntu.com/focal/amd64/linux-image-5.10.0-1057-oem/download</li>
+<li>ubuntu 20.04.4LTS</li>
+<li>linux kernel: 5.10.0-1057-oem</li>
+<li>driver</li>
+</ul>
+</li>
+<li>
+<p>6450 pistis</p>
+</li>
+<li>driver</li>
+<li>畫圖</li>
+</ul>
+<h2 id="91">9/1</h2>
+<ul>
+<li>6450 kernel<ul>
+<li>https://packages.ubuntu.com/focal/amd64/linux-image-5.10.0-1057-oem/download</li>
+<li>ubuntu 20.04.4LTS</li>
+<li>linux kernel: 5.10.0-1057-oem</li>
+<li>driver</li>
+</ul>
+</li>
+<li>capability</li>
+<li>6450 pistis</li>
+<li>email</li>
+<li>運動</li>
+</ul>
+<h2 id="831">8/31</h2>
+<ul>
+<li>6450 kernel<ul>
+<li>https://packages.ubuntu.com/focal/amd64/linux-image-5.10.0-1057-oem/download</li>
+<li>ubuntu 20.04.4LTS</li>
+<li>linux kernel: 5.10.0-1057-oem</li>
+</ul>
+</li>
+<li>capability</li>
+<li>6450 pistis</li>
+<li>email</li>
+<li>運動</li>
+</ul>
+<h3 id="note">Note</h3>
+<p>https://b8807053.pixnet.net/blog/post/347445314-ubuntu-update-kernel</p>
+<pre class="codehilite"><code> sudo apt-cache search linux-image-* | grep 5.10.0-1057
+
+ sudo apt-get install linux-image-5.10.0-1057-oem
+
+ sudo update-initramfs -u -k all
+ sudo update-grub
+ sudo reboot
+</code></pre>
+
+<pre class="codehilite"><code>https://blog.ladsai.com/ubuntu-%E5%88%87%E6%8F%9B-kernel-%E7%89%88%E6%9C%AC.html
+
+https://packages.ubuntu.com/focal/linux-image-5.10.0-1057-oem
+
+uname -r 
+5.10.0-1057-oem
+
+dpkg -i *.deb
+</code></pre>
+
+<h2 id="830">8/30</h2>
+<ul>
+<li>block diagram<ul>
+<li>UML<ul>
+<li>use case diagram</li>
+<li>activity diagram</li>
+<li>sequence diagram</li>
+<li>file server(是否需要)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>secure boot nano</li>
+<li>device key nano</li>
+<li>capability api</li>
+<li>OVA</li>
+</ul>
+<h1 id="829">8/29</h1>
+<ul>
+<li>數位憑證技術與應用, Spring Boot, 隱私計算</li>
+</ul>
+<h2 id="828">8/28</h2>
+<ul>
+<li>jar包裝 ~1830</li>
+<li>container傳檔案 ~1900</li>
+<li>secure boot錄影 ~1930</li>
+<li>錄影五分鐘 ~2000</li>
+</ul>
+<h2 id="824">8/24</h2>
+<ul>
+<li>secure boot</li>
+<li>重新佈署pistis </li>
+</ul>
+<h2 id="818">8/18</h2>
+<ul>
+<li>ubuntu20.04.2 linux kernel安裝<ul>
+<li>secure boot mok</li>
+</ul>
+</li>
+<li>pistis部屬</li>
+<li>mok burning</li>
+<li>可信執行環境pdf</li>
+<li>siging flow</li>
+<li>sign hasg driver sandbox</li>
+</ul>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twca Code Signing Sandbox | Jerry's Growth Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0b1329'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Prism.js CSS for modern code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Markdown rendering overrides */
+        .markdown-body h1 { @apply text-3xl font-bold text-white mb-6 border-b border-slate-700 pb-2; }
+        .markdown-body h2 { @apply text-2xl font-bold text-sky-400 mt-8 mb-4 border-b border-slate-800 pb-1; }
+        .markdown-body h3 { @apply text-xl font-semibold text-sky-300 mt-6 mb-3; }
+        .markdown-body p { @apply text-slate-300 mb-4 leading-relaxed; }
+        .markdown-body ul { @apply list-disc list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body ol { @apply list-decimal list-inside text-slate-300 mb-4 pl-4 space-y-2; }
+        .markdown-body blockquote { @apply border-l-4 border-sky-500 bg-slate-800/50 px-4 py-3 rounded-r-md text-slate-400 italic my-4; }
+        .markdown-body table { @apply min-w-full divide-y divide-slate-800 my-6; }
+        .markdown-body th { @apply bg-slate-800/50 text-left px-4 py-3 text-xs font-semibold text-sky-400 uppercase tracking-wider border-b border-slate-700; }
+        .markdown-body td { @apply px-4 py-3 text-sm text-slate-300 border-b border-slate-800/50; }
+        .markdown-body pre { @apply rounded-lg p-4 bg-slate-900 overflow-x-auto my-4 border border-slate-800; }
+        .markdown-body code { @apply text-sky-300 bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono; }
+        .markdown-body pre code { @apply text-inherit bg-inherit p-0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Top Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Jerry Yang · Playbook Portal</span>
+            <span class="bg-sky-500/10 text-sky-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-sky-500/20">CI Action Flow Page</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">📄 Welcome Dashboard</a>
+            <span class="text-slate-700">|</span>
+            <span class="text-xs text-slate-500 font-mono">Status: Secure Sandbox Active</span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Persistent Sidebar -->
+        <aside class="w-80 bg-slate-900 border-r border-slate-800 p-6 overflow-y-auto hidden md:block">
+            <!-- Sidebar search -->
+            <div class="mb-6">
+                <input type="text" id="docSearch" placeholder="搜尋筆記..." class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500" />
+            </div>
+            
+            <nav class="space-y-6" id="sidebarNav">
+                <div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">01 Dsa Coding Interview</h3><ul class="space-y-1"><li><a href="domains_01-dsa-coding-interview_strategy.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Strategy</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_2026-04-02-tpm-luks-sealed-storage-analysis.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">2026 04 02 Tpm Luks Sealed Storage Analysis</a></li><li><a href="domains_05-security-trusted-systems_portfolio-summary.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Portfolio Summary</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">05 Security Trusted Systems/Archive</h3><ul class="space-y-1"><li><a href="domains_05-security-trusted-systems_archive_container-sandbox-fecp.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Container Sandbox Fecp</a></li><li><a href="domains_05-security-trusted-systems_archive_misc-notes.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Misc Notes</a></li><li><a href="domains_05-security-trusted-systems_archive_secure-boot-infosec.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Secure Boot Infosec</a></li><li><a href="domains_05-security-trusted-systems_archive_tpm-key-provisioning.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Tpm Key Provisioning</a></li><li><a href="domains_05-security-trusted-systems_archive_twca-code-signing-sandbox.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors bg-sky-600 text-white font-medium">Twca Code Signing Sandbox</a></li></ul></div><div class="mb-4"><h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Domains</h3><ul class="space-y-1"><li><a href="domains_reading-list.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Reading List</a></li><li><a href="domains_track-template.html" class="block px-3 py-1.5 rounded-md text-sm transition-colors text-slate-300 hover:bg-slate-700 hover:text-white">Track Template</a></li></ul></div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Pane -->
+        <main class="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16 max-w-5xl mx-auto w-full">
+            <div class="markdown-body">
+                <h1 id="twca-code-signing-sandbox">Twca Code Signing Sandbox</h1>
+<h2 id="1026">10/26</h2>
+<ul>
+<li>跑一次<ul>
+<li>gpgsm --list-key --with-validation</li>
+</ul>
+</li>
+<li>gpgsm</li>
+</ul>
+<pre class="codehilite"><code>gpgsm -K ansible test Root CA
+gpgsm --import server-ca.crt 
+gpgsm --disable-crl-checks --verify test.cms 
+gpgsm --disable-crl-checks --verify test.cms &lt;(echo &quot;your_input_string_here&quot;)
+
+gpgsm --list-keys 
+查看ID
+</code></pre>
+
+<ul>
+<li>
+<p>note</p>
+<ul>
+<li>gpgsm --disable-crl-checks --verify test.cms<ul>
+<li>pod 找不到rootca</li>
+</ul>
+</li>
+<li>gpgsm --list-keys<ul>
+<li>pod的CN ansible test Intermediate CA</li>
+<li>放在最底層</li>
+</ul>
+</li>
+<li>gpgsm -K ansible test Root CA</li>
+<li>gpgsm -K ansible test Intermediate CA</li>
+<li>installed and marked as trusted <ul>
+<li>gpgsm --edit-key 0x0A408B46</li>
+</ul>
+</li>
+<li>cert ID<ul>
+<li>0x25F74A48</li>
+</ul>
+</li>
+<li>指紋<ul>
+<li>E7:F8:BD:EA:E0:6B:3E:BE:4D:B5:0C:B6:39:56:D4:D7:0A:40:8B:46</li>
+<li>gpg-agent configure</li>
+<li>trustlist.txt</li>
+</ul>
+</li>
+<li>/opt/fiducia/.gnupg</li>
+<li>APPDATA/GNU/etc/gnupg/trustlist.txt</li>
+<li>https://www.gnupg.org/documentation/manuals/gnupg/Agent-Options.html#option-_002d_002dhomedir</li>
+<li>~/.gnupg/trustlist.txt</li>
+<li>manually adding the certificate's fingerprint to the trustlist.txt<ul>
+<li>gpgsm --keyring trustlist.txt --disable-crl-checks --verify test.cms</li>
+<li>gpgsm: dirmngr cache-only key lookup failed: No dirmngr</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>cert fidderenet</p>
+</li>
+</ul>
+<pre class="codehilite"><code>gpgsm --disable-crl-checks --verify test.cms
+
+woking node
+gpgsm: Signature made 2023-10-26 04:27:10 using certificate ID 0x25F74A48
+
+failing node
+gpgsm: Signature made 2023-10-26 04:27:10 UTC
+gpgsm:                using rsa2048 key 6734353EA8C577141E6C67B90E2D8C1225F74A48
+
+why different to the same test.cms
+ChatGPT
+The difference in the gpgsm output between the working node and the failing node when verifying the same test.cms file may be due to variations in how the nodes are configured, especially with regard to the certificates and trust settings. Let's break down the differences you've highlighted:
+
+Working Node Output:
+
+gpgsm: Signature made 2023-10-26 04:27:10 using certificate ID 0x25F74A48
+Failing Node Output:
+
+gpgsm: Signature made 2023-10-26 04:27:10 UTC
+gpgsm: using rsa2048 key 6734353EA8C577141E6C67B90E2D8C1225F74A48
+The working node's output indicates that it successfully verified the signature of test.cms using the certificate ID 0x25F74A48.
+
+The failing node's output, on the other hand, indicates a couple of things:
+
+It correctly verifies the signature made on test.cms with a timestamp of &quot;2023-10-26 04:27:10 UTC.&quot;
+It mentions the key ID (6734353EA8C577141E6C67B90E2D8C1225F74A48) used in the signature.
+The key difference in the failing node's output is that it provides more detailed information about the key (6734353EA8C577141E6C67B90E2D8C1225F74A48) used in the signature verification, which is not present in the working node's output.
+
+This additional information can be useful for troubleshooting and understanding the certificate chain and key used in the verification process. The fact that it provides information about the key used (6734353EA8C577141E6C67B90E2D8C1225F74A48) is not necessarily a sign of a problem but rather an additional level of detail in the output.
+
+To address the issue of trust and the root certificate not being marked as trusted on the failing node, you should follow the steps mentioned in the previous responses to ensure that the root certificate is correctly installed and marked as trusted on the failing node. Once the root certificate is trusted, the failing node should be able to verify the signature of test.cms just like the working node.
+</code></pre>
+
+<ul>
+<li>test</li>
+</ul>
+<p>https://www.gnupg.org/documentation/manuals/gnupg/Howto-Create-a-Server-Cert.html
+gpgsm -K ansible test Root CA
+update-ca-certificates</p>
+<p>gpgsm --disable-crl-checks --verify test.cms </p>
+<p>gpgsm --import</p>
+<ul>
+<li>tmp</li>
+</ul>
+<p>r marking certificates as trusted or editing keys. </p>
+<p>To resolve the issue, you should follow the steps provided earlier to mark the root certificate as trusted on the failing node using the gpgsm --edit-key command:</p>
+<p>bash
+Copy code
+gpgsm --edit-key 0x0A408B46
+trust
+5  # Select "I trust ultimately"
+save
+This should mark the root certificate as trusted on the failing node and allow it to be used for signature verification without encountering the "root certificate is not marked trusted" error.</p>
+<pre class="codehilite"><code>    info!(&quot;utils::gpgsm_verify::echo_out {:?}&quot;,echo_out);
+    let output = Command::new(&quot;gpgsm&quot;)
+        .stdin(Stdio::from(echo_out))
+        .arg(&quot;--disable-crl-checks&quot;)
+        .arg(&quot;--verify&quot;)
+        .output()
+        .expect(&quot;Failed to start gpgsm process&quot;);
+
+     gpgsm --disable-crl-checks --verify test.cms [string here]
+</code></pre>
+
+<pre class="codehilite"><code>gpgsm: Signature made 2023-10-26 04:27:10 UTC
+gpgsm:                using rsa2048 key 6734353EA8C577141E6C67B90E2D8C1225F74A48
+gpgsm: root certificate is not marked trusted
+gpgsm: fingerprint=E7:F8:BD:EA:E0:6B:3E:BE:4D:B5:0C:B6:39:56:D4:D7:0A:40:8B:46
+gpgsm: DBG: BEGIN Certificate 'issuer':
+gpgsm: DBG:      serial: 6C7F598D979C1E17FEA4E556E974467BD44CF8F6
+gpgsm: DBG:   notBefore: 2023-10-24 07:36:33
+gpgsm: DBG:    notAfter: 2033-10-21 07:36:33
+gpgsm: DBG:      issuer: CN=ansible test Root CA,OU=ansible test Root CA,O=FiduciaEdge,L=Hsinchu,ST=Hsinchu,C=TW
+gpgsm: DBG:     subject: CN=ansible test Root CA,OU=ansible test Root CA,O=FiduciaEdge,L=Hsinchu,ST=Hsinchu,C=TW
+gpgsm: DBG:   hash algo: 1.2.840.113549.1.1.11
+gpgsm: DBG:   SHA1 Fingerprint: E7:F8:BD:EA:E0:6B:3E:BE:4D:B5:0C:B6:39:56:D4:D7:0A:40:8B:46
+gpgsm: DBG: END Certificate
+gpgsm: after checking the fingerprint, you may want to add it manually to the list of trusted certificates.
+gpgsm: invalid certification chain: Not trusted
+&quot;, metadata: MetadataMap { headers: {&quot;content-type&quot;: &quot;application/grpc&quot;, &quot;date&quot;: &quot;Thu, 26 Oct 2023 08:23:05 GMT&quot;, &quot;content-length&quot;: &quot;0&quot;} 
+</code></pre>
+
+<h2 id="810">8/10</h2>
+<ul>
+<li>
+<p>tiip~21:00</p>
+<ul>
+<li>hacker 網頁</li>
+<li>
+<p>demo script function</p>
+<ul>
+<li>00-config</li>
+<li>010-push-unsigned-image</li>
+<li>011-deploy-unsigned-image<ul>
+<li>成功 192.168.10.215:3447</li>
+</ul>
+</li>
+<li>012-push-signed-image<ul>
+<li>harbor ui顯示綠勾</li>
+<li>harbor掃描</li>
+</ul>
+</li>
+<li>013-deploy-signed-image<ul>
+<li>打開網頁說明</li>
+</ul>
+</li>
+<li>
+<p>014-remove-signature</p>
+</li>
+<li>
+<p>020-attack-poisoned-unsigned</p>
+<ul>
+<li>webui更改成功</li>
+<li>011 失敗拒絕沒簽名</li>
+</ul>
+</li>
+<li>021-attack-poisoned-signed<ul>
+<li>推送失敗 沒有鑰匙</li>
+<li>刪除失敗 沒有鑰匙</li>
+<li>014刪除簽名</li>
+<li>推送signed失敗</li>
+<li>推送unsigned成功 deploy 失敗</li>
+<li>3-1影片</li>
+<li>demo影片</li>
+</ul>
+</li>
+<li>正規</li>
+<li>攻防</li>
+<li>mender 21~23<ul>
+<li>configure</li>
+<li>getfile </li>
+</ul>
+</li>
+</ul>
+<h2 id="89">8/9</h2>
+<ul>
+<li>tiip meeting<ul>
+<li>3-1影片 五分鐘</li>
+</ul>
+</li>
+<li>錄製旁白<ul>
+<li>demo一間房間 可以的話兩個螢幕</li>
+</ul>
+</li>
+<li>一個螢幕駭客 右下角駭客人畫面</li>
+<li>一個螢幕後台展示作法<ul>
+<li>沒有攻防不超過十分鐘</li>
+<li>攻防演練不超過五分鐘</li>
+</ul>
+</li>
+<li>被hacker 改某一個畫面(改html 駭客logo顯示在index.html 小圖呈現)<ul>
+<li>script簡體字</li>
+</ul>
+</li>
+<li>改成linux shell script</li>
+<li>function處理<ul>
+<li>強調harbor相關字眼說明signer設計</li>
+<li>him醫療相關 強調相關性</li>
+<li>展示內容(畫面)</li>
+</ul>
+</li>
+<li>兩台主機 <ul>
+<li>駭客 Jerry筆電(外借)</li>
+<li>使用者/架構展示 Jerry主要筆電</li>
+<li>TWCA 家宏筆電</li>
+</ul>
+</li>
+<li>螢幕 主原則 兩台螢幕<ul>
+<li>
+<ol>
+<li>架構ppt動畫 大投影</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>後台(駭客/使用者/TWCA 可走瀏覽器 待討論)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>螢幕 較佳備案 三台螢幕<ul>
+<li>
+<ol>
+<li>架構ppt動畫 大投影</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>左後台(駭客)</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>右後台(使用者/TWCA 可走瀏覽器 待討論)</li>
+</ol>
+</li>
+<li>schedule</li>
+</ul>
+</li>
+<li>8/17 四 10:00 排演demo 確認流程<ul>
+<li>twca2樓 兩個螢幕 下午討論歐文</li>
+<li>gopro錄影</li>
+</ul>
+</li>
+<li>8/18 五 上午完成備用demo影片<ul>
+<li>開會錄音走一遍</li>
+<li>demo螢幕上走一遍</li>
+<li>考前猜題</li>
+</ul>
+</li>
+<li>8/23 三 最終查核TWCA<ul>
+<li>內容討論</li>
+</ul>
+</li>
+<li>上傳tuf 用command line(script function)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>tiip</p>
+<ul>
+<li>hacker 網頁</li>
+<li>3-1影片</li>
+<li>demo影片<ul>
+<li>正規</li>
+<li>攻防</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>mender<ul>
+<li>configure</li>
+<li>getfile </li>
+</ul>
+</li>
+</ul>
+<h2 id="88">8/8</h2>
+<ul>
+<li>mender server client<ul>
+<li>server install<ul>
+<li>Production installation with Kubernetes</li>
+</ul>
+</li>
+<li>client install<ul>
+<li>installing</li>
+<li>Use an Update Module</li>
+<li>Use the Device-side API</li>
+<li>Configuration file</li>
+</ul>
+</li>
+<li>Artifact creation<ul>
+<li>Sign and verify</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>mender API<ul>
+<li>https://docs.mender.io/api/#introduction</li>
+</ul>
+</li>
+</ul>
+<h2 id="714">7/14</h2>
+<ul>
+<li>投影片動畫<ul>
+<li>正常推image 駭客置換</li>
+<li>說明DCT</li>
+<li>DCT push</li>
+<li>轉成CoSNAR</li>
+<li>pull sign image</li>
+<li>pull unsigned image</li>
+<li>hacker pull remove</li>
+<li>owner移除簽名</li>
+<li>駭客假裝簽名失敗</li>
+<li>駭客上傳無簽名覆蓋 部屬失敗</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<h2 id="74">7/4</h2>
+<ul>
+<li>test api(已改完)<ul>
+<li>TestCryptoSignerInterfaceBehaviorTWCA(Ok)</li>
+<li>healthcheck(有時間測試, 可能週三)</li>
+</ul>
+</li>
+<li>harbor ca(先不管cert issue)<ul>
+<li>harbor放客戶端由客戶設定<ul>
+<li>先不管，給對外機使用，對外機在管理certificate</li>
+</ul>
+</li>
+<li>未來放在合適的雲端位置(AWS)</li>
+</ul>
+</li>
+<li>port(待測notary)<ul>
+<li>30003, harbor registry使用(OK)<ul>
+<li>harbor.twca.com.tw</li>
+</ul>
+</li>
+<li>30004, notary server對外使用(待測)<ul>
+<li>notary.twca.com.tw</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="625">6/25</h2>
+<ul>
+<li>go call local module<ul>
+<li>https://stackoverflow.com/questions/52026284/accessing-local-packages-within-a-go-module-go-1-11</li>
+</ul>
+</li>
+<li>go test api</li>
+<li>比對twca</li>
+</ul>
+<h2 id="623">6/23</h2>
+<ul>
+<li>go hello world</li>
+<li>gitgub notary signer模擬</li>
+<li>go grpc server</li>
+<li>go-signer</li>
+<li>signer io</li>
+<li>
+<p>twca signer</p>
+</li>
+<li>
+<p>auto zsh</p>
+</li>
+</ul>
+<pre class="codehilite"><code>docker run -p 127.0.0.1:30892:39180 -v /opt/client/tls:/opt/client/tls --env SERVER_CERT_PATH=/opt/client/tls/server-cert.pem SERVER_KEY_PATH=/opt/client/tls/server-key.pem CA_CERT_PATH=/opt/client/tls/ca-cert.pem
+</code></pre>
+
+<h2 id="615">6/15</h2>
+<ul>
+<li>自建harbor server切割signer 實作</li>
+</ul>
+<h2 id="531">5/31</h2>
+<ul>
+<li>
+<p>修改</p>
+<ul>
+<li>capability util<ul>
+<li>109 select ServiceName from device (getservice)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>notary 自己架設
+https://github.com/notaryproject/notary/blob/master/docs/running_a_service.md</p>
+</li>
+<li>確認server證書</li>
+<li>notary signer分離</li>
+<li>攻防情境</li>
+</ul>
+<h2 id="todo">Todo</h2>
+<ul>
+<li>
+<p>Modify harbor templates for notary-server</p>
+<ul>
+<li>Notary-sign test with CLI</li>
+<li>Notary-sign test with gRPC</li>
+</ul>
+</li>
+<li>
+<p>Offensive and Defensive Exercise document (CoSNAR)~<strong>5/31</strong></p>
+</li>
+<li>
+<p>fECB v1.4.3 ~<strong>6/1</strong></p>
+</li>
+<li>
+<p>Set up traefik routing for TWCA</p>
+</li>
+</ul>
+<h2 id="529">5/29</h2>
+<ul>
+<li>tiip<ul>
+<li>tuf signature</li>
+<li>攻防情境</li>
+</ul>
+</li>
+</ul>
+<h3 id="dev">dev</h3>
+<ul>
+<li>notary sign</li>
+<li>grpc</li>
+<li>documnet</li>
+</ul>
+<h2 id="523">5/23</h2>
+<ul>
+<li>modify<ul>
+<li>client: 192.168.10.217</li>
+</ul>
+</li>
+<li>Test notary function via image signature<ul>
+<li>Create testing script</li>
+<li>Verify image's signature</li>
+</ul>
+</li>
+<li>CoSNAR notary function</li>
+<li>Draw sequence diagram
+https://github.com/zj1244/Blog/blob/master/2019/harbor%E7%9A%84Notary%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95.md</li>
+</ul>
+<h2 id="28">2/8</h2>
+<ul>
+<li>meeting<ul>
+<li>全配字幕 淺顯易懂 這一步目的是甚麼 <ul>
+<li>改成投影片顯示 講到哪裡只到哪裡<ul>
+<li>子畫面 螢幕錄製</li>
+<li>指令放附錄</li>
+<li>目標導向 結果導向</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ccsars<ul>
+<li>字幕說明整段過程</li>
+<li>補上twca cert</li>
+<li>強調紅色方框</li>
+</ul>
+</li>
+<li>cosnar<ul>
+<li>https://blogs.vmware.com/vmware-taiwan/2018/05/31/pks-%E6%BC%94%E7%A4%BA-%E5%AE%B9%E5%99%A8%E6%98%A0%E5%83%8F%E5%80%89%E5%BA%AB-harbor/</li>
+<li>microsoft azure 文字轉語音 yunJhe 1.0 General</li>
+<li>5 6 分鐘結束</li>
+<li>trivy指向notary</li>
+<li>notary signer</li>
+<li>開頭的部分</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>flow<ul>
+<li>ccsars (一小時)<ul>
+<li>介紹secure boot</li>
+<li>介紹code sign<ul>
+<li>實作hash</li>
+<li>驗證secure boot</li>
+</ul>
+</li>
+<li>介紹device cert<ul>
+<li>實作device cert</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>cosnar (一小時)<ul>
+<li>介紹harbor</li>
+<li>介紹notary<ul>
+<li>實作sign</li>
+<li>驗證unsigned</li>
+</ul>
+</li>
+<li>介紹trivy<ul>
+<li>實作scan</li>
+</ul>
+</li>
+<li>介紹scanner<ul>
+<li>報告展示</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>介紹 sb codesign ~2130</li>
+<li>實作 device cert 2150</li>
+</ul>
+<h2 id="16">1/6</h2>
+<ul>
+<li>overview<ul>
+<li>notary signer<ul>
+<li>Sign</li>
+<li>CreateKey</li>
+<li>delete</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>接通自己的notary server<ul>
+<li>架設notary server<ul>
+<li>去掉--with-notary</li>
+<li>--with-notary</li>
+<li>建立notary</li>
+<li>docker run server<ul>
+<li>了解筆記</li>
+<li>建立signer</li>
+</ul>
+</li>
+<li>docker run signer</li>
+<li>遠端連線 </li>
+</ul>
+</li>
+<li>client, server, signer 設定<ul>
+<li>notary server -&gt; twca signer</li>
+</ul>
+</li>
+<li>docker compose yml修改</li>
+<li>觀察log</li>
+</ul>
+</li>
+<li>分離自己的notary signer</li>
+<li>連通台網的notary signert</li>
+<li>轉成kubenete</li>
+</ul>
+<h2 id="1223">12/23</h2>
+<h3 id="jar-test">jar test</h3>
+<h1 id="java-jar-codesignjar-getver">java -jar codesign.jar getVer</h1>
+<h1 id="java-jar-codesignjar-getcert-fe_prod_soft">java -jar codesign.jar getCert fe_prod_soft</h1>
+<h1 id="shashasum-a-256-shimx64efi">sha=($(shasum -a 256 shimx64.efi))</h1>
+<h1 id="echo-sha-unsigned_hash">echo $sha &gt; unsigned_hash</h1>
+<h1 id="java-jar-codesignjar-sign-fe_prod_soft-unsigned_hash-signed_hash">java -jar codesign.jar Sign fe_prod_soft unsigned_hash signed_hash</h1>
+<h1 id="java-jar-codesignjar-attach-certb64-shimx64efi-signed_hash-p7_sig">java -jar codesign.jar Attach certb64 shimx64.efi  signed_hash  p7_sig</h1>
+<h1 id="sbattach-attach-p7_sig-shimx64efi">sbattach --attach p7_sig shimx64.efi</h1>
+<h1 id="sbverify-list-grubx64efi">sbverify --list grubx64.efi</h1>
+<h1 id="sbattach-remove-grubx64efi">sbattach --remove grubx64.efi</h1>
+<h3 id="uefi-teset">UEFI teset</h3>
+<h2 id="1219">12/19</h2>
+<ul>
+<li>notary signer</li>
+</ul>
+<h2 id="1218">12/18</h2>
+<ul>
+<li>notary signer</li>
+<li>codesign grpc</li>
+<li></li>
+</ul>
+<h2 id="1214">12/14</h2>
+<ul>
+<li>gitlab</li>
+<li>瑞峰<ul>
+<li>sign</li>
+<li>csr</li>
+</ul>
+</li>
+</ul>
+<h1 id="deadline">deadline</h1>
+<ul>
+<li>12/3 12:00 keyhost/fusing host</li>
+<li>12/3 22:00 flashing host/sign host</li>
+<li>12/4 codesign notary</li>
+</ul>
+<h1 id="_1">行程規劃</h1>
+<ul>
+<li>12/2 keyhost/ fusinghost</li>
+<li>12/3 flashing host/sign host</li>
+<li>12/4 codesign notary</li>
+</ul>
+<h2 id="121">12/1</h2>
+<ul>
+<li>meeting<ul>
+<li>軟體排程</li>
+<li>TAA(PE) 流程手畫 手冊 (呈現無視 8221 intel)</li>
+<li>下週五要去跑 明天內部(這禮拜有點趕 下周一安裝 下周三ready)</li>
+<li>驗收單</li>
+</ul>
+</li>
+<li>進度<ul>
+<li>8221 (1400)</li>
+<li>notary signer(1600)</li>
+<li>架構圖 (連線台網過程, 過程)</li>
+<li>手冊</li>
+<li>deploy</li>
+</ul>
+</li>
+</ul>
+<h2 id="1129">11/29</h2>
+<ul>
+<li>codesign service (notary signer)</li>
+</ul>
+<h2 id="1018">10/18</h2>
+<ul>
+<li>rust pod ip</li>
+<li>ai inference</li>
+<li>notary</li>
+<li>codesign service rust</li>
+</ul>
+<h2 id="1017">10/17</h2>
+<ul>
+<li>rust service<ul>
+<li>書1~5</li>
+<li>code hash </li>
+<li>code sign</li>
+</ul>
+</li>
+</ul>
+<h2 id="1012">10/12</h2>
+<ul>
+<li>11月中 locus做到 codesign<ul>
+<li>image</li>
+</ul>
+</li>
+<li>12月底 做到OTA</li>
+</ul>
+<h2 id="105">10/5</h2>
+<ul>
+<li>codesign service<ul>
+<li>sign</li>
+</ul>
+</li>
+</ul>
+<h2 id="104">10/4</h2>
+<ul>
+<li>harbor架設完畢</li>
+<li>codesign hash</li>
+<li>畫圖</li>
+</ul>
+<h2 id="103">10/3</h2>
+<ul>
+<li>harbor架設 (k3s master) helm</li>
+<li>notary / cosign</li>
+<li>codesign service <ul>
+<li>hash code</li>
+<li>code sign</li>
+</ul>
+</li>
+</ul>
+<h2 id="929">9/29</h2>
+<ul>
+<li>codehash</li>
+<li>codesign</li>
+<li>https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#destructuring-nested-structs-and-enums</li>
+</ul>
+<h2 id="926">9/26</h2>
+<ul>
+<li>6450 test腳本</li>
+<li>codesign rust<ul>
+<li>hashcode</li>
+<li>signcode</li>
+<li>buildp7</li>
+<li>csr</li>
+</ul>
+</li>
+</ul>
+<h2 id="922">9/22</h2>
+<ul>
+<li>hashcode<ul>
+<li>上傳stream</li>
+<li>做hash</li>
+<li>回hashed</li>
+</ul>
+</li>
+<li>listversion</li>
+</ul>
+<h3 id="todo_1">todo</h3>
+<ul>
+<li>hashcode<ul>
+<li>https://www.vinsguru.com/grpc-file-upload-client-streaming/</li>
+<li>upload streaming</li>
+<li>hashcode</li>
+</ul>
+</li>
+<li>listversion</li>
+</ul>
+<h2 id="919">9/19</h2>
+<ul>
+<li>
+<p>https://cloud.tencent.com/developer/article/1832918</p>
+</li>
+<li>
+<p>meeting</p>
+<ul>
+<li>harbor的verify外包出來實行，code不要讓我們看到</li>
+<li>讓開發者覺得不用洩漏code</li>
+<li>https://goharbor.io/docs/2.5.0/working-with-projects/project-configuration/implementing-content-trust/</li>
+</ul>
+</li>
+<li>vHub AI inference 十二月初demo
+uml流程圖</li>
+</ul>
+<pre class="codehilite"><code>Ask for taking the half day leave on 9/22 and 生日假 on 9/23
+
+Dear John,
+
+I am writing this letter to apply my annual leave for taking the afternoon off on 9/22(Thursday) and 生日假 on 9/23(Friday), I will be back to work on the 9/26 (Monday), 
+kindly please approve.
+
+Best Regards,
+Jerry
+</code></pre>
+
+<h2 id="910">9/10</h2>
+<ul>
+<li>test pods</li>
+<li>twca client</li>
+</ul>
+<h2 id="829">8/29</h2>
+<ul>
+<li>影片<ul>
+<li>左OEM</li>
+<li>右TWCA client</li>
+<li>右下資料傳遞區</li>
+</ul>
+</li>
+</ul>
+<h2 id="827">8/27</h2>
+<ul>
+<li>sign, hash, verify image</li>
+</ul>
+<h2 id="826">8/26</h2>
+<ul>
+<li>
+<p>demo情境slide</p>
+<ul>
+<li>A3.1<ol>
+<li>開發能在可信執行環境 (TEE)中運算SHA-256雜湊值程式碼映像檔的「安全程式碼雜湊運算模組」</li>
+<li>將程式碼雜湊模組封裝成兼容於OCI的容器映像檔</li>
+<li>在 FiduciaEdge可信邊緣運算平台 (fECP) 上的安全沙箱中佈署和執行容器化的安全程式碼雜湊運算模組</li>
+</ol>
+</li>
+<li>A3.2<ol>
+<li>在用戶開發環境中的容器化程式碼簽章客戶端與在TWCA環境中的伺服器之間在HTTPS + mTLS + JSON Web Token (JWT) 保護下進行相互認證、不可否認和資料保密的交易功能</li>
+<li>程式碼簽章客戶端和伺服器之間具有rollback功能的原子化交易功能</li>
+<li>程式碼雜湊和簽章解耦之安全交易的應用程式</li>
+<li>程式碼映像檔和密鑰分發之安全交易的應用程式</li>
+<li>TWCA發行在交易中使用的X.509公鑰證書</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>java code(verify) ~1430</p>
+<ul>
+<li>p1 build失敗, 實作p7</li>
+</ul>
+</li>
+<li>java container ~1500</li>
+<li>影片 ~1530</li>
+<li>secure boot ~1600</li>
+<li>pistis ~1630</li>
+<li>OTA update 晚上</li>
+</ul>
+<h2 id="825">8/25</h2>
+<ul>
+<li>p1, p7<ul>
+<li>書4567</li>
+</ul>
+</li>
+<li>sign hash verify code
+<img alt="" src="https://i.imgur.com/hyhfcq3.png" /></li>
+<li>docker image, sandbox</li>
+<li>secure boot<ul>
+<li>https://www.youtube.com/watch?v=Td4o7b24I28</li>
+</ul>
+</li>
+<li>重新佈署pistis </li>
+</ul>
+<h2 id="824">8/24</h2>
+<ul>
+<li>meeting<ul>
+<li>需求建議書<ul>
+<li>server會上雲端</li>
+<li>不做ZERO TRUST怕node可以調整server調整</li>
+<li>server可以調整</li>
+</ul>
+</li>
+<li>開會<ul>
+<li>明日8221 燒錄pbkey, signed system software, end to end securuty(設定改動)</li>
+<li>1.<ul>
+<li>原本出場就燒好(組裝廠做的, 停車住組裝時做的)</li>
+<li>燒錄自己的應用軟體, linux再組裝廠燒得</li>
+<li>炎陽給的機器是空的, 炎陽工廠燒比較輕鬆</li>
+<li>一台20分鐘, 可以一次燒好幾台</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>p1, p7<ul>
+<li>書4567</li>
+</ul>
+</li>
+<li>sign hash verify code
+<img alt="" src="https://i.imgur.com/hyhfcq3.png" /></li>
+<li>docker image, sandbox</li>
+<li>secure boot<ul>
+<li>https://www.youtube.com/watch?v=Td4o7b24I28</li>
+</ul>
+</li>
+</ul>
+<h2 id="nano">Nano</h2>
+<pre class="codehilite"><code>package com.fiducia;
+
+
+import java.io.*;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Signature;
+import java.security.PublicKey;
+import java.util.Base64;
+
+public class SignService {
+    public static void main(String[] args) throws Exception {
+        API.getVer();
+        System.out.println(&quot;java -jar .\\codesign-v1.4.0.jar getVer&quot;);
+
+
+        /*
+        if(args.length == 0)
+            return ;
+
+        if (args[0].compareTo(&quot;getVer&quot;)==0)
+            try{
+                API.getVer();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        */
+
+
+
+
+
+        //openssl dgst -sha256 -verify pk -signature signedhash codehash
+
+        Cert cert = new Cert(&quot;fe_prod_soft&quot;);
+        cert.pem2file(&quot;cert.pem&quot;);
+
+
+        //byte[] byteFile =  utils.File2Byte(&quot;codehash&quot;);
+        //byte[] bytehash = hexStr2Byte(new String(byteFile));
+
+        String strFile= utils.File2Str(&quot;codehash&quot;);
+        byte[] bytehash = hexToBytes(strFile);
+
+
+
+        Key.listKey();
+        Key.keyActive(&quot;fe_prod_soft&quot;);
+
+        Sign sign = new Sign(&quot;fe_prod_soft&quot;);
+        String signedhash= sign.SignHash(bytehash);
+        System.out.println(signedhash);
+
+
+        //utils.Str2File(signedhash,&quot;signedhash.sha256&quot;);
+        //Key.keyDeactive(&quot;fe_prod_soft&quot;);
+
+
+        //boolean rst=Verify.testsign(signedhash,&quot;fe_prod_soft&quot;,bytehash);
+
+
+
+    }
+
+
+
+    public static byte[] hexToByteData(String hex)
+    {
+        byte[] convertedByteArray = new byte[hex.length()/2];
+        int count  = 0;
+
+        for( int i = 0; i &lt; hex.length() -1; i += 2 )
+        {
+            String output;
+            output = hex.substring(i, (i + 2));
+            int decimal = (int)(Integer.parseInt(output, 16));
+            convertedByteArray[count] =  (byte)(decimal &amp; 0xFF);
+            count ++;
+        }
+        return convertedByteArray;
+    }
+
+    public static byte[] hexToBytes(String hex){
+        hex = hex.length() % 2 != 0 ? &quot;0&quot; + hex : hex;
+
+        byte[] b = new byte[hex.length() / 2];
+        for(int i = 0 ; i &lt; b.length; i ++){
+            int index = i * 2;
+            int v = Integer.parseInt(hex.substring(index,index+2), 16);
+            b[i] = (byte) v;
+        }
+        return  b;
+
+    }
+}
+</code></pre>
+
+<h2 id="823">8/23</h2>
+<ul>
+<li>雙蓋摺疊小包 1600 BEB03</li>
+<li>拉鍊萬用小包 680</li>
+<li>
+<p>名片零錢兩用小包 680</p>
+</li>
+<li>
+<p>demo</p>
+<ul>
+<li>get code(from minio)</li>
+<li>do hash(hash sandbox)傳到sign sandbox</li>
+<li>sign hash(sign sandbox)上傳minio</li>
+<li>verify</li>
+</ul>
+</li>
+<li>
+<p>todo</p>
+<ul>
+<li>java getfile</li>
+<li>java hash,sign</li>
+<li>sandbox</li>
+<li>verify</li>
+</ul>
+</li>
+<li>
+<p>OEM</p>
+<ul>
+<li>hash sandbox<ul>
+<li>hashtool.jar</li>
+<li>code -&gt; <code>java -jar hashtool -i code -o hashedcode</code> -&gt; hashedcode</li>
+</ul>
+</li>
+<li>sign sandbox(service)<ul>
+<li>signtool.jar(daemon)</li>
+<li>hashedcode -&gt;<code>java -jar signtool -i hashedcode -o signed</code> -&gt; signed</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>User<ul>
+<li>verify sandbox<ul>
+<li>signed, code, cert -&gt; <code>java -jar verifytool -i--sign signed -i--code code -i--cert cert -o result</code> -&gt; result</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="hash-sign-verify">hash, sign, verify</h3>
+<h2 id="822">8/22</h2>
+<p>https://developer.nvidia.com/embedded/jetson-linux-archive
+https://docs.nvidia.com/jetson/archives/l4t-archived/l4t-3261/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/adaptation_and_bringup_nano.html
+<img alt="" src="https://i.imgur.com/hyhfcq3.png" /></p>
+<ul>
+<li>code<ul>
+<li>hash (~1420)</li>
+<li>sign (~1440)</li>
+<li>attach (~1500)</li>
+<li>verify</li>
+<li>service 傳遞</li>
+</ul>
+</li>
+</ul>
+<pre class="codehilite"><code>    public Resp codeSign(String kid, SIG_FMT fmt, byte[] data) {
+        logger.info(&quot;recv codeSign, kid:{}, data.len:{}&quot;, kid, data.length);
+        if (IS_DEBUG) {
+            return Resp.getFake_codeSign();
+        }
+        Map m = new HashMap&lt;String, Object&gt;() {
+            {
+                put(&quot;kid&quot;, kid);
+                put(&quot;fmt&quot;, fmt.getFmt());
+            }
+        };
+
+        //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;do hash&quot;&gt;
+        try {
+            byte[] hash = null;
+            if (SIG_FMT.isHashed(fmt)) {
+                hash = data;
+            } else {
+                hash = CryptoTool.doHash(data);//SHA256
+            }
+            String hashStr = new String(Hex.encode(hash)).toUpperCase();
+            logger.info(&quot;hashStr:{}&quot;, hashStr);
+            m.put(&quot;hash&quot;, hashStr);
+        } catch (Exception e) {
+            return Resp.getFail(ERR.DO_HASH_FAIL);
+        }
+        //&lt;/editor-fold&gt;
+
+        Resp resp = toServer(SERVER_URL + &quot;codeSign&quot;, m);
+
+        //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;本地驗章&quot;&gt;
+//        try {
+//            boolean rtn = CommonTool.verifyP1(CommonTool.der(resp.getSig()), SIG_FMT.isHashed(fmt) ? &quot;1234&quot;.getBytes() : data, CommonTool.loadCertPemNoBegin(resp.getX5c().get(0)).getPublicKey());
+//            logger.info(&quot;verifyP1 rtn: &quot; + rtn);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        //&lt;/editor-fold&gt;
+        //組P7
+        if (SIG_FMT.P7 == fmt) {
+            try {
+                List&lt;String&gt; certs = resp.getX5c();
+                byte[] p7 = CommonTool.buildP7withP1(certs.get(0), data, Base64.decode(resp.getSig()));//SHA256WithRSA
+                String p7Str = new String(Base64.encode(p7));
+                resp.setSig(p7Str);
+            } catch (Exception e) {
+                logger.error(&quot;buildP7withP1 fail&quot;, e);
+                return Resp.getFail(ERR.BUILD_P7_FAIL);
+            }
+        }
+        return resp;
+    }
+</code></pre>
+
+<pre class="codehilite"><code>    public static void main(String[] args) throws Exception {
+        Client client = Client.getInstance();
+        try {
+
+            String keyLabel = &quot;test_20220531001&quot;;
+//            logger.info(client.getVer().getVer());
+//            logger.info(client.keyGenerate(keyLabel, ALG.ES256, LEN.LEN_256).getCode());
+//            logger.info(client.keyDeactive(keyLabel).getCode());
+//            logger.info(client.keyActive(keyLabel).getCode());
+//            logger.info(client.getCertificate(keyLabel, CERT_FMT.SINGLE_CERT).getCode());
+            logger.info(client.codeSign(keyLabel, SIG_FMT.P1, &quot;1234&quot;.getBytes()).getSig());
+//            logger.info(client.codeSign(keyLabel, SIG_FMT.P1_WITH_HASHED, CryptoTool.doHash(&quot;1234&quot;.getBytes())).getSig());
+//            logger.info(client.codeSign(keyLabel, SIG_FMT.P7, &quot;1234&quot;.getBytes()).getSig());
+//            logger.info(client.listKey().getCode());
+
+        } catch (Exception e) {
+            logger.error(&quot;&quot;, e);
+        }
+    }
+</code></pre>
+
+<p>https://www.w3study.wiki/a/202109/1072497.html</p>
+<h2 id="820">8/20</h2>
+<ul>
+<li>hash sandbox<ul>
+<li>dohash</li>
+<li>hash傳送回得簽名</li>
+</ul>
+</li>
+<li>sign sandbox<ul>
+<li>得cert</li>
+<li>收hash 申請簽名</li>
+</ul>
+</li>
+</ul>
+<h2 id="821">8/21</h2>
+<ul>
+<li>sign sandbox<ul>
+<li>得cert</li>
+<li>收hash 申請簽名</li>
+<li>pe file</li>
+</ul>
+</li>
+<li>sandbox架設起來</li>
+<li>a3.2測試報告</li>
+<li>a3.3測試報告</li>
+<li>pistis部屬</li>
+<li>siging flow</li>
+<li>sign hasg driver sandbox</li>
+</ul>
+<p>https://stackoverflow.com/questions/41441276/how-to-decode-a-base64-encoded-certificate</p>
+<p>https://stackoverflow.com/questions/41441276/how-to-decode-a-base64-encoded-certificate</p>
+<pre class="codehilite"><code>    public static void main(String[] args) throws Exception {
+
+        //****test
+        Client twca_client = Client.getInstance();
+
+        //****getver
+        Resp ca_resp = twca_client.getVer();
+        System.out.println(&quot;getVer: &quot;);
+        System.out.println(ca_resp.getCode());
+
+        //****keygenerate -&gt; kid、alg、len、pk、code、ts
+        String uniqueID= UUID.randomUUID().toString().substring(0,16);
+        Resp key_resp= twca_client.keyGenerate(uniqueID, ALG.RS256, LEN.LEN_2048);
+        System.out.println(&quot;getGenerate: &quot;);
+        System.out.println(key_resp.getPk());
+
+        //****keyActive
+        //****keyDeactive
+
+        //****keylist -&gt; code, keyinfo, ts
+        System.out.println(&quot;listKey: &quot;);
+        Resp keylist_resp = twca_client.listKey();
+        System.out.println(keylist_resp.getCode());
+
+        if (keylist_resp.getCode().compareTo(&quot;0&quot;) != 0){
+            System.out.println(&quot;listKey FAIL &quot;);
+        }
+        else{
+            StringBuilder result = new StringBuilder(&quot;{\&quot;key\&quot;:[&quot;);
+            List&lt;Resp.KeyInfo&gt; keys = keylist_resp.getKeyInfo();
+            System.out.println(&quot;keys number&quot;);
+            System.out.println(keys.size());
+            for(int i = 0 ; i&lt; keys.size() ; i++){
+                if (i==0){
+                    result.append(&quot;{\&quot;kid\&quot;:&quot;).append(keys.get(i).getKid())
+                            .append(&quot;,\&quot;active\&quot;:&quot;).append(keys.get(i).getStatus()== 0 ? &quot;false&quot; : &quot;true&quot;)
+                            .append(&quot;}&quot;);
+                }
+                else{
+                    result.append(&quot;,{\&quot;kid\&quot;:&quot;).append(keys.get(i).getKid()).append(&quot;\&quot;&quot;)
+                            .append(&quot;,\&quot;active\&quot;:&quot;).append(keys.get(i).getStatus()== 0 ? &quot;false&quot; : &quot;true&quot;)
+                            .append(&quot;}&quot;);
+                }
+            }
+            result.append(&quot;]}&quot;);
+            //System.out.println(keylist_resp.getCode());
+            System.out.println(result);
+            //return;
+
+            //****getCertificate -&gt; code, kid, ts, x5c
+            System.out.println(&quot;getCertificate: &quot;);
+            //JSONObject jo = new JSONObject()
+            CERT_FMT cert_type=CERT_FMT.SINGLE_CERT;//CERTCHAIN
+            String kid = &quot;fe_prod_soft&quot;;
+            Resp b64code_cert_resp = twca_client.getCertificate(kid, cert_type);
+            System.out.println(b64code_cert_resp.getX5c());
+
+        }
+    }
+</code></pre>
+
+<ul>
+<li>meeting<ul>
+<li>A3.1分三個說明書<ul>
+<li>fECP安裝操作說明書</li>
+<li>容器化部屬說明書</li>
+<li>可信運算說明書</li>
+</ul>
+</li>
+<li>A3.2 overview重新撰寫
+    a.  將TWCA頒發的X.509公鑰證書安裝到由TWCA認證的客戶端和伺服器上
+    b.  在這些經過認證的客戶端和伺服器上安裝這些交易模組
+    c.  在這些通過認證的客戶端和伺服器之間執行這些交易的操作程序
+    d.  確保這些交易的機密性、完整性、真實性和不可否認性的測試程序</li>
+<li></li>
+</ul>
+</li>
+</ul>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism.js Scripts for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Inline Search Script -->
+    <script>
+        document.getElementById('docSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('#sidebarNav > div');
+            
+            categories.forEach(cat => {
+                let catMatches = 0;
+                const items = cat.querySelectorAll('li');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = 'block';
+                        catMatches++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (catMatches > 0 || query === '') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
